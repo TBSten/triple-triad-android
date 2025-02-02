@@ -48,7 +48,6 @@ jobs:
 
       - name: Take Actual Screenshot from Head Branch
         run: ./gradlew recordRoborazziDebug
-      - run: tree build/roborazzi-outputs && cat ui/src/main/kotlin/your/projectPackage/ui/component/AppButton.kt
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

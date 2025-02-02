@@ -70,7 +70,7 @@ private fun Project.configureComposePreviewTests() {
                     "qualifiers" to "RobolectricDeviceQualifiers.Pixel5",
                 )
             includePrivatePreviews = true
-            testerQualifiedClassName = "your.projectPackage.ui.testing.AppComposePreviewTester"
+            testerQualifiedClassName = "me.tbsten.tripleTriad.ui.testing.AppComposePreviewTester"
         }
     }
 }

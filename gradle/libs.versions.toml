@@ -1,6 +1,5 @@
 [versions]
-# TODO Replace your package
-app-applicationId = "your.projectPackage"
+app-applicationId = "me.tbsten.tripleTriad"
 app-compileSdk = "35"
 app-minSdk = "28"
 app-targetSdk = "35"

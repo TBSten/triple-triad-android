@@ -5,9 +5,9 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
+import me.tbsten.tripleTriad.testing.CoroutineRule
 import org.junit.Rule
 import org.junit.Test
-import me.tbsten.tripleTriad.testing.CoroutineRule
 
 internal class UserTest {
     @get:Rule

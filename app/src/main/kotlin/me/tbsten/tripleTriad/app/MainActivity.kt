@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import me.tbsten.tripleTriad.debug.ui.InjectDebugMenu
 import me.tbsten.tripleTriad.error.ApplicationErrorStateHolder
+import me.tbsten.tripleTriad.tools.debug.ui.InjectDebugMenu
 import me.tbsten.tripleTriad.ui.designSystem.AppTheme
 import me.tbsten.tripleTriad.ui.error.HandleErrors
 

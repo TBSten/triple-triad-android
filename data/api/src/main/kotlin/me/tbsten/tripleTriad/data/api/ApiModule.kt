@@ -5,9 +5,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import me.tbsten.tripleTriad.data.api.generated.api.PostsApi
 import retrofit2.Retrofit
 import retrofit2.create
-import me.tbsten.tripleTriad.data.api.generated.api.PostsApi
 
 @Module
 @InstallIn(SingletonComponent::class)

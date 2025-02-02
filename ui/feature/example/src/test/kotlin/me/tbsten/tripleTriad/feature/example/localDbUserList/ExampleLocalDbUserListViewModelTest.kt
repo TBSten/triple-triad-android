@@ -7,8 +7,6 @@ import kotlin.test.assertIs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
-import org.junit.Rule
-import org.junit.Test
 import me.tbsten.tripleTriad.domain.example.user.GetUsersUseCase
 import me.tbsten.tripleTriad.domain.example.user.User
 import me.tbsten.tripleTriad.domain.example.user.UserId
@@ -16,6 +14,8 @@ import me.tbsten.tripleTriad.error.ApplicationErrorStateHolder
 import me.tbsten.tripleTriad.testing.CoroutineRule
 import me.tbsten.tripleTriad.ui.feature.example.localDbUserList.ExampleLocalDbUserListUiState
 import me.tbsten.tripleTriad.ui.feature.example.localDbUserList.ExampleLocalDbUserListViewModel
+import org.junit.Rule
+import org.junit.Test
 
 internal class ExampleLocalDbUserListViewModelTest {
     @get:Rule

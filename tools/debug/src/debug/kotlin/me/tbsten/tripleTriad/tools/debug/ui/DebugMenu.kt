@@ -1,4 +1,4 @@
-package me.tbsten.tripleTriad.debug.ui
+package me.tbsten.tripleTriad.tools.debug.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import me.tbsten.tripleTriad.debug.ui.component.DebugMenuTabSection
+import me.tbsten.tripleTriad.tools.debug.ui.component.DebugMenuTabSection
 import me.tbsten.tripleTriad.ui.Dispatch
 import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.consumeViewModel

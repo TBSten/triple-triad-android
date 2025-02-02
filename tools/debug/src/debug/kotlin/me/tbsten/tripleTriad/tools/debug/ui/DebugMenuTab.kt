@@ -1,4 +1,4 @@
-package me.tbsten.tripleTriad.debug.ui
+package me.tbsten.tripleTriad.tools.debug.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

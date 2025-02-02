@@ -1,4 +1,4 @@
-package me.tbsten.tripleTriad.debug.ui
+package me.tbsten.tripleTriad.tools.debug.ui
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

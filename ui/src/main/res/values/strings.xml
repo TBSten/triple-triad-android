@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_dialog_title_api">通信エラー</string>
+    <string name="common_error_dialog_text_api">時間をしばらく置いてから再度実行するか、通信ができる環境でアクセスしてください。</string>
+    <string name="common_error_dialog_title_api_no_body">通信エラー</string>
+    <string name="common_error_dialog_text_api_no_body">何度も同様のエラーが発生する場合は弊社にお問い合わせください。</string>
+    <string name="common_error_dialog_title_unknown">不明なエラー</string>
+    <string name="common_error_dialog_text_unknown">何度も同様のエラーが発生する場合は弊社にお問い合わせください。</string>
+</resources>

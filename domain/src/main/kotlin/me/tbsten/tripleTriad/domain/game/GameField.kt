@@ -1,7 +1,7 @@
 package me.tbsten.tripleTriad.domain.game
 
-private const val Width = 3
-private const val Height = 3
+private const val WIDTH = 3
+private const val HEIGHT = 3
 
 data class GameField(
     val squares: List<Square>,
@@ -9,7 +9,7 @@ data class GameField(
     init {
         // validate
         this.squares.forEachIndexed { index, square ->
-            if (square.y * Width + square.x != index) {
+            if (square.y * WIDTH + square.x != index) {
                 throw GameException.IllegalSquareAccess("index:$index square:$square")
             }
         }
@@ -46,8 +46,8 @@ data class GameField(
     companion object {
         fun emptyAll() = GameField(
             squares =
-            List(Width * Height) {
-                Square.Empty(x = it % Height, y = it / Height)
+            List(WIDTH * HEIGHT) {
+                Square.Empty(x = it % HEIGHT, y = it / HEIGHT)
             },
         )
     }

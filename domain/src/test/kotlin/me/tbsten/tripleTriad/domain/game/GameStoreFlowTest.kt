@@ -155,7 +155,8 @@ class GameStoreFlowTest {
                     playerHands = prevState.playerHands,
                     enemy = initialState.enemy,
                     enemyHands = prevState.enemyHands,
-                    gameField = prevState.gameField, // TODO BasicPlaceRule 適用後の状態になってることを確認すべき
+                    // TODO BasicPlaceRule 適用後の状態になってることを確認すべき
+                    gameField = prevState.gameField,
                     turnPlayer = prevState.enemy,
                 ),
                 it,

@@ -6,6 +6,7 @@ import me.tbsten.tripleTriad.domain.game.MoveCardData
 
 data object BasicPlaceCardRule : PlaceCardRule {
     // TODO 置いたカードの上下左右の数字を比べて必要に応じて owner を更新
+    @Suppress("CyclomaticComplexMethod")
     override suspend fun afterPlaceCard(gameField: GameField, moveCardData: MoveCardData): GameField {
         var resultGameField = gameField
         val selectedCard = moveCardData.selectedCard

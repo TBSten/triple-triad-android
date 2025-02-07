@@ -13,6 +13,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.ui.testing.annotation)
     implementation(platform(libs.composeBom))
     implementation(libs.kotlinxCoroutinesTest)
     implementation(libs.androidxEspressoCore)

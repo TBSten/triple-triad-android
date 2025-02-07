@@ -84,7 +84,7 @@ class AppComposePreviewTester : ComposePreviewTester<AndroidPreviewInfo> by Andr
 
         // ローディングインジケータなどを含む Preview で想定以上の時間がかかるため、最大 10秒 待つようにする。
         composeTestRule.mainClock.autoAdvance = false
-        composeTestRule.awaitIdle(maxDuration = 10.seconds)
+        composeTestRule.awaitIdle(maxDuration = 5.seconds)
             .also {
                 if (it) println("WARN: Cancelled wait because ComposeTestRule.awaitIdle() took more than 10 seconds.")
             }

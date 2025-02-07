@@ -9,4 +9,5 @@ android {
 
 dependencies {
     api(projects.domain.error)
+    api(libs.tartCore)
 }

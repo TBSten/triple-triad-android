@@ -32,6 +32,7 @@ plugins {
     alias(libs.plugins.roborazzi) apply false
     alias(libs.plugins.room) apply false
     alias(libs.plugins.openApi) apply false
+    alias(libs.plugins.lumoUi)
 }
 
 /**

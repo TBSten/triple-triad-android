@@ -34,6 +34,7 @@ openApi = "7.10.0"
 okhttp = "4.12.0"
 timber = "5.0.1"
 tart = "1.0.0"
+lumoUi = "1.1.1"
 
 ktlintGradlePlugin = "12.1.2"
 detekt = "1.23.7"
@@ -50,13 +51,17 @@ androidxLifecycleRuntimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-k
 androidxLifecycleViewModelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+composeFoundation = { module = "androidx.compose.foundation:foundation" }
+composeFoundationLayout = { module = "androidx.compose.foundation:foundation-layout" }
 composeUi = { module = "androidx.compose.ui:ui" }
 composeUiGraphics = { module = "androidx.compose.ui:ui-graphics" }
+composeUiUtil = { module = "androidx.compose.ui:ui-util" }
 composeUiTooling = { module = "androidx.compose.ui:ui-tooling" }
 composeUiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
 composeUiTestManifest = { module = "androidx.compose.ui:ui-test-manifest" }
 composeUiTestJunit4 = { module = "androidx.compose.ui:ui-test-junit4" }
-composeMaterial3 = { module = "androidx.compose.material3:material3" }
+composeMaterialRipple = { module = "androidx.compose.material:material-ripple" }
+composeMaterialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
 navigationCompose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -106,6 +111,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 room = { id = "androidx.room", version.ref = "room" }
 openApi = { id = "org.openapi.generator", version.ref = "openApi" }
+lumoUi = { id = "com.nomanr.plugin.lumo", version.ref = "lumoUi" }
 
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradlePlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

@@ -8,4 +8,12 @@ android {
 }
 
 dependencies {
+    api(platform(libs.composeBom))
+    api(libs.composeFoundation)
+    api(libs.composeFoundationLayout)
+    api(libs.composeUi)
+    api(libs.composeUiTooling)
+    api(libs.composeUiToolingPreview)
+    api(libs.composeUiUtil)
+    api(libs.composeMaterialRipple)
 }

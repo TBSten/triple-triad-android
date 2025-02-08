@@ -3,6 +3,8 @@ package me.tbsten.tripleTriad.domain.game.gameRule
 import me.tbsten.tripleTriad.common.update
 import me.tbsten.tripleTriad.domain.game.GameField
 import me.tbsten.tripleTriad.domain.game.MoveCardData
+import me.tbsten.tripleTriad.domain.game.owner
+import me.tbsten.tripleTriad.domain.game.squares
 
 data object BasicPlaceCardRule : PlaceCardRule {
     // TODO 置いたカードの上下左右の数字を比べて必要に応じて owner を更新
@@ -19,9 +21,9 @@ data object BasicPlaceCardRule : PlaceCardRule {
                     it.owner != moveCardData.placeBy &&
                     selectedCard.top >= it.placedCard.bottom
                 ) {
-                    resultGameField = resultGameField.copy(
-                        squares = resultGameField.squares.update(it, it.copy(owner = moveCardData.placeBy)),
-                    )
+                    resultGameField = GameField.squares.modify(resultGameField) { squares ->
+                        squares.update(it, GameField.Square.PlacedCard.owner.modify(it) { moveCardData.placeBy })
+                    }
                 }
             }
 
@@ -33,9 +35,9 @@ data object BasicPlaceCardRule : PlaceCardRule {
                     it.owner != moveCardData.placeBy &&
                     selectedCard.bottom >= it.placedCard.top
                 ) {
-                    resultGameField = resultGameField.copy(
-                        squares = resultGameField.squares.update(it, it.copy(owner = moveCardData.placeBy)),
-                    )
+                    resultGameField = GameField.squares.modify(resultGameField) { squares ->
+                        squares.update(it, GameField.Square.PlacedCard.owner.modify(it) { moveCardData.placeBy })
+                    }
                 }
             }
 
@@ -47,9 +49,9 @@ data object BasicPlaceCardRule : PlaceCardRule {
                     it.owner != moveCardData.placeBy &&
                     selectedCard.left >= it.placedCard.right
                 ) {
-                    resultGameField = resultGameField.copy(
-                        squares = resultGameField.squares.update(it, it.copy(owner = moveCardData.placeBy)),
-                    )
+                    resultGameField = GameField.squares.modify(resultGameField) { squares ->
+                        squares.update(it, GameField.Square.PlacedCard.owner.modify(it) { moveCardData.placeBy })
+                    }
                 }
             }
 
@@ -61,9 +63,9 @@ data object BasicPlaceCardRule : PlaceCardRule {
                     it.owner != moveCardData.placeBy &&
                     selectedCard.right >= it.placedCard.left
                 ) {
-                    resultGameField = resultGameField.copy(
-                        squares = resultGameField.squares.update(it, it.copy(owner = moveCardData.placeBy)),
-                    )
+                    resultGameField = GameField.squares.modify(resultGameField) { squares ->
+                        squares.update(it, GameField.Square.PlacedCard.owner.modify(it) { moveCardData.placeBy })
+                    }
                 }
             }
 

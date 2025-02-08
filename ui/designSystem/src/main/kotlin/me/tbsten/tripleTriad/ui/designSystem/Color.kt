@@ -1,5 +1,6 @@
 package me.tbsten.tripleTriad.ui.designSystem
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -139,8 +140,13 @@ internal val DarkColors =
         elevation = Gray200,
     )
 
+@SuppressLint("ComposeCompositionLocalUsage")
 val LocalColors = staticCompositionLocalOf { LightColors }
+
+@SuppressLint("ComposeCompositionLocalUsage")
 val LocalContentColor = compositionLocalOf { Color.Black }
+
+@SuppressLint("ComposeCompositionLocalUsage")
 val LocalContentAlpha = compositionLocalOf { 1f }
 
 fun Colors.contentColorFor(backgroundColor: Color): Color = when (backgroundColor) {

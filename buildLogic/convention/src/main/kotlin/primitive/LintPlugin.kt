@@ -30,6 +30,7 @@ private fun Project.configureKtlint() {
     }
 
     ktlint {
+        version.set("1.5.0")
         reporters {
             reporter(ReporterType.SARIF)
         }

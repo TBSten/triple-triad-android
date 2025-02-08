@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +16,7 @@ import me.tbsten.tripleTriad.tools.debug.ui.component.DebugMenuTabSection
 import me.tbsten.tripleTriad.ui.Dispatch
 import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.consumeViewModel
+import me.tbsten.tripleTriad.ui.designSystem.components.Surface
 import me.tbsten.tripleTriad.ui.error.SafeLaunchedEffect
 
 @Composable

@@ -3,14 +3,14 @@ package me.tbsten.tripleTriad.ui.feature.example.apiPostList.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.tbsten.tripleTriad.ui.PreviewRoot
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
+import me.tbsten.tripleTriad.ui.designSystem.components.Surface
+import me.tbsten.tripleTriad.ui.designSystem.components.Text
 
 @Composable
 internal fun ErrorSection(
@@ -19,9 +19,8 @@ internal fun ErrorSection(
 ) {
     Surface(
         modifier = modifier,
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.errorContainer,
-        contentColor = MaterialTheme.colorScheme.error,
+        color = TripleTriadTheme.colors.error,
+        contentColor = TripleTriadTheme.colors.onError,
     ) {
         Column(
             modifier = Modifier

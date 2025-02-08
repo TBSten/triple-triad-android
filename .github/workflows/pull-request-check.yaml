@@ -94,7 +94,7 @@ jobs:
       - run: npm i -g @microsoft/sarif-multitool
 
       - name: detekt
-        run: ./gradlew detekt
+        run: ./gradlew detekt --continue
 
       - name: Merge sarif files
         if: ${{ !cancelled() }}
@@ -126,7 +126,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: yumemi-inc/setup-java-gradle@v2
-      - run: ./gradlew test
+      - run: ./gradlew test --continue
       - uses: yumemi-inc/comment-pull-request@v1
         if: cancelled() != true
         with:
@@ -144,7 +144,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: yumemi-inc/setup-java-gradle@v2
-      - run: ./gradlew :app:assemble${{ matrix.variants }}
+      - run: ./gradlew :app:assemble${{ matrix.variants }} --continue
       - uses: yumemi-inc/comment-pull-request@v1
         if: cancelled() != true
         with:

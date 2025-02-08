@@ -1,7 +1,5 @@
 package me.tbsten.tripleTriad.ui.error
 
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,7 +10,7 @@ import me.tbsten.tripleTriad.error.ErrorState
 import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.R
 import me.tbsten.tripleTriad.ui.ValuesPreviewParameterProvider
-import me.tbsten.tripleTriad.ui.component.AppButton
+import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialog
 
 @Composable
 internal fun CommonErrorDialog(
@@ -27,31 +25,11 @@ internal fun CommonErrorDialog(
 
     AlertDialog(
         onDismissRequest = onClose,
-        title = {
-            Text(errorState.exception.displayTitle)
-        },
-        text = errorState.exception.displayText.let { { Text(it) } },
-        confirmButton = {
-            @Suppress("KotlinConstantConditions")
-            if (retryable) {
-                AppButton(onClick = onRetry) {
-                    Text("再読み込み")
-                }
-            } else {
-                AppButton(onClick = onClose) {
-                    Text("閉じる")
-                }
-            }
-        },
-        dismissButton = @Suppress("KotlinConstantConditions") if (retryable) {
-            {
-                AppButton(onClick = onClose) {
-                    Text("閉じる")
-                }
-            }
-        } else {
-            null
-        },
+        title = errorState.exception.displayTitle,
+        text = errorState.exception.displayText,
+        confirmButtonText = if (retryable) "再読み込み" else "閉じる",
+        onConfirmClick = onRetry,
+        dismissButtonText = "閉じる",
     )
 }
 
@@ -77,11 +55,12 @@ private val Throwable.displayText: String
         else -> stringResource(R.string.common_error_dialog_text_unknown)
     }
 
-private const val NOT_FOUND_STATUS_CODE = 404
+private const val NotFoundStatusCode = 404
+
 class CommonErrorDialogPreviewParameters :
     ValuesPreviewParameterProvider<ErrorState.HandleError>(
         ErrorState.HandleError(
-            AppException.Api("Not Found", NOT_FOUND_STATUS_CODE, null),
+            AppException.Api("Not Found", NotFoundStatusCode, null),
             ErrorHandleType.Dialog,
         ),
         ErrorState.HandleError(

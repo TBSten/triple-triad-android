@@ -8,13 +8,13 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.tbsten.tripleTriad.error.AbstractErrorStateHolder
-import me.tbsten.tripleTriad.ui.designSystem.AppTheme
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.error.LocalErrorStateHolder
 
 @SuppressLint("ComposeModifierMissing")
 @Composable
 fun PreviewRoot(content: @Composable () -> Unit) {
-    AppTheme {
+    TripleTriadTheme {
         CompositionLocalProvider(
             LocalErrorStateHolder provides PreviewErrorStateHolder,
         ) {

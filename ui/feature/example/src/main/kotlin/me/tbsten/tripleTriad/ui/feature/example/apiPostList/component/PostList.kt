@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,6 +20,8 @@ import me.tbsten.tripleTriad.domain.example.post.PostId
 import me.tbsten.tripleTriad.domain.example.post.UserId
 import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.ValuesPreviewParameterProvider
+import me.tbsten.tripleTriad.ui.designSystem.components.HorizontalDivider
+import me.tbsten.tripleTriad.ui.designSystem.components.Text
 
 @Composable
 internal fun PostList(

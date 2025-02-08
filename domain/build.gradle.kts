@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.buildLogicModuleAndroidLibrary)
     alias(libs.plugins.buildLogicPrimitiveHilt)
+    alias(libs.plugins.buildLogicPrimitiveKotlinxSerialization)
 }
 
 android {

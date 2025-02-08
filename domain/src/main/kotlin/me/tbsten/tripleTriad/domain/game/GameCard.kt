@@ -1,5 +1,8 @@
 package me.tbsten.tripleTriad.domain.game
 
+import arrow.optics.optics
+
+@optics
 data class GameCard(
     val top: CardNumber,
     val bottom: CardNumber,
@@ -7,6 +10,8 @@ data class GameCard(
     val right: CardNumber,
 ) {
     override fun toString(): String = "Card(t=$top,b=$bottom,l=$left,r=$right)"
+
+    companion object;
 }
 
 sealed interface CardNumber {

@@ -8,6 +8,14 @@ fun <T> List<T>.update(prev: T, new: T) = map {
     }
 }
 
+fun <T> List<T>.update(prev: T, new: (T) -> T) = map {
+    if (it != prev) {
+        it
+    } else {
+        new(it)
+    }
+}
+
 fun <T> List<T>.updateIndexOf(index: Int, new: T) = mapIndexed { i, value ->
     if (i != index) {
         value

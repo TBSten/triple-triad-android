@@ -32,7 +32,6 @@ open class FeatureModulePlugin : Plugin<Project> {
                 implementation(libs.library("composeUi"))
                 implementation(libs.library("composeUiGraphics"))
                 implementation(libs.library("composeUiToolingPreview"))
-                implementation(libs.library("composeMaterial3"))
                 implementation(libs.library("hiltNavigationCompose"))
                 implementation(libs.library("androidxLifecycleViewModelKtx"))
                 implementation(libs.library("tartCompose"))

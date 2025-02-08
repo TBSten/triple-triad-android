@@ -14,7 +14,6 @@ dependencies {
     implementation(libs.composeUi)
     implementation(libs.composeUiGraphics)
     implementation(libs.composeUiToolingPreview)
-    implementation(libs.composeMaterial3)
     implementation(libs.hiltNavigationCompose)
     implementation(libs.androidxLifecycleViewModelKtx)
     implementation(libs.hiltNavigationCompose)

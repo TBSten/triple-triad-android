@@ -47,7 +47,6 @@ fun Project.setUpCompose() {
         implementation(libs.library("composeUi"))
         implementation(libs.library("composeUiGraphics"))
         implementation(libs.library("composeUiToolingPreview"))
-        implementation(libs.library("composeMaterial3"))
 
         androidTestImplementation(platform(libs.library("composeBom")))
         androidTestImplementation(libs.library("composeUiTestJunit4"))

@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,8 +20,10 @@ import me.tbsten.tripleTriad.domain.example.user.UserId
 import me.tbsten.tripleTriad.ui.Dispatch
 import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.ValuesPreviewParameterProvider
-import me.tbsten.tripleTriad.ui.component.AppButton
 import me.tbsten.tripleTriad.ui.consumeViewModel
+import me.tbsten.tripleTriad.ui.designSystem.components.Button
+import me.tbsten.tripleTriad.ui.designSystem.components.Text
+import me.tbsten.tripleTriad.ui.designSystem.components.progressindicators.CircularProgressIndicator
 import me.tbsten.tripleTriad.ui.error.handleUiEvent
 import me.tbsten.tripleTriad.ui.feature.example.localDbUserList.component.UserListItem
 
@@ -48,11 +47,10 @@ private fun ExampleLocalDbUserListScreen(
     dispatch: Dispatch<ExampleLocalDbUserListUiAction>,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(modifier = modifier) { innerPadding ->
+    Box(modifier.fillMaxSize()) {
         Crossfade(
             if (uiState == ExampleLocalDbUserListUiState.InitialLoading) uiState else null,
             label = "ExampleLocalDbUserListScreen Loading Crossfade",
-            modifier = Modifier.padding(innerPadding),
         ) { uiState ->
             uiState?.let {
                 Box(
@@ -67,7 +65,6 @@ private fun ExampleLocalDbUserListScreen(
         Crossfade(
             uiState is ExampleLocalDbUserListUiState.Success,
             label = "ExampleLocalDbUserListScreen Success Crossfade",
-            modifier = Modifier.padding(innerPadding),
         ) { isSuccess ->
             if (isSuccess && uiState is ExampleLocalDbUserListUiState.Success) {
                 Column(
@@ -89,7 +86,7 @@ private fun ExampleLocalDbUserListScreen(
                         }
 
                         item {
-                            AppButton(
+                            Button(
                                 modifier = Modifier.padding(top = 32.dp),
                                 onClick = handleUiEvent { dispatch(ExampleLocalDbUserListUiAction.OnAddUser) },
                             ) {

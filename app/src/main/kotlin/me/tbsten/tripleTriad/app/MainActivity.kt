@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import me.tbsten.tripleTriad.error.ApplicationErrorStateHolder
 import me.tbsten.tripleTriad.tools.debug.ui.InjectDebugMenu
-import me.tbsten.tripleTriad.ui.designSystem.AppTheme
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.error.HandleErrors
 
 @AndroidEntryPoint
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppTheme {
+            TripleTriadTheme {
                 HandleErrors(applicationErrorStateHolder) {
                     InjectDebugMenu()
                     AppNavHost()

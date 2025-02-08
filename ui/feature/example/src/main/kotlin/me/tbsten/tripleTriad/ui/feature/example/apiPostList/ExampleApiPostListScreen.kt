@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,8 +25,10 @@ import me.tbsten.tripleTriad.domain.example.post.UserId
 import me.tbsten.tripleTriad.ui.Dispatch
 import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.ValuesPreviewParameterProvider
-import me.tbsten.tripleTriad.ui.component.AppButton
 import me.tbsten.tripleTriad.ui.consumeViewModel
+import me.tbsten.tripleTriad.ui.designSystem.components.Button
+import me.tbsten.tripleTriad.ui.designSystem.components.Text
+import me.tbsten.tripleTriad.ui.designSystem.components.progressindicators.CircularProgressIndicator
 import me.tbsten.tripleTriad.ui.error.handleUiEvent
 import me.tbsten.tripleTriad.ui.feature.example.apiPostList.component.ErrorSection
 import me.tbsten.tripleTriad.ui.feature.example.apiPostList.component.PostList
@@ -59,7 +59,7 @@ internal fun ExampleApiPostListScreen(
             .windowInsetsPadding(WindowInsets.systemBars),
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)) {
-            AppButton(onClick = handleUiEvent { dispatch(ExampleApiPostListUiAction.Refresh) }) {
+            Button(onClick = handleUiEvent { dispatch(ExampleApiPostListUiAction.Refresh) }) {
                 Text("Refresh")
             }
             AnimatedVisibility(uiState is ExampleApiPostListUiState.Loading) {

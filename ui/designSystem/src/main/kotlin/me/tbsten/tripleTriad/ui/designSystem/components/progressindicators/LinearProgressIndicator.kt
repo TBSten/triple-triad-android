@@ -20,11 +20,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
-import androidx.compose.ui.tooling.preview.Preview
 import kotlin.math.abs
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 
 @Composable
 fun LinearProgressIndicator(
@@ -61,11 +61,13 @@ fun LinearProgressIndicator(
             1f,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
-                        0f at LinearProgressIndicatorDefaults.FirstLineHeadDelay using LinearProgressIndicatorDefaults.FirstLineHeadEasing
-                        1f at LinearProgressIndicatorDefaults.FirstLineHeadDuration + LinearProgressIndicatorDefaults.FirstLineHeadDelay
-                    },
+                keyframes {
+                    durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
+                    0f at LinearProgressIndicatorDefaults.FirstLineHeadDelay using
+                        LinearProgressIndicatorDefaults.FirstLineHeadEasing
+                    1f at LinearProgressIndicatorDefaults.FirstLineHeadDuration +
+                        LinearProgressIndicatorDefaults.FirstLineHeadDelay
+                },
             ),
             label = "FirstLineHead",
         )
@@ -75,11 +77,13 @@ fun LinearProgressIndicator(
             1f,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
-                        0f at LinearProgressIndicatorDefaults.FirstLineTailDelay using LinearProgressIndicatorDefaults.FirstLineTailEasing
-                        1f at LinearProgressIndicatorDefaults.FirstLineTailDuration + LinearProgressIndicatorDefaults.FirstLineTailDelay
-                    },
+                keyframes {
+                    durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
+                    0f at LinearProgressIndicatorDefaults.FirstLineTailDelay using
+                        LinearProgressIndicatorDefaults.FirstLineTailEasing
+                    1f at LinearProgressIndicatorDefaults.FirstLineTailDuration +
+                        LinearProgressIndicatorDefaults.FirstLineTailDelay
+                },
             ),
             label = "FirstLineTail",
         )
@@ -89,11 +93,13 @@ fun LinearProgressIndicator(
             1f,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
-                        0f at LinearProgressIndicatorDefaults.SecondLineHeadDelay using LinearProgressIndicatorDefaults.SecondLineHeadEasing
-                        1f at LinearProgressIndicatorDefaults.SecondLineHeadDuration + LinearProgressIndicatorDefaults.SecondLineHeadDelay
-                    },
+                keyframes {
+                    durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
+                    0f at LinearProgressIndicatorDefaults.SecondLineHeadDelay using
+                        LinearProgressIndicatorDefaults.SecondLineHeadEasing
+                    1f at LinearProgressIndicatorDefaults.SecondLineHeadDuration +
+                        LinearProgressIndicatorDefaults.SecondLineHeadDelay
+                },
             ),
             label = "SecondLineHead",
         )
@@ -103,11 +109,13 @@ fun LinearProgressIndicator(
             1f,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
-                        0f at LinearProgressIndicatorDefaults.SecondLineTailDelay using LinearProgressIndicatorDefaults.SecondLineTailEasing
-                        1f at LinearProgressIndicatorDefaults.SecondLineTailDuration + LinearProgressIndicatorDefaults.SecondLineTailDelay
-                    },
+                keyframes {
+                    durationMillis = LinearProgressIndicatorDefaults.AnimationDuration
+                    0f at LinearProgressIndicatorDefaults.SecondLineTailDelay using
+                        LinearProgressIndicatorDefaults.SecondLineTailEasing
+                    1f at LinearProgressIndicatorDefaults.SecondLineTailDuration +
+                        LinearProgressIndicatorDefaults.SecondLineTailDelay
+                },
             ),
             label = "SecondLineTail",
         )
@@ -210,7 +218,7 @@ object LinearProgressIndicatorDefaults {
 
 @Composable
 @Preview
-fun LinearProgressIndicatorPreview() {
+private fun LinearProgressIndicatorPreview() {
     TripleTriadTheme {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),

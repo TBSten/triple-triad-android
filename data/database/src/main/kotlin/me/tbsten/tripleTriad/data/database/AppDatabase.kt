@@ -13,7 +13,7 @@ import javax.inject.Singleton
 import me.tbsten.tripleTriad.data.database.example.user.UserDao
 import me.tbsten.tripleTriad.data.database.example.user.UserEntity
 
-private const val DATABASE_NAME = "app-database"
+private const val DatabaseName = "app-database"
 
 @Database(
     entities = [
@@ -36,6 +36,6 @@ internal object AppDatabaseModule {
     ) = Room.databaseBuilder(
         applicationContext,
         AppDatabase::class.java,
-        DATABASE_NAME,
+        DatabaseName,
     ).build()
 }

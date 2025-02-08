@@ -28,10 +28,9 @@ class ButtonElevation internal constructor(
     internal fun shadowElevation(
         enabled: Boolean,
         interactionSource: InteractionSource,
-    ): State<Dp> {
-        return animateElevation(enabled = enabled, interactionSource = interactionSource)
-    }
+    ): State<Dp> = animateElevation(enabled = enabled, interactionSource = interactionSource)
 
+    @Suppress("CyclomaticComplexMethod")
     @Composable
     private fun animateElevation(
         enabled: Boolean,
@@ -44,27 +43,21 @@ class ButtonElevation internal constructor(
                     is HoverInteraction.Enter -> {
                         interactions.add(interaction)
                     }
-
                     is HoverInteraction.Exit -> {
                         interactions.remove(interaction.enter)
                     }
-
                     is FocusInteraction.Focus -> {
                         interactions.add(interaction)
                     }
-
                     is FocusInteraction.Unfocus -> {
                         interactions.remove(interaction.focus)
                     }
-
                     is PressInteraction.Press -> {
                         interactions.add(interaction)
                     }
-
                     is PressInteraction.Release -> {
                         interactions.remove(interaction.press)
                     }
-
                     is PressInteraction.Cancel -> {
                         interactions.remove(interaction.press)
                     }

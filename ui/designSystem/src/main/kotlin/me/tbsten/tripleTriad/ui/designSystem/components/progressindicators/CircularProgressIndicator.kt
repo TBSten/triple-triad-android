@@ -26,13 +26,13 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
-import androidx.compose.ui.tooling.preview.Preview
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.max
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 
 @Composable
 fun CircularProgressIndicator(
@@ -81,12 +81,12 @@ fun CircularProgressIndicator(
             Int.VectorConverter,
             infiniteRepeatable(
                 animation =
-                    tween(
-                        durationMillis =
-                            CircularProgressIndicatorDefaults.RotationDuration *
-                                CircularProgressIndicatorDefaults.RotationsPerCycle,
-                        easing = LinearEasing,
-                    ),
+                tween(
+                    durationMillis =
+                    CircularProgressIndicatorDefaults.RotationDuration *
+                        CircularProgressIndicatorDefaults.RotationsPerCycle,
+                    easing = LinearEasing,
+                ),
             ),
             label = "Current Rotation",
         )
@@ -96,10 +96,10 @@ fun CircularProgressIndicator(
             CircularProgressIndicatorDefaults.BaseRotationAngle,
             infiniteRepeatable(
                 animation =
-                    tween(
-                        durationMillis = CircularProgressIndicatorDefaults.RotationDuration,
-                        easing = LinearEasing,
-                    ),
+                tween(
+                    durationMillis = CircularProgressIndicatorDefaults.RotationDuration,
+                    easing = LinearEasing,
+                ),
             ),
             label = "Base Rotation",
         )
@@ -109,12 +109,13 @@ fun CircularProgressIndicator(
             CircularProgressIndicatorDefaults.JumpRotationAngle,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = CircularProgressIndicatorDefaults.HeadTailAnimationDuration +
-                            CircularProgressIndicatorDefaults.HeadTailDelayDuration
-                        0f at 0 using CircularProgressIndicatorDefaults.CircularEasing
-                        CircularProgressIndicatorDefaults.JumpRotationAngle at CircularProgressIndicatorDefaults.HeadTailAnimationDuration
-                    },
+                keyframes {
+                    durationMillis = CircularProgressIndicatorDefaults.HeadTailAnimationDuration +
+                        CircularProgressIndicatorDefaults.HeadTailDelayDuration
+                    0f at 0 using CircularProgressIndicatorDefaults.CircularEasing
+                    CircularProgressIndicatorDefaults.JumpRotationAngle at
+                        CircularProgressIndicatorDefaults.HeadTailAnimationDuration
+                },
             ),
             label = "End Angle",
         )
@@ -124,12 +125,13 @@ fun CircularProgressIndicator(
             CircularProgressIndicatorDefaults.JumpRotationAngle,
             infiniteRepeatable(
                 animation =
-                    keyframes {
-                        durationMillis = CircularProgressIndicatorDefaults.HeadTailAnimationDuration +
-                            CircularProgressIndicatorDefaults.HeadTailDelayDuration
-                        0f at CircularProgressIndicatorDefaults.HeadTailDelayDuration using CircularProgressIndicatorDefaults.CircularEasing
-                        CircularProgressIndicatorDefaults.JumpRotationAngle at durationMillis
-                    },
+                keyframes {
+                    durationMillis = CircularProgressIndicatorDefaults.HeadTailAnimationDuration +
+                        CircularProgressIndicatorDefaults.HeadTailDelayDuration
+                    0f at CircularProgressIndicatorDefaults.HeadTailDelayDuration using
+                        CircularProgressIndicatorDefaults.CircularEasing
+                    CircularProgressIndicatorDefaults.JumpRotationAngle at durationMillis
+                },
             ),
             label = "Start Angle",
         )
@@ -239,7 +241,7 @@ object CircularProgressIndicatorDefaults {
 
 @Composable
 @Preview
-fun CircularProgressIndicatorPreview() {
+private fun CircularProgressIndicatorPreview() {
     TripleTriadTheme {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),

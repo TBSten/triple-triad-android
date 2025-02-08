@@ -17,7 +17,7 @@ import me.tbsten.tripleTriad.domain.example.user.UserId
 import me.tbsten.tripleTriad.error.ApplicationErrorStateHolder
 import me.tbsten.tripleTriad.ui.BaseViewModel
 
-private const val INITIAL_FETCH_DELAY = 1000L
+private const val InitialFetchDelay = 1000L
 private val randomRange = 1..1_000_000
 
 @HiltViewModel
@@ -34,7 +34,7 @@ internal class ExampleLocalDbUserListViewModel @Inject constructor(
 
     override fun init() {
         viewModelScope.launchSafe {
-            delay(INITIAL_FETCH_DELAY)
+            delay(InitialFetchDelay)
             refresh()
         }
     }

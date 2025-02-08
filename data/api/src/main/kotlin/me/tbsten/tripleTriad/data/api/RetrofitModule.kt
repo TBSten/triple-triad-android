@@ -12,7 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
-private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
+private const val BaseUrl = "https://jsonplaceholder.typicode.com/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -29,7 +29,7 @@ internal object RetrofitModule {
 
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(BASE_URL)
+            .baseUrl(BaseUrl)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
     }

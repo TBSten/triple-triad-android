@@ -25,11 +25,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
-import me.tbsten.tripleTriad.ui.designSystem.LocalContentColor
-import me.tbsten.tripleTriad.ui.designSystem.foundation.ButtonElevation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import me.tbsten.tripleTriad.ui.designSystem.LocalContentColor
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
+import me.tbsten.tripleTriad.ui.designSystem.foundation.ButtonElevation
 
 @Composable
 fun Button(
@@ -58,12 +58,12 @@ fun Button(
 
 @Composable
 internal fun ButtonComponent(
-    text: String? = null,
-    modifier: Modifier,
-    enabled: Boolean = true,
-    loading: Boolean = false,
     style: ButtonStyle,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    text: String? = null,
+    enabled: Boolean = true,
+    loading: Boolean = false,
     contentPadding: PaddingValues = ButtonDefaults.contentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: (@Composable () -> Unit)? = null,
@@ -89,9 +89,9 @@ internal fun ButtonComponent(
     Surface(
         onClick = onClick,
         modifier =
-            modifier
-                .defaultMinSize(minHeight = ButtonDefaults.MinHeight)
-                .semantics { role = Role.Button },
+        modifier
+            .defaultMinSize(minHeight = ButtonDefaults.MinHeight)
+            .semantics { role = Role.Button },
         enabled = enabled,
         shape = style.shape,
         color = containerColor,
@@ -112,10 +112,11 @@ internal fun ButtonComponent(
 
 @Composable
 private fun DefaultButtonContent(
-    modifier: Modifier = Modifier,
-    text: String? = null,
+    @Suppress("UNUSED_PARAMETER")
     loading: Boolean,
     contentColor: Color,
+    modifier: Modifier = Modifier,
+    text: String? = null,
     content: (@Composable () -> Unit)? = null,
 ) {
     if (text?.isEmpty() == false) {
@@ -167,24 +168,23 @@ enum class ButtonVariant {
 }
 
 @Composable
-internal fun buttonStyleFor(variant: ButtonVariant): ButtonStyle {
-    return when (variant) {
-        ButtonVariant.Primary -> ButtonDefaults.primaryFilled()
-        ButtonVariant.PrimaryOutlined -> ButtonDefaults.primaryOutlined()
-        ButtonVariant.PrimaryElevated -> ButtonDefaults.primaryElevated()
-        ButtonVariant.PrimaryGhost -> ButtonDefaults.primaryGhost()
-        ButtonVariant.Secondary -> ButtonDefaults.secondaryFilled()
-        ButtonVariant.SecondaryOutlined -> ButtonDefaults.secondaryOutlined()
-        ButtonVariant.SecondaryElevated -> ButtonDefaults.secondaryElevated()
-        ButtonVariant.SecondaryGhost -> ButtonDefaults.secondaryGhost()
-        ButtonVariant.Destructive -> ButtonDefaults.destructiveFilled()
-        ButtonVariant.DestructiveOutlined -> ButtonDefaults.destructiveOutlined()
-        ButtonVariant.DestructiveElevated -> ButtonDefaults.destructiveElevated()
-        ButtonVariant.DestructiveGhost -> ButtonDefaults.destructiveGhost()
-        ButtonVariant.Ghost -> ButtonDefaults.ghost()
-    }
+internal fun buttonStyleFor(variant: ButtonVariant): ButtonStyle = when (variant) {
+    ButtonVariant.Primary -> ButtonDefaults.primaryFilled()
+    ButtonVariant.PrimaryOutlined -> ButtonDefaults.primaryOutlined()
+    ButtonVariant.PrimaryElevated -> ButtonDefaults.primaryElevated()
+    ButtonVariant.PrimaryGhost -> ButtonDefaults.primaryGhost()
+    ButtonVariant.Secondary -> ButtonDefaults.secondaryFilled()
+    ButtonVariant.SecondaryOutlined -> ButtonDefaults.secondaryOutlined()
+    ButtonVariant.SecondaryElevated -> ButtonDefaults.secondaryElevated()
+    ButtonVariant.SecondaryGhost -> ButtonDefaults.secondaryGhost()
+    ButtonVariant.Destructive -> ButtonDefaults.destructiveFilled()
+    ButtonVariant.DestructiveOutlined -> ButtonDefaults.destructiveOutlined()
+    ButtonVariant.DestructiveElevated -> ButtonDefaults.destructiveElevated()
+    ButtonVariant.DestructiveGhost -> ButtonDefaults.destructiveGhost()
+    ButtonVariant.Ghost -> ButtonDefaults.ghost()
 }
 
+@Suppress("TooManyFunctions")
 internal object ButtonDefaults {
     internal val MinHeight = 44.dp
     internal val OutlineHeight = 1.dp
@@ -205,223 +205,209 @@ internal object ButtonDefaults {
     private val outlinedShape = ButtonShape
 
     @Composable
-    fun buttonElevation() =
-        ButtonElevation(
-            defaultElevation = 2.dp,
-            pressedElevation = 2.dp,
-            focusedElevation = 2.dp,
-            hoveredElevation = 2.dp,
-            disabledElevation = 0.dp,
-        )
+    fun buttonElevation() = ButtonElevation(
+        defaultElevation = 2.dp,
+        pressedElevation = 2.dp,
+        focusedElevation = 2.dp,
+        hoveredElevation = 2.dp,
+        disabledElevation = 0.dp,
+    )
 
     @Composable
-    fun primaryFilled() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.primary,
-                    contentColor = TripleTriadTheme.colors.onPrimary,
-                    disabledContainerColor = TripleTriadTheme.colors.disabled,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun primaryFilled() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.primary,
+            contentColor = TripleTriadTheme.colors.onPrimary,
+            disabledContainerColor = TripleTriadTheme.colors.disabled,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun primaryElevated() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.primary,
-                    contentColor = TripleTriadTheme.colors.onPrimary,
-                    disabledContainerColor = TripleTriadTheme.colors.disabled,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                ),
-            shape = elevatedShape,
-            elevation = buttonElevation(),
-            contentPadding = contentPadding,
-        )
+    fun primaryElevated() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.primary,
+            contentColor = TripleTriadTheme.colors.onPrimary,
+            disabledContainerColor = TripleTriadTheme.colors.disabled,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+        ),
+        shape = elevatedShape,
+        elevation = buttonElevation(),
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun primaryOutlined() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.transparent,
-                    contentColor = TripleTriadTheme.colors.primary,
-                    borderColor = TripleTriadTheme.colors.primary,
-                    disabledContainerColor = TripleTriadTheme.colors.transparent,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                    disabledBorderColor = TripleTriadTheme.colors.disabled,
-                ),
-            shape = outlinedShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun primaryOutlined() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.transparent,
+            contentColor = TripleTriadTheme.colors.primary,
+            borderColor = TripleTriadTheme.colors.primary,
+            disabledContainerColor = TripleTriadTheme.colors.transparent,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+            disabledBorderColor = TripleTriadTheme.colors.disabled,
+        ),
+        shape = outlinedShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun primaryGhost() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.transparent,
-                    contentColor = TripleTriadTheme.colors.primary,
-                    borderColor = TripleTriadTheme.colors.transparent,
-                    disabledContainerColor = TripleTriadTheme.colors.transparent,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                    disabledBorderColor = TripleTriadTheme.colors.transparent,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun primaryGhost() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.transparent,
+            contentColor = TripleTriadTheme.colors.primary,
+            borderColor = TripleTriadTheme.colors.transparent,
+            disabledContainerColor = TripleTriadTheme.colors.transparent,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+            disabledBorderColor = TripleTriadTheme.colors.transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun secondaryFilled() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.secondary,
-                    contentColor = TripleTriadTheme.colors.onSecondary,
-                    disabledContainerColor = TripleTriadTheme.colors.disabled,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun secondaryFilled() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.secondary,
+            contentColor = TripleTriadTheme.colors.onSecondary,
+            disabledContainerColor = TripleTriadTheme.colors.disabled,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun secondaryElevated() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.secondary,
-                    contentColor = TripleTriadTheme.colors.onSecondary,
-                    disabledContainerColor = TripleTriadTheme.colors.disabled,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                ),
-            shape = elevatedShape,
-            elevation = buttonElevation(),
-            contentPadding = contentPadding,
-        )
+    fun secondaryElevated() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.secondary,
+            contentColor = TripleTriadTheme.colors.onSecondary,
+            disabledContainerColor = TripleTriadTheme.colors.disabled,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+        ),
+        shape = elevatedShape,
+        elevation = buttonElevation(),
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun secondaryOutlined() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.transparent,
-                    contentColor = TripleTriadTheme.colors.primary,
-                    borderColor = TripleTriadTheme.colors.secondary,
-                    disabledContainerColor = TripleTriadTheme.colors.transparent,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                    disabledBorderColor = TripleTriadTheme.colors.disabled,
-                ),
-            shape = outlinedShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun secondaryOutlined() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.transparent,
+            contentColor = TripleTriadTheme.colors.primary,
+            borderColor = TripleTriadTheme.colors.secondary,
+            disabledContainerColor = TripleTriadTheme.colors.transparent,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+            disabledBorderColor = TripleTriadTheme.colors.disabled,
+        ),
+        shape = outlinedShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun secondaryGhost() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.transparent,
-                    contentColor = TripleTriadTheme.colors.primary,
-                    borderColor = TripleTriadTheme.colors.transparent,
-                    disabledContainerColor = TripleTriadTheme.colors.transparent,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                    disabledBorderColor = TripleTriadTheme.colors.transparent,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun secondaryGhost() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.transparent,
+            contentColor = TripleTriadTheme.colors.primary,
+            borderColor = TripleTriadTheme.colors.transparent,
+            disabledContainerColor = TripleTriadTheme.colors.transparent,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+            disabledBorderColor = TripleTriadTheme.colors.transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun destructiveFilled() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.error,
-                    contentColor = TripleTriadTheme.colors.onError,
-                    disabledContainerColor = TripleTriadTheme.colors.disabled,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun destructiveFilled() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.error,
+            contentColor = TripleTriadTheme.colors.onError,
+            disabledContainerColor = TripleTriadTheme.colors.disabled,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun destructiveElevated() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.error,
-                    contentColor = TripleTriadTheme.colors.onError,
-                    disabledContainerColor = TripleTriadTheme.colors.disabled,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                ),
-            shape = elevatedShape,
-            elevation = buttonElevation(),
-            contentPadding = contentPadding,
-        )
+    fun destructiveElevated() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.error,
+            contentColor = TripleTriadTheme.colors.onError,
+            disabledContainerColor = TripleTriadTheme.colors.disabled,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+        ),
+        shape = elevatedShape,
+        elevation = buttonElevation(),
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun destructiveOutlined() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.transparent,
-                    contentColor = TripleTriadTheme.colors.error,
-                    borderColor = TripleTriadTheme.colors.error,
-                    disabledContainerColor = TripleTriadTheme.colors.transparent,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                    disabledBorderColor = TripleTriadTheme.colors.disabled,
-                ),
-            shape = outlinedShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun destructiveOutlined() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.transparent,
+            contentColor = TripleTriadTheme.colors.error,
+            borderColor = TripleTriadTheme.colors.error,
+            disabledContainerColor = TripleTriadTheme.colors.transparent,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+            disabledBorderColor = TripleTriadTheme.colors.disabled,
+        ),
+        shape = outlinedShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun destructiveGhost() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.transparent,
-                    contentColor = TripleTriadTheme.colors.error,
-                    borderColor = TripleTriadTheme.colors.transparent,
-                    disabledContainerColor = TripleTriadTheme.colors.transparent,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                    disabledBorderColor = TripleTriadTheme.colors.transparent,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun destructiveGhost() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.transparent,
+            contentColor = TripleTriadTheme.colors.error,
+            borderColor = TripleTriadTheme.colors.transparent,
+            disabledContainerColor = TripleTriadTheme.colors.transparent,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+            disabledBorderColor = TripleTriadTheme.colors.transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 
     @Composable
-    fun ghost() =
-        ButtonStyle(
-            colors =
-                ButtonColors(
-                    containerColor = TripleTriadTheme.colors.transparent,
-                    contentColor = LocalContentColor.current,
-                    borderColor = TripleTriadTheme.colors.transparent,
-                    disabledContainerColor = TripleTriadTheme.colors.transparent,
-                    disabledContentColor = TripleTriadTheme.colors.onDisabled,
-                    disabledBorderColor = TripleTriadTheme.colors.transparent,
-                ),
-            shape = filledShape,
-            elevation = null,
-            contentPadding = contentPadding,
-        )
+    fun ghost() = ButtonStyle(
+        colors =
+        ButtonColors(
+            containerColor = TripleTriadTheme.colors.transparent,
+            contentColor = LocalContentColor.current,
+            borderColor = TripleTriadTheme.colors.transparent,
+            disabledContainerColor = TripleTriadTheme.colors.transparent,
+            disabledContentColor = TripleTriadTheme.colors.onDisabled,
+            disabledBorderColor = TripleTriadTheme.colors.transparent,
+        ),
+        shape = filledShape,
+        elevation = null,
+        contentPadding = contentPadding,
+    )
 }
 
 @Immutable
@@ -434,15 +420,19 @@ internal data class ButtonColors(
     val disabledBorderColor: Color? = null,
 ) {
     @Composable
-    internal fun containerColor(enabled: Boolean) =
-        rememberUpdatedState(newValue = if (enabled) containerColor else disabledContainerColor)
+    internal fun containerColor(enabled: Boolean) = rememberUpdatedState(
+        newValue = if (enabled) containerColor else disabledContainerColor,
+    )
 
     @Composable
-    internal fun contentColor(enabled: Boolean) =
-        rememberUpdatedState(newValue = if (enabled) contentColor else disabledContentColor)
+    internal fun contentColor(enabled: Boolean) = rememberUpdatedState(
+        newValue = if (enabled) contentColor else disabledContentColor,
+    )
 
     @Composable
-    fun borderColor(enabled: Boolean) = rememberUpdatedState(newValue = if (enabled) borderColor else disabledBorderColor)
+    fun borderColor(enabled: Boolean) = rememberUpdatedState(
+        newValue = if (enabled) borderColor else disabledBorderColor,
+    )
 }
 
 @Immutable
@@ -455,7 +445,7 @@ internal data class ButtonStyle(
 
 @Composable
 @Preview
-fun ButtonPreview() {
+private fun ButtonPreview() {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         PrimaryButtonPreview()
         SecondaryButtonPreview()
@@ -465,13 +455,13 @@ fun ButtonPreview() {
 
 @Composable
 @Preview
-fun PrimaryButtonPreview() {
+private fun PrimaryButtonPreview() {
     TripleTriadTheme {
         Column(
             modifier =
-                Modifier
-                    .background(TripleTriadTheme.colors.background)
-                    .padding(16.dp),
+            Modifier
+                .background(TripleTriadTheme.colors.background)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = "Primary Buttons", style = TripleTriadTheme.typography.h2)
@@ -521,13 +511,13 @@ fun PrimaryButtonPreview() {
 
 @Composable
 @Preview
-fun SecondaryButtonPreview() {
+private fun SecondaryButtonPreview() {
     TripleTriadTheme {
         Column(
             modifier =
-                Modifier
-                    .background(TripleTriadTheme.colors.background)
-                    .padding(16.dp),
+            Modifier
+                .background(TripleTriadTheme.colors.background)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = "Secondary Buttons", style = TripleTriadTheme.typography.h2)
@@ -577,13 +567,13 @@ fun SecondaryButtonPreview() {
 
 @Composable
 @Preview
-fun DestructiveButtonPreview() {
+private fun DestructiveButtonPreview() {
     TripleTriadTheme {
         Column(
             modifier =
-                Modifier
-                    .background(TripleTriadTheme.colors.background)
-                    .padding(16.dp),
+            Modifier
+                .background(TripleTriadTheme.colors.background)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = "Destructive Buttons", style = TripleTriadTheme.typography.h2)

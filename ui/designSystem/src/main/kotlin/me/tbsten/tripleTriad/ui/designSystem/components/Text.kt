@@ -20,12 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import me.tbsten.tripleTriad.ui.designSystem.LocalContentColor
 import me.tbsten.tripleTriad.ui.designSystem.LocalTextStyle
 import me.tbsten.tripleTriad.ui.designSystem.LocalTypography
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun Text(
@@ -118,14 +118,14 @@ internal fun Text(
 
 @Preview
 @Composable
-fun TypographySample() {
+private fun TypographySample() {
     val typography = LocalTypography.current
 
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(

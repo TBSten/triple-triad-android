@@ -36,10 +36,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.designSystem.LocalContentColor
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.designSystem.foundation.ProvideContentColorTextStyle
 
+@Suppress("ComposeParameterOrder", "LongParameterList", "LongMethod")
 @Composable
 internal fun CommonDecorationBox(
     value: String,
@@ -81,7 +82,12 @@ internal fun CommonDecorationBox(
         showLabel = label != null,
     ) { placeholderAlphaProgress ->
 
-        val labelColor = colors.labelColor(enabled = enabled, isError = isError, interactionSource = interactionSource).value
+        val labelColor = colors
+            .labelColor(
+                enabled = enabled,
+                isError = isError,
+                interactionSource = interactionSource,
+            ).value
         val decoratedLabel: @Composable (() -> Unit)? =
             label?.let {
                 @Composable {
@@ -153,7 +159,11 @@ internal fun CommonDecorationBox(
         val decoratedSupporting: @Composable (() -> Unit)? =
             supportingText?.let {
                 @Composable {
-                    Decoration(contentColor = supportingTextColor, typography = TripleTriadTheme.typography.body2, content = it)
+                    Decoration(
+                        contentColor = supportingTextColor,
+                        typography = TripleTriadTheme.typography.body2,
+                        content = it,
+                    )
                 }
             }
 
@@ -266,6 +276,7 @@ internal fun animateTextFieldBorderAsState(
     )
 }
 
+@Suppress("ComposeModifierComposed")
 internal fun Modifier.containerOutline(
     enabled: Boolean,
     isError: Boolean,
@@ -275,14 +286,14 @@ internal fun Modifier.containerOutline(
     shape: Shape,
 ) = composed(
     inspectorInfo =
-        debugInspectorInfo {
-            name = "indicatorLine"
-            properties["enabled"] = enabled
-            properties["isError"] = isError
-            properties["interactionSource"] = interactionSource
-            properties["colors"] = colors
-            properties["borderThickness"] = borderThickness
-        },
+    debugInspectorInfo {
+        name = "indicatorLine"
+        properties["enabled"] = enabled
+        properties["isError"] = isError
+        properties["interactionSource"] = interactionSource
+        properties["colors"] = colors
+        properties["borderThickness"] = borderThickness
+    },
 ) {
     val indicatorColor = colors.containerOutlineColor(enabled, isError, interactionSource)
 
@@ -293,6 +304,7 @@ internal fun Modifier.containerOutline(
     this.then(Modifier.border(stroke.value, shape = shape))
 }
 
+@Suppress("ComposeModifierComposed")
 internal fun Modifier.containerUnderline(
     enabled: Boolean,
     isError: Boolean,

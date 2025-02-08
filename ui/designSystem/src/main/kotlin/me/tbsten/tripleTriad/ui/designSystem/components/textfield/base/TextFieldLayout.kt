@@ -30,9 +30,9 @@ import androidx.compose.ui.util.fastFirstOrNull
 import kotlin.math.max
 import kotlin.math.roundToInt
 
+@Suppress("LongParameterList")
 @Composable
 internal fun TextFieldLayout(
-    modifier: Modifier,
     textField: @Composable () -> Unit,
     label: @Composable (() -> Unit)?,
     placeholder: @Composable ((Modifier) -> Unit)?,
@@ -47,6 +47,7 @@ internal fun TextFieldLayout(
     supportingPaddingValues: PaddingValues,
     leadingIconPaddingValues: PaddingValues,
     trailingIconPaddingValues: PaddingValues,
+    modifier: Modifier = Modifier,
 ) {
     val measurePolicy =
         remember(paddingValues) {
@@ -72,10 +73,10 @@ internal fun TextFieldLayout(
             if (leading != null) {
                 Box(
                     modifier =
-                        Modifier
-                            .layoutId(LeadingId)
-                            .padding(leadingIconPaddingValues)
-                            .then(IconDefaultSizeModifier),
+                    Modifier
+                        .layoutId(LeadingId)
+                        .padding(leadingIconPaddingValues)
+                        .then(IconDefaultSizeModifier),
                     contentAlignment = Alignment.Center,
                 ) {
                     leading()
@@ -84,10 +85,10 @@ internal fun TextFieldLayout(
             if (trailing != null) {
                 Box(
                     modifier =
-                        Modifier
-                            .layoutId(TrailingId)
-                            .padding(trailingIconPaddingValues)
-                            .then(IconDefaultSizeModifier),
+                    Modifier
+                        .layoutId(TrailingId)
+                        .padding(trailingIconPaddingValues)
+                        .then(IconDefaultSizeModifier),
                     contentAlignment = Alignment.Center,
                 ) {
                     trailing()
@@ -153,9 +154,9 @@ internal fun TextFieldLayout(
             }
             Box(
                 modifier =
-                    Modifier
-                        .layoutId(TextFieldId)
-                        .then(textPadding),
+                Modifier
+                    .layoutId(TextFieldId)
+                    .then(textPadding),
                 propagateMinConstraints = true,
             ) {
                 textField()
@@ -238,12 +239,15 @@ private class TextFieldMeasurePolicy(
 
         // measure placeholder
         val placeholderConstraints = textFieldConstraints.copy(minWidth = 0)
-        val placeholderPlaceable = measurables.fastFirstOrNull { it.layoutId == PlaceholderId }?.measure(placeholderConstraints)
+        val placeholderPlaceable = measurables
+            .fastFirstOrNull { it.layoutId == PlaceholderId }
+            ?.measure(placeholderConstraints)
 
         occupiedSpaceVertically =
             max(
                 occupiedSpaceVertically,
-                max(heightOrZero(textFieldPlaceable), heightOrZero(placeholderPlaceable)) + effectiveTopOffset + bottomPaddingValue,
+                max(heightOrZero(textFieldPlaceable), heightOrZero(placeholderPlaceable)) +
+                    effectiveTopOffset + bottomPaddingValue,
             )
         val width =
             calculateWidth(
@@ -314,37 +318,29 @@ private class TextFieldMeasurePolicy(
     override fun IntrinsicMeasureScope.maxIntrinsicHeight(
         measurables: List<IntrinsicMeasurable>,
         width: Int,
-    ): Int {
-        return intrinsicHeight(measurables, width) { intrinsicMeasurable, w ->
-            intrinsicMeasurable.maxIntrinsicHeight(w)
-        }
+    ): Int = intrinsicHeight(measurables, width) { intrinsicMeasurable, w ->
+        intrinsicMeasurable.maxIntrinsicHeight(w)
     }
 
     override fun IntrinsicMeasureScope.minIntrinsicHeight(
         measurables: List<IntrinsicMeasurable>,
         width: Int,
-    ): Int {
-        return intrinsicHeight(measurables, width) { intrinsicMeasurable, w ->
-            intrinsicMeasurable.minIntrinsicHeight(w)
-        }
+    ): Int = intrinsicHeight(measurables, width) { intrinsicMeasurable, w ->
+        intrinsicMeasurable.minIntrinsicHeight(w)
     }
 
     override fun IntrinsicMeasureScope.maxIntrinsicWidth(
         measurables: List<IntrinsicMeasurable>,
         height: Int,
-    ): Int {
-        return intrinsicWidth(measurables, height) { intrinsicMeasurable, h ->
-            intrinsicMeasurable.maxIntrinsicWidth(h)
-        }
+    ): Int = intrinsicWidth(measurables, height) { intrinsicMeasurable, h ->
+        intrinsicMeasurable.maxIntrinsicWidth(h)
     }
 
     override fun IntrinsicMeasureScope.minIntrinsicWidth(
         measurables: List<IntrinsicMeasurable>,
         height: Int,
-    ): Int {
-        return intrinsicWidth(measurables, height) { intrinsicMeasurable, h ->
-            intrinsicMeasurable.minIntrinsicWidth(h)
-        }
+    ): Int = intrinsicWidth(measurables, height) { intrinsicMeasurable, h ->
+        intrinsicMeasurable.minIntrinsicWidth(h)
     }
 
     private fun intrinsicWidth(
@@ -389,6 +385,7 @@ private class TextFieldMeasurePolicy(
         )
     }
 
+    @Suppress("CyclomaticComplexMethod")
     private fun IntrinsicMeasureScope.intrinsicHeight(
         measurables: List<IntrinsicMeasurable>,
         width: Int,
@@ -469,6 +466,7 @@ private fun Int.substractConstraintSafely(from: Int): Int {
     return this - from
 }
 
+@Suppress("LongParameterList")
 private fun calculateWidth(
     leadingWidth: Int,
     trailingWidth: Int,
@@ -491,6 +489,7 @@ private fun calculateWidth(
     return max(wrappedWidth, constraints.minWidth)
 }
 
+@Suppress("LongParameterList")
 private fun calculateHeight(
     textFieldHeight: Int,
     labelHeight: Int,
@@ -526,6 +525,7 @@ private fun calculateHeight(
     )
 }
 
+@Suppress("LongParameterList")
 private fun Placeable.PlacementScope.placePlaceables(
     width: Int,
     totalHeight: Int,

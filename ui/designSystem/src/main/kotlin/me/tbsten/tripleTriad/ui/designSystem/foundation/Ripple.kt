@@ -38,9 +38,7 @@ fun ripple(
     color: ColorProducer,
     bounded: Boolean = true,
     radius: Dp = Dp.Unspecified,
-): IndicationNodeFactory {
-    return RippleNodeFactory(bounded, radius, color)
-}
+): IndicationNodeFactory = RippleNodeFactory(bounded, radius, color)
 
 /** Default values used by [ripple]. */
 object RippleDefaults {
@@ -83,57 +81,57 @@ class RippleConfiguration(
         return result
     }
 
-    override fun toString(): String {
-        return "RippleConfiguration(color=$color, rippleAlpha=$rippleAlpha)"
-    }
+    override fun toString(): String = "RippleConfiguration(color=$color, rippleAlpha=$rippleAlpha)"
 }
 
 @Stable
 private class RippleNodeFactory
-    private constructor(
-        private val bounded: Boolean,
-        private val radius: Dp,
-        private val colorProducer: ColorProducer?,
-        private val color: Color,
-    ) : IndicationNodeFactory {
-        constructor(
-            bounded: Boolean,
-            radius: Dp,
-            colorProducer: ColorProducer,
-        ) : this(bounded, radius, colorProducer, Color.Unspecified)
+private constructor(
+    private val bounded: Boolean,
+    private val radius: Dp,
+    private val colorProducer: ColorProducer?,
+    private val color: Color,
+) : IndicationNodeFactory {
+    constructor(
+        bounded: Boolean,
+        radius: Dp,
+        colorProducer: ColorProducer,
+    ) : this(bounded, radius, colorProducer, Color.Unspecified)
 
-        constructor(bounded: Boolean, radius: Dp, color: Color) : this(bounded, radius, null, color)
+    constructor(bounded: Boolean, radius: Dp, color: Color) : this(bounded, radius, null, color)
 
-        override fun create(interactionSource: InteractionSource): DelegatableNode {
-            val colorProducer = colorProducer ?: ColorProducer { color }
-            return DelegatingThemeAwareRippleNode(interactionSource, bounded, radius, colorProducer)
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is RippleNodeFactory) return false
-
-            if (bounded != other.bounded) return false
-            if (radius != other.radius) return false
-            if (colorProducer != other.colorProducer) return false
-            return color == other.color
-        }
-
-        override fun hashCode(): Int {
-            var result = bounded.hashCode()
-            result = 31 * result + radius.hashCode()
-            result = 31 * result + colorProducer.hashCode()
-            result = 31 * result + color.hashCode()
-            return result
-        }
+    override fun create(interactionSource: InteractionSource): DelegatableNode {
+        val colorProducer = colorProducer ?: ColorProducer { color }
+        return DelegatingThemeAwareRippleNode(interactionSource, bounded, radius, colorProducer)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is RippleNodeFactory) return false
+
+        if (bounded != other.bounded) return false
+        if (radius != other.radius) return false
+        if (colorProducer != other.colorProducer) return false
+        return color == other.color
+    }
+
+    override fun hashCode(): Int {
+        var result = bounded.hashCode()
+        result = 31 * result + radius.hashCode()
+        result = 31 * result + colorProducer.hashCode()
+        result = 31 * result + color.hashCode()
+        return result
+    }
+}
 
 private class DelegatingThemeAwareRippleNode(
     private val interactionSource: InteractionSource,
     private val bounded: Boolean,
     private val radius: Dp,
     private val color: ColorProducer,
-) : DelegatingNode(), CompositionLocalConsumerModifierNode, ObserverModifierNode {
+) : DelegatingNode(),
+    CompositionLocalConsumerModifierNode,
+    ObserverModifierNode {
     private var rippleNode: DelegatableNode? = null
 
     override fun onAttach() {

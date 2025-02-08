@@ -79,11 +79,11 @@ fun TextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-                modifier
-                    .defaultMinSize(
-                        minHeight = TextFieldDefaults.MinHeight,
-                    )
-                    .fillMaxWidth(),
+            modifier
+                .defaultMinSize(
+                    minHeight = TextFieldDefaults.MinHeight,
+                )
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -158,11 +158,11 @@ fun TextField(
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
             modifier =
-                modifier
-                    .defaultMinSize(
-                        minHeight = TextFieldDefaults.MinHeight,
-                    )
-                    .fillMaxWidth(),
+            modifier
+                .defaultMinSize(
+                    minHeight = TextFieldDefaults.MinHeight,
+                )
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -269,7 +269,7 @@ internal object TextFieldDefaults {
         shape: Shape = Shape,
         colors: TextFieldColors = colors(),
         container: @Composable () -> Unit = {
-            ContainerBox(enabled, isError, interactionSource, colors, shape)
+            ContainerBox(enabled, isError, interactionSource, colors, shape = shape)
         },
     ) {
         CommonDecorationBox(
@@ -302,62 +302,61 @@ internal object TextFieldDefaults {
         isError: Boolean,
         interactionSource: InteractionSource,
         colors: TextFieldColors,
+        modifier: Modifier = Modifier,
         shape: Shape = Shape,
         borderThickness: Dp = containerBorderThickness(interactionSource),
     ) {
         Box(
-            Modifier
+            modifier
                 .background(colors.containerColor(enabled, isError, interactionSource).value, shape)
                 .containerOutline(enabled, isError, interactionSource, colors, borderThickness, shape),
         )
     }
 
     @Composable
-    fun colors(): TextFieldColors {
-        return TextFieldColors(
-            focusedTextColor = TripleTriadTheme.colors.text,
-            unfocusedTextColor = TripleTriadTheme.colors.text,
-            disabledTextColor = TripleTriadTheme.colors.onDisabled,
-            errorTextColor = TripleTriadTheme.colors.text,
-            focusedContainerColor = TripleTriadTheme.colors.surface,
-            unfocusedContainerColor = TripleTriadTheme.colors.surface,
-            disabledContainerColor = TripleTriadTheme.colors.disabled,
-            errorContainerColor = TripleTriadTheme.colors.surface,
-            cursorColor = TripleTriadTheme.colors.primary,
-            errorCursorColor = TripleTriadTheme.colors.error,
-            textSelectionColors = LocalTextSelectionColors.current,
-            focusedOutlineColor = TripleTriadTheme.colors.transparent,
-            unfocusedOutlineColor = TripleTriadTheme.colors.transparent,
-            disabledOutlineColor = TripleTriadTheme.colors.transparent,
-            errorOutlineColor = TripleTriadTheme.colors.error,
-            focusedLeadingIconColor = TripleTriadTheme.colors.primary,
-            unfocusedLeadingIconColor = TripleTriadTheme.colors.primary,
-            disabledLeadingIconColor = TripleTriadTheme.colors.onDisabled,
-            errorLeadingIconColor = TripleTriadTheme.colors.primary,
-            focusedTrailingIconColor = TripleTriadTheme.colors.primary,
-            unfocusedTrailingIconColor = TripleTriadTheme.colors.primary,
-            disabledTrailingIconColor = TripleTriadTheme.colors.onDisabled,
-            errorTrailingIconColor = TripleTriadTheme.colors.primary,
-            focusedLabelColor = TripleTriadTheme.colors.primary,
-            unfocusedLabelColor = TripleTriadTheme.colors.primary,
-            disabledLabelColor = TripleTriadTheme.colors.textDisabled,
-            errorLabelColor = TripleTriadTheme.colors.error,
-            focusedPlaceholderColor = TripleTriadTheme.colors.textSecondary,
-            unfocusedPlaceholderColor = TripleTriadTheme.colors.textSecondary,
-            disabledPlaceholderColor = TripleTriadTheme.colors.textDisabled,
-            errorPlaceholderColor = TripleTriadTheme.colors.textSecondary,
-            focusedSupportingTextColor = TripleTriadTheme.colors.primary,
-            unfocusedSupportingTextColor = TripleTriadTheme.colors.primary,
-            disabledSupportingTextColor = TripleTriadTheme.colors.textDisabled,
-            errorSupportingTextColor = TripleTriadTheme.colors.error,
-            focusedPrefixColor = TripleTriadTheme.colors.primary,
-            unfocusedPrefixColor = TripleTriadTheme.colors.primary,
-            disabledPrefixColor = TripleTriadTheme.colors.onDisabled,
-            errorPrefixColor = TripleTriadTheme.colors.primary,
-            focusedSuffixColor = TripleTriadTheme.colors.primary,
-            unfocusedSuffixColor = TripleTriadTheme.colors.primary,
-            disabledSuffixColor = TripleTriadTheme.colors.onDisabled,
-            errorSuffixColor = TripleTriadTheme.colors.primary,
-        )
-    }
+    fun colors(): TextFieldColors = TextFieldColors(
+        focusedTextColor = TripleTriadTheme.colors.text,
+        unfocusedTextColor = TripleTriadTheme.colors.text,
+        disabledTextColor = TripleTriadTheme.colors.onDisabled,
+        errorTextColor = TripleTriadTheme.colors.text,
+        focusedContainerColor = TripleTriadTheme.colors.surface,
+        unfocusedContainerColor = TripleTriadTheme.colors.surface,
+        disabledContainerColor = TripleTriadTheme.colors.disabled,
+        errorContainerColor = TripleTriadTheme.colors.surface,
+        cursorColor = TripleTriadTheme.colors.primary,
+        errorCursorColor = TripleTriadTheme.colors.error,
+        textSelectionColors = LocalTextSelectionColors.current,
+        focusedOutlineColor = TripleTriadTheme.colors.transparent,
+        unfocusedOutlineColor = TripleTriadTheme.colors.transparent,
+        disabledOutlineColor = TripleTriadTheme.colors.transparent,
+        errorOutlineColor = TripleTriadTheme.colors.error,
+        focusedLeadingIconColor = TripleTriadTheme.colors.primary,
+        unfocusedLeadingIconColor = TripleTriadTheme.colors.primary,
+        disabledLeadingIconColor = TripleTriadTheme.colors.onDisabled,
+        errorLeadingIconColor = TripleTriadTheme.colors.primary,
+        focusedTrailingIconColor = TripleTriadTheme.colors.primary,
+        unfocusedTrailingIconColor = TripleTriadTheme.colors.primary,
+        disabledTrailingIconColor = TripleTriadTheme.colors.onDisabled,
+        errorTrailingIconColor = TripleTriadTheme.colors.primary,
+        focusedLabelColor = TripleTriadTheme.colors.primary,
+        unfocusedLabelColor = TripleTriadTheme.colors.primary,
+        disabledLabelColor = TripleTriadTheme.colors.textDisabled,
+        errorLabelColor = TripleTriadTheme.colors.error,
+        focusedPlaceholderColor = TripleTriadTheme.colors.textSecondary,
+        unfocusedPlaceholderColor = TripleTriadTheme.colors.textSecondary,
+        disabledPlaceholderColor = TripleTriadTheme.colors.textDisabled,
+        errorPlaceholderColor = TripleTriadTheme.colors.textSecondary,
+        focusedSupportingTextColor = TripleTriadTheme.colors.primary,
+        unfocusedSupportingTextColor = TripleTriadTheme.colors.primary,
+        disabledSupportingTextColor = TripleTriadTheme.colors.textDisabled,
+        errorSupportingTextColor = TripleTriadTheme.colors.error,
+        focusedPrefixColor = TripleTriadTheme.colors.primary,
+        unfocusedPrefixColor = TripleTriadTheme.colors.primary,
+        disabledPrefixColor = TripleTriadTheme.colors.onDisabled,
+        errorPrefixColor = TripleTriadTheme.colors.primary,
+        focusedSuffixColor = TripleTriadTheme.colors.primary,
+        unfocusedSuffixColor = TripleTriadTheme.colors.primary,
+        disabledSuffixColor = TripleTriadTheme.colors.onDisabled,
+        errorSuffixColor = TripleTriadTheme.colors.primary,
+    )
 }

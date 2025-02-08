@@ -31,12 +31,12 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.designSystem.LocalContentColor
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.designSystem.contentColorFor
 import me.tbsten.tripleTriad.ui.designSystem.foundation.ButtonElevation
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun IconButton(
@@ -66,14 +66,15 @@ fun IconButton(
 
 @Composable
 private fun IconButtonComponent(
-    modifier: Modifier,
     enabled: Boolean,
+    @Suppress("UNUSED_PARAMETER")
     loading: Boolean,
     style: IconButtonStyle,
     onClick: () -> Unit,
     contentPadding: PaddingValues,
     interactionSource: MutableInteractionSource,
     content: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val containerColor = style.colors.containerColor(enabled).value
     val contentColor = style.colors.contentColor(enabled).value
@@ -122,6 +123,7 @@ enum class IconButtonVariant {
     Ghost,
 }
 
+@Suppress("TooManyFunctions")
 internal object IconButtonDefaults {
     val ButtonSize = 44.dp
     val ButtonPadding = PaddingValues(4.dp)
@@ -139,22 +141,20 @@ internal object IconButtonDefaults {
     )
 
     @Composable
-    fun styleFor(variant: IconButtonVariant, shape: Shape): IconButtonStyle {
-        return when (variant) {
-            IconButtonVariant.Primary -> primaryFilled(shape)
-            IconButtonVariant.PrimaryOutlined -> primaryOutlined(shape)
-            IconButtonVariant.PrimaryElevated -> primaryElevated(shape)
-            IconButtonVariant.PrimaryGhost -> primaryGhost(shape)
-            IconButtonVariant.Secondary -> secondaryFilled(shape)
-            IconButtonVariant.SecondaryOutlined -> secondaryOutlined(shape)
-            IconButtonVariant.SecondaryElevated -> secondaryElevated(shape)
-            IconButtonVariant.SecondaryGhost -> secondaryGhost(shape)
-            IconButtonVariant.Destructive -> destructiveFilled(shape)
-            IconButtonVariant.DestructiveOutlined -> destructiveOutlined(shape)
-            IconButtonVariant.DestructiveElevated -> destructiveElevated(shape)
-            IconButtonVariant.DestructiveGhost -> destructiveGhost(shape)
-            IconButtonVariant.Ghost -> ghost(shape)
-        }
+    fun styleFor(variant: IconButtonVariant, shape: Shape): IconButtonStyle = when (variant) {
+        IconButtonVariant.Primary -> primaryFilled(shape)
+        IconButtonVariant.PrimaryOutlined -> primaryOutlined(shape)
+        IconButtonVariant.PrimaryElevated -> primaryElevated(shape)
+        IconButtonVariant.PrimaryGhost -> primaryGhost(shape)
+        IconButtonVariant.Secondary -> secondaryFilled(shape)
+        IconButtonVariant.SecondaryOutlined -> secondaryOutlined(shape)
+        IconButtonVariant.SecondaryElevated -> secondaryElevated(shape)
+        IconButtonVariant.SecondaryGhost -> secondaryGhost(shape)
+        IconButtonVariant.Destructive -> destructiveFilled(shape)
+        IconButtonVariant.DestructiveOutlined -> destructiveOutlined(shape)
+        IconButtonVariant.DestructiveElevated -> destructiveElevated(shape)
+        IconButtonVariant.DestructiveGhost -> destructiveGhost(shape)
+        IconButtonVariant.Ghost -> ghost(shape)
     }
 
     @Composable
@@ -354,7 +354,7 @@ data class IconButtonStyle(
 
 @Composable
 @Preview
-fun PrimaryIconButtonPreview() {
+private fun PrimaryIconButtonPreview() {
     TripleTriadTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -382,7 +382,7 @@ fun PrimaryIconButtonPreview() {
 
 @Composable
 @Preview
-fun SecondaryIconButtonPreview() {
+private fun SecondaryIconButtonPreview() {
     TripleTriadTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -410,7 +410,7 @@ fun SecondaryIconButtonPreview() {
 
 @Composable
 @Preview
-fun DestructiveIconButtonPreview() {
+private fun DestructiveIconButtonPreview() {
     TripleTriadTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -439,7 +439,7 @@ fun DestructiveIconButtonPreview() {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 @Preview
-fun GhostIconButtonPreview() {
+private fun GhostIconButtonPreview() {
     TripleTriadTheme {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -447,12 +447,18 @@ fun GhostIconButtonPreview() {
         ) {
             BasicText(text = "Ghost Icon Buttons", style = TripleTriadTheme.typography.h2)
 
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
                 Box(
-                    modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.background),
+                    modifier = Modifier
+                        .size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.background),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.background)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.background),
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -460,10 +466,13 @@ fun GhostIconButtonPreview() {
                 }
 
                 Box(
-                    modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.primary),
+                    modifier = Modifier
+                        .size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.primary),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.primary)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.primary),
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -471,10 +480,13 @@ fun GhostIconButtonPreview() {
                 }
 
                 Box(
-                    modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.secondary),
+                    modifier = Modifier
+                        .size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.secondary),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.secondary)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.secondary),
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -482,10 +494,13 @@ fun GhostIconButtonPreview() {
                 }
 
                 Box(
-                    modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.tertiary),
+                    modifier = Modifier
+                        .size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.tertiary),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.tertiary)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.tertiary),
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -493,10 +508,13 @@ fun GhostIconButtonPreview() {
                 }
 
                 Box(
-                    modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.surface),
+                    modifier = Modifier
+                        .size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.surface),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.surface)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.surface),
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -504,10 +522,13 @@ fun GhostIconButtonPreview() {
                 }
 
                 Box(
-                    modifier = Modifier.size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.error),
+                    modifier = Modifier
+                        .size(56.dp).clip(RoundedCornerShape(8)).background(TripleTriadTheme.colors.error),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.error)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides contentColorFor(color = TripleTriadTheme.colors.error),
+                    ) {
                         IconButton(variant = IconButtonVariant.Ghost) {
                             DummyIconForIconButtonPreview()
                         }
@@ -520,7 +541,7 @@ fun GhostIconButtonPreview() {
 
 @Composable
 @Preview
-fun IconButtonShapesPreview() {
+private fun IconButtonShapesPreview() {
     TripleTriadTheme {
         Column(
             modifier = Modifier.padding(16.dp),

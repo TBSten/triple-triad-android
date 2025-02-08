@@ -11,6 +11,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 
+@Suppress("TooManyFunctions", "LongParameterList")
 @Immutable
 class TextFieldColors(
     val focusedTextColor: Color,
@@ -329,9 +330,9 @@ class TextFieldColors(
     }
 
     @Composable
-    internal fun cursorColor(isError: Boolean): State<Color> {
-        return rememberUpdatedState(if (isError) errorCursorColor else cursorColor)
-    }
+    internal fun cursorColor(isError: Boolean): State<Color> = rememberUpdatedState(
+        if (isError) errorCursorColor else cursorColor,
+    )
 
     internal val selectionColors: TextSelectionColors
         @Composable get() = textSelectionColors

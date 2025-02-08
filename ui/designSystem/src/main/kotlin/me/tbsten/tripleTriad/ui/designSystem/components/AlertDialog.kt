@@ -22,15 +22,16 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
+import kotlin.math.max
 import me.tbsten.tripleTriad.ui.designSystem.LocalContentColor
-import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.TextPadding
+import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.ButtonsCrossAxisSpacing
 import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.ButtonsMainAxisSpacing
 import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.DialogElevation
@@ -39,10 +40,9 @@ import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.Dial
 import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.DialogPadding
 import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.DialogShape
 import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.IconPadding
+import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.TextPadding
 import me.tbsten.tripleTriad.ui.designSystem.components.AlertDialogDefaults.TitlePadding
 import me.tbsten.tripleTriad.ui.designSystem.foundation.ProvideContentColorTextStyle
-import androidx.compose.ui.tooling.preview.Preview
-import kotlin.math.max
 
 @Composable
 fun AlertDialog(
@@ -50,6 +50,7 @@ fun AlertDialog(
     onConfirmClick: () -> Unit,
     title: String,
     text: String,
+    modifier:Modifier = Modifier,
     confirmButtonText: String = "OK",
     dismissButtonText: String? = "Cancel",
     icon: (@Composable () -> Unit)? = null,
@@ -67,7 +68,7 @@ fun AlertDialog(
         confirmButton = {
             Button(variant = ButtonVariant.Ghost, text = confirmButtonText, onClick = onConfirmClick)
         },
-        modifier = Modifier,
+        modifier = modifier,
         dismissButton =
         if (dismissButtonText != null) {
             {
@@ -114,11 +115,11 @@ fun BasicAlertDialog(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun AlertDialogComponent(
     onDismissRequest: () -> Unit,
     confirmButton: @Composable () -> Unit,
-    modifier: Modifier,
     dismissButton: @Composable (() -> Unit)?,
     icon: @Composable (() -> Unit)?,
     title: @Composable (() -> Unit)?,
@@ -130,6 +131,7 @@ private fun AlertDialogComponent(
     textContentColor: Color,
     elevation: Dp,
     properties: DialogProperties,
+    modifier: Modifier = Modifier,
     content: @Composable (() -> Unit)? = null,
 ) {
     BasicAlertDialog(
@@ -174,10 +176,10 @@ private fun AlertDialogComponent(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 internal fun AlertDialogContent(
     buttons: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
     icon: (@Composable () -> Unit)?,
     title: (@Composable () -> Unit)?,
     text: @Composable (() -> Unit)?,
@@ -188,6 +190,7 @@ internal fun AlertDialogContent(
     iconContentColor: Color,
     titleContentColor: Color,
     textContentColor: Color,
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier,
@@ -274,8 +277,8 @@ internal fun AlertDialogFlowRow(
         var currentCrossAxisSize = 0
 
         // Return whether the placeable can be added to the current sequence.
-        fun canAddToCurrentSequence(placeable: Placeable) =
-            currentSequence.isEmpty() || currentMainAxisSize + mainAxisSpacing.roundToPx() + placeable.width <= constraints.maxWidth
+        fun canAddToCurrentSequence(placeable: Placeable) = currentSequence.isEmpty() ||
+            currentMainAxisSize + mainAxisSpacing.roundToPx() + placeable.width <= constraints.maxWidth
 
         // Store current sequence information and start a new sequence.
         fun startNewSequence() {
@@ -364,7 +367,7 @@ internal object AlertDialogDefaults {
 
 @Preview
 @Composable
-fun AlertDialogPreviews() {
+private fun AlertDialogPreviews() {
     Column(
         modifier =
         Modifier
@@ -430,7 +433,8 @@ fun AlertDialogPreviews() {
                 title = "Information",
                 text = "This alert only has a confirmation button",
                 confirmButtonText = "Got it",
-                dismissButtonText = null, // Removes the dismiss button
+                // Removes the dismiss button
+                dismissButtonText = null,
                 containerColor = Color.White,
                 titleContentColor = Color.Black,
                 textContentColor = Color.DarkGray,
@@ -444,9 +448,9 @@ fun AlertDialogPreviews() {
                 title = "Terms & Conditions",
                 text =
                 "This is a longer content example that demonstrates how the alert dialog handles " +
-                        "multiple lines of text. The content will automatically adjust to show longer " +
-                        "messages while maintaining readability. This is particularly useful for " +
-                        "displaying terms and conditions or detailed information to users.",
+                    "multiple lines of text. The content will automatically adjust to show longer " +
+                    "messages while maintaining readability. This is particularly useful for " +
+                    "displaying terms and conditions or detailed information to users.",
                 confirmButtonText = "Accept",
                 dismissButtonText = "Decline",
                 containerColor = Color.White,

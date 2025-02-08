@@ -43,9 +43,7 @@ fun TripleTriadTheme(
 }
 
 @Composable
-fun contentColorFor(color: Color): Color {
-    return TripleTriadTheme.colors.contentColorFor(color)
-}
+fun contentColorFor(color: Color): Color = TripleTriadTheme.colors.contentColorFor(color)
 
 @Composable
 internal fun rememberTextSelectionColors(colorScheme: Colors): TextSelectionColors {

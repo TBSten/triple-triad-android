@@ -6,6 +6,7 @@ import me.tbsten.tripleTriad.common.update
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import me.tbsten.tripleTriad.domain.game.gameRule.PlaceCardRule
 
+@Suppress("NestedBlockDepth")
 internal suspend fun gameReducer(
     placeCardRules: List<PlaceCardRule>,
     state: GameState,

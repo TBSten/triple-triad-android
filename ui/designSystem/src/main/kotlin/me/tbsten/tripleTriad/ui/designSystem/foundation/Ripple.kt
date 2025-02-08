@@ -1,5 +1,6 @@
 package me.tbsten.tripleTriad.ui.designSystem.foundation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.material.ripple.RippleAlpha
@@ -55,6 +56,7 @@ object RippleDefaults {
         )
 }
 
+@SuppressLint("ComposeCompositionLocalUsage")
 val LocalRippleConfiguration: ProvidableCompositionLocal<RippleConfiguration?> =
     compositionLocalOf {
         RippleConfiguration()

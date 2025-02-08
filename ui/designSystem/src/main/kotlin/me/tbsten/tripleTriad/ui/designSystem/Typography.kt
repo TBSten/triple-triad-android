@@ -1,5 +1,6 @@
 package me.tbsten.tripleTriad.ui.designSystem
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -135,5 +136,8 @@ fun provideTypography(): Typography {
     )
 }
 
+@SuppressLint("ComposeCompositionLocalUsage")
 val LocalTypography = staticCompositionLocalOf { defaultTypography }
+
+@SuppressLint("ComposeCompositionLocalUsage")
 val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }

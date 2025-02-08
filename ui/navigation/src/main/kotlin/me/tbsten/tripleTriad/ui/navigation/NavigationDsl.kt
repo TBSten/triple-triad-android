@@ -94,6 +94,8 @@ inline fun <reified D : Dialog> NavGraphBuilder.dialog(
     content = content,
 )
 
-inline fun <reified D : Dialog> SavedStateHandle.toRoute() = toRoute<D>(
+inline fun <reified D : Route> SavedStateHandle.toRoute() = toRoute<D>(
     typeMap = customTypeMap,
 )
+
+inline fun <reified D : Route> NavBackStackEntry.toRoute() = toRoute<D>()

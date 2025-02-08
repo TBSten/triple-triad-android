@@ -58,7 +58,8 @@ internal suspend fun gameReducer(
 
 class GameStore(
     initialGameState: InitialGameState,
-    private val selectFirstPlayer: suspend () -> GamePlayer,
+    private val selectFirstPlayer: suspend () -> GamePlayer =
+        DefaultSelectFirstPlayer(initialGameState.player, initialGameState.enemy),
     private val placeCardRules: List<PlaceCardRule> = listOf(BasicPlaceCardRule),
 ) : Store.Base<GameState, GameAction, Nothing>(initialGameState) {
     override suspend fun onDispatch(

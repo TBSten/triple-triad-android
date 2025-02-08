@@ -15,7 +15,8 @@ local.properties
 !.idea/codeInsightSettings.xml
 !.idea/detekt.xml
 !.idea/ktlint-plugin.xml
-
+!.idea/inspectionProfiles/
+!.idea/inspectionProfiles/Project_Default.xml
 build/
 
 .kotlin

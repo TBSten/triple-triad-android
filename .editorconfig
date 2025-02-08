@@ -45,3 +45,5 @@ ktlint_standard_function-expression-body = enabled
 max_line_length = off
 
 ktlint_argument_list_wrapping_ignore_when_parameter_count_greater_or_equal_than = unset
+
+ktlint_property_naming_constant_naming = pascal_case

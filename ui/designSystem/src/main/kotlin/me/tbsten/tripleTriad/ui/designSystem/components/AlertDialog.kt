@@ -50,7 +50,7 @@ fun AlertDialog(
     onConfirmClick: () -> Unit,
     title: String,
     text: String,
-    modifier:Modifier = Modifier,
+    modifier: Modifier = Modifier,
     confirmButtonText: String = "OK",
     dismissButtonText: String? = "Cancel",
     icon: (@Composable () -> Unit)? = null,

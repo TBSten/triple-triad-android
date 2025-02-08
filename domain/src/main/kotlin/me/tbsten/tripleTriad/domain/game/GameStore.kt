@@ -2,9 +2,11 @@ package me.tbsten.tripleTriad.domain.game
 
 import io.yumemi.tart.core.Store
 import me.tbsten.tripleTriad.common.removedIndexOf
+import me.tbsten.tripleTriad.common.update
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import me.tbsten.tripleTriad.domain.game.gameRule.PlaceCardRule
 
+@Suppress("NestedBlockDepth")
 internal suspend fun gameReducer(
     placeCardRules: List<PlaceCardRule>,
     state: GameState,
@@ -41,10 +43,9 @@ internal suspend fun gameReducer(
                             applyingPlaceRuleState.gameField,
                             applyingPlaceRuleState.moveCardData,
                         )
-                    applyingPlaceRuleState.copy(
-                        gameField = newGameField,
-                        applyingPlaceRules = rules.toList(),
-                    )
+                    applyingPlaceRuleState
+                        .let { GameState.ApplyingPlaceRule.gameField.modify(it) { newGameField } }
+                        .let { GameState.ApplyingPlaceRule.applyingPlaceRules.modify(it) { rules.toList() } }
                 }
             }
         }
@@ -140,35 +141,27 @@ private fun GameState.SelectingSquare.movePlacedCardFromHandsToField(
         // 手札から削除
         when (placingCardState.turnPlayer) {
             placingCardState.player ->
-                placingCardState.copy(
-                    playerHands = placingCardState.playerHands
-                        .removedIndexOf(moveCardData.selectedCardIndexInHands),
-                )
+                GameState.SelectingSquare.playerHands
+                    .modify(placingCardState) { it.removedIndexOf(moveCardData.selectedCardIndexInHands) }
             placingCardState.enemy ->
-                placingCardState.copy(
-                    enemyHands = placingCardState.enemyHands
-                        .removedIndexOf(moveCardData.selectedCardIndexInHands),
-                )
+                GameState.SelectingSquare.enemyHands
+                    .modify(placingCardState) { it.removedIndexOf(moveCardData.selectedCardIndexInHands) }
             else -> throw GameException.IllegalTurnPlayer()
         }
     }.let { placingCardState ->
         // フィールドにカードを配置
-        placingCardState.copy(
-            gameField = placingCardState.gameField.copy(
-                squares = placingCardState.gameField.squares.map {
-                    if (it != moveCardData.selectedSquare) {
-                        it
-                    } else if (it !is GameField.Square.Empty) {
-                        throw GameException.AlreadyPlaced()
-                    } else {
-                        it.toPlacedCard(
-                            owner = moveCardData.placeBy,
-                            placedCard = moveCardData.selectedCard,
-                        )
-                    }
-                },
-            ),
-        )
+        GameState.SelectingSquare.gameField.squares.modify(placingCardState) {
+            it.update(moveCardData.selectedSquare) {
+                if (it !is GameField.Square.Empty) {
+                    throw GameException.AlreadyPlaced()
+                } else {
+                    it.toPlacedCard(
+                        owner = moveCardData.placeBy,
+                        placedCard = moveCardData.selectedCard,
+                    )
+                }
+            }
+        }
     }
 
 private fun WithTurnPlayerState.toNextTurnOrFinish() = if (gameField.isFill()) {

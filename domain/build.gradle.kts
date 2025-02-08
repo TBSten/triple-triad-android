@@ -10,4 +10,6 @@ android {
 dependencies {
     api(projects.domain.error)
     api(libs.tartCore)
+    api(libs.arrowKtOptics)
+    ksp(libs.arrowKtOpticsKspPlugin)
 }

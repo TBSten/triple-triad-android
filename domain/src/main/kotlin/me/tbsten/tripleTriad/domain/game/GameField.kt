@@ -1,8 +1,11 @@
 package me.tbsten.tripleTriad.domain.game
 
+import arrow.optics.optics
+
 private const val WIDTH = 3
 private const val HEIGHT = 3
 
+@optics
 data class GameField(
     val squares: List<Square>,
 ) {
@@ -30,17 +33,23 @@ data class GameField(
         val x: Int
         val y: Int
 
+        @optics
         data class Empty(
             override val x: Int,
             override val y: Int,
-        ) : Square
+        ) : Square {
+            companion object;
+        }
 
+        @optics
         data class PlacedCard(
             override val x: Int,
             override val y: Int,
             val owner: GamePlayer,
             val placedCard: GameCard,
-        ) : Square
+        ) : Square {
+            companion object;
+        }
     }
 
     companion object {

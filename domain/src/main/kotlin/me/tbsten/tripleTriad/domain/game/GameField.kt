@@ -8,7 +8,7 @@ private const val HEIGHT = 3
 @optics
 data class GameField(
     val squares: List<Square>,
-) {
+) : List<GameField.Square> by squares {
     init {
         // validate
         this.squares.forEachIndexed { index, square ->

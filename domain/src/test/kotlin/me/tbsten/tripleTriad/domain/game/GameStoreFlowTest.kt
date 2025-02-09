@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.test.runTest
-import me.tbsten.tripleTriad.common.removedItemOf
 import me.tbsten.tripleTriad.common.update
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import org.junit.Test
@@ -115,8 +114,7 @@ class GameStoreFlowTest {
             assertEquals(
                 GameState.ApplyingPlaceRule(
                     player = prevState.player,
-                    playerHands = prevState.playerHands
-                        .removedItemOf(selectedCard),
+                    playerHands = prevState.playerHands - selectedCard,
                     enemy = prevState.enemy,
                     enemyHands = prevState.enemyHands,
                     gameField = prevState.gameField.copy(
@@ -139,7 +137,7 @@ class GameStoreFlowTest {
                         placeBy = initialState.player,
                     ),
                     applyingPlaceRule = placeCardRules[0],
-                    applyingPlaceRules = placeCardRules.removedItemOf(placeCardRules[0]),
+                    applyingPlaceRules = placeCardRules - placeCardRules[0],
                 ),
                 it,
             )

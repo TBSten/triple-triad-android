@@ -19,6 +19,7 @@ open class AndroidLibraryModulePlugin : Plugin<Project> {
             }
 
             configureBasic()
+            configureKotlin()
             configureAndroid()
 
             androidLibrary {

@@ -2,6 +2,7 @@ package me.tbsten.tripleTriad.domain.game
 
 import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
+import me.tbsten.tripleTriad.common.updateIndexed
 import org.junit.Test
 
 class GameStoreTest {
@@ -32,7 +33,8 @@ class GameStoreTest {
                 selectedCardIndexInHands = 0,
             )
         }
-        val action = GameAction.SelectSquare(prevState.gameField.squares[0])
+        val selectedSquareIndex = 0
+        val action = GameAction.SelectSquare(prevState.gameField.squares[selectedSquareIndex])
         val newState = gameReducer(
             placeCardRules = listOf(),
             state = prevState,
@@ -44,20 +46,17 @@ class GameStoreTest {
                 player = prevState.player,
                 playerHands = emptyList(),
                 enemy = prevState.enemy,
-                enemyHands = listOf(allAceCard()),
-                gameField = GameField(
-                    squares = listOf(
-                        GameField.Square.PlacedCard(0, 0, prevState.player, allAceCard()),
-                        GameField.Square.PlacedCard(1, 0, prevState.enemy, allAceCard()),
-                        GameField.Square.PlacedCard(2, 0, prevState.player, allAceCard()),
-                        GameField.Square.PlacedCard(0, 1, prevState.enemy, allAceCard()),
-                        GameField.Square.PlacedCard(1, 1, prevState.player, allAceCard()),
-                        GameField.Square.PlacedCard(2, 1, prevState.enemy, allAceCard()),
-                        GameField.Square.PlacedCard(0, 2, prevState.player, allAceCard()),
-                        GameField.Square.PlacedCard(1, 2, prevState.enemy, allAceCard()),
-                        GameField.Square.PlacedCard(2, 2, prevState.player, allAceCard()),
-                    ),
-                ),
+                enemyHands = prevState.enemyHands,
+                gameField = GameField.squares.modify(prevState.gameField) {
+                    it.updateIndexed(selectedSquareIndex) { prevSquare ->
+                        GameField.Square.PlacedCard(
+                            prevSquare.x,
+                            prevSquare.y,
+                            prevState.player,
+                            prevState.selectedCard,
+                        )
+                    }
+                },
                 turnPlayer = prevState.player,
             ),
             newState,

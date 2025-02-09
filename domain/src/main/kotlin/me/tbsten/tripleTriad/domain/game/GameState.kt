@@ -87,7 +87,7 @@ typealias InitialGameState = GameState.SelectingFirstPlayer
 
 typealias TurnFirstState = GameState.SelectingCard
 
-interface WithTurnPlayerState : GameState {
+sealed interface WithTurnPlayerState : GameState {
     val turnPlayer: GamePlayer
     val turnPlayerHands: Hands
         get() = when (turnPlayer) {

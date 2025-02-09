@@ -1,7 +1,6 @@
 package me.tbsten.tripleTriad.domain.game
 
 import io.yumemi.tart.core.Store
-import me.tbsten.tripleTriad.common.removedIndexOf
 import me.tbsten.tripleTriad.common.update
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import me.tbsten.tripleTriad.domain.game.gameRule.PlaceCardRule
@@ -143,10 +142,10 @@ private fun GameState.SelectingSquare.movePlacedCardFromHandsToField(
         when (placingCardState.turnPlayer) {
             placingCardState.player ->
                 GameState.SelectingSquare.playerHands
-                    .modify(placingCardState) { it.removedIndexOf(moveCardData.selectedCardIndexInHands) }
+                    .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
             placingCardState.enemy ->
                 GameState.SelectingSquare.enemyHands
-                    .modify(placingCardState) { it.removedIndexOf(moveCardData.selectedCardIndexInHands) }
+                    .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
             else -> throw GameException.IllegalTurnPlayer()
         }
     }.let { placingCardState ->

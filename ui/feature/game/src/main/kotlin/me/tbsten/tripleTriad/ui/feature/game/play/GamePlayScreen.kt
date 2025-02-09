@@ -24,6 +24,7 @@ internal fun GamePlayScreen(
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun GamePlayScreen(
     uiState: GamePlayUiState,

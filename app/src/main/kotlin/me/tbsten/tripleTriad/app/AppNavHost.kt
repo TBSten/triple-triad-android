@@ -11,6 +11,8 @@ import me.tbsten.tripleTriad.ui.navigation.NavControllerWrapper
 @Composable
 internal fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+
+    @Suppress("UNUSED_VARIABLE")
     val navControllerWrapper = NavControllerWrapper(navController)
 
     NavHost(navController = navController, startDestination = Game, modifier = modifier) {

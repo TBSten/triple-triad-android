@@ -71,4 +71,3 @@ internal val gameFieldsForPreview = listOf(
         },
     ),
 )
-

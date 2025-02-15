@@ -146,7 +146,7 @@ private fun GameState.SelectingSquare.movePlacedCardFromHandsToField(
             placingCardState.enemy ->
                 GameState.SelectingSquare.enemyHands
                     .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
-            else -> throw GameException.IllegalTurnPlayer()
+            else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
     }.let { placingCardState ->
         // フィールドにカードを配置

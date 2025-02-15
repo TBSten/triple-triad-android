@@ -93,13 +93,13 @@ sealed interface WithTurnPlayerState : GameState {
         get() = when (turnPlayer) {
             player -> playerHands
             enemy -> enemyHands
-            else -> throw GameException.IllegalTurnPlayer()
+            else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
     val nextTurnPlayer: GamePlayer
         get() = when (turnPlayer) {
             player -> enemy
             enemy -> player
-            else -> throw GameException.IllegalTurnPlayer()
+            else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
 }
 

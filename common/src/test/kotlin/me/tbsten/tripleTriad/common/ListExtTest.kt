@@ -15,7 +15,7 @@ class ListExtTest {
     @Test
     fun updateIndexOfTest() {
         assertEquals(
-            listOf("A", "B", "C", "D").updateIndexOf(3, "XXX"),
+            listOf("A", "B", "C", "D").updateIndexed(3) { "XXX" },
             listOf("A", "B", "C", "XXX"),
         )
     }

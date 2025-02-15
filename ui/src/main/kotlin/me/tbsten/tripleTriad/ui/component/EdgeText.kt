@@ -1,6 +1,11 @@
 package me.tbsten.tripleTriad.ui.component
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,6 +16,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -25,41 +31,57 @@ fun EdgeText(
     style: TextStyle = LocalTextStyle.current.merge(color = LocalTextStyle.current.color.reversed()),
     edgeWidth: Dp = 2.dp,
     edgeTextStyle: TextStyle = style.copy(color = style.color.reversed()),
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
 ) {
     val measurer = rememberTextMeasurer()
-    val textResult = measurer.measure(
-        text,
-        style = style,
-        skipCache = true,
-    )
-    val edgeResult = measurer.measure(
-        text,
-        style = style.merge(edgeTextStyle),
-        skipCache = true,
-    )
 
-    with(LocalDensity.current) {
-        Canvas(
-            modifier = modifier
-                .size(
-                    textResult.size.width.toDp() + edgeWidth * 2,
-                    textResult.size.height.toDp() + edgeWidth * 2,
-                ),
-        ) {
-            // 縁
-            drawText(
-                edgeResult,
-                topLeft = Offset(edgeWidth.toPx(), edgeWidth.toPx()),
-                drawStyle = Stroke(edgeWidth.toPx() * 2, miter = 0f),
-                color = edgeTextStyle.color,
-            )
+    BoxWithConstraints(
+        modifier = modifier
+    ) {
+        val textResult = measurer.measure(
+            text,
+            style = style,
+            skipCache = true,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            constraints = this.constraints,
+        )
+        val edgeResult = measurer.measure(
+            text,
+            style = style.merge(edgeTextStyle),
+            skipCache = true,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            constraints = this.constraints,
+        )
 
-            // テキスト
-            drawText(
-                textResult,
-                topLeft = Offset(edgeWidth.toPx(), edgeWidth.toPx()),
-                color = style.color,
-            )
+        with(LocalDensity.current) {
+            Canvas(
+                modifier = Modifier
+                    .size(
+                        textResult.size.width.toDp() + edgeWidth * 2,
+                        textResult.size.height.toDp() + edgeWidth * 2,
+                    ),
+            ) {
+                // 縁
+                drawText(
+                    edgeResult,
+                    topLeft = Offset(edgeWidth.toPx(), edgeWidth.toPx()),
+                    drawStyle = Stroke(edgeWidth.toPx() * 2, miter = 0f),
+                    color = edgeTextStyle.color,
+                )
+
+                // テキスト
+                drawText(
+                    textResult,
+                    topLeft = Offset(edgeWidth.toPx(), edgeWidth.toPx()),
+                    color = style.color,
+                )
+            }
         }
     }
 }

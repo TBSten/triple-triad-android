@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -124,7 +125,7 @@ private fun boundingBoxSize(
 @Preview
 @Composable
 private fun RotateWithLayoutPreview() = PreviewRoot {
-    var degress by remember { mutableStateOf(30f) }
+    var degress by remember { mutableFloatStateOf(30f) }
     val animatedDegress by animateFloatAsState(degress)
     val transformOrigin = TransformOrigin(0f, 0f)
 

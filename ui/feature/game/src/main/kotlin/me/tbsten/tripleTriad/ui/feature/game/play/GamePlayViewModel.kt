@@ -11,14 +11,14 @@ import me.tbsten.tripleTriad.domain.game.CardNumber
 import me.tbsten.tripleTriad.domain.game.GameCard
 import me.tbsten.tripleTriad.domain.game.GamePlayer
 import me.tbsten.tripleTriad.domain.game.GameState
+import me.tbsten.tripleTriad.domain.game.GameState.SelectingFirstPlayer
 import me.tbsten.tripleTriad.domain.game.GameStore
-import me.tbsten.tripleTriad.domain.game.InitialGameState
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import me.tbsten.tripleTriad.error.ApplicationErrorStateHolder
 import me.tbsten.tripleTriad.ui.BaseViewModel
 
 private val initialGameStateForTest =
-    InitialGameState(
+    SelectingFirstPlayer(
         player = GamePlayer("Test Player"),
         playerHands = listOf(
             GameCard(CardNumber(6), CardNumber(1), CardNumber(1), CardNumber(1)),
@@ -61,9 +61,39 @@ internal class GamePlayViewModel @Inject constructor(
 }
 
 private fun GameState.toUiState(): GamePlayUiState = when (this) {
-    is GameState.SelectingFirstPlayer -> GamePlayUiState.SelectingFirstPlayer
-    is GameState.SelectingCard -> GamePlayUiState.SelectingCard
-    is GameState.SelectingSquare -> GamePlayUiState.SelectingSquare
-    is GameState.ApplyingPlaceRule -> GamePlayUiState.ApplyingPlaceRule
-    is GameState.Finished -> GamePlayUiState.Finished
+    is SelectingFirstPlayer -> GamePlayUiState.SelectingFirstPlayer(
+        player = this.player,
+        playerHands = this.playerHands,
+        enemy = this.enemy,
+        enemyHands = this.enemyHands,
+        gameField = this.gameField,
+    )
+    is GameState.SelectingCard -> GamePlayUiState.SelectingCard(
+        player = this.player,
+        playerHands = this.playerHands,
+        enemy = this.enemy,
+        enemyHands = this.enemyHands,
+        gameField = this.gameField,
+    )
+    is GameState.SelectingSquare -> GamePlayUiState.SelectingSquare(
+        player = this.player,
+        playerHands = this.playerHands,
+        enemy = this.enemy,
+        enemyHands = this.enemyHands,
+        gameField = this.gameField,
+    )
+    is GameState.ApplyingPlaceRule -> GamePlayUiState.ApplyingPlaceRule(
+        player = this.player,
+        playerHands = this.playerHands,
+        enemy = this.enemy,
+        enemyHands = this.enemyHands,
+        gameField = this.gameField,
+    )
+    is GameState.Finished -> GamePlayUiState.Finished(
+        player = this.player,
+        playerHands = this.playerHands,
+        enemy = this.enemy,
+        enemyHands = this.enemyHands,
+        gameField = this.gameField,
+    )
 }

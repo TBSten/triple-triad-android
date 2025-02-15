@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(libs.plugins.buildLogicModuleFeature)
 }
@@ -7,4 +9,10 @@ android {
 }
 
 dependencies {
+}
+
+tasks.withType<KotlinCompile> {
+    compilerOptions {
+        optIn.add("androidx.compose.animation.ExperimentalSharedTransitionApi")
+    }
 }

@@ -80,6 +80,9 @@ data class Colors(
     val textDisabled: Color,
     val scrim: Color,
     val elevation: Color,
+
+    val me: Color,
+    val enemy: Color,
 )
 
 internal val LightColors =
@@ -109,6 +112,8 @@ internal val LightColors =
         textDisabled = Gray400,
         scrim = Color.Black.copy(alpha = 0.32f),
         elevation = Gray700,
+        me = Color(0xFF618AB9),
+        enemy = Color(0xFFB97777),
     )
 
 internal val DarkColors =
@@ -138,6 +143,8 @@ internal val DarkColors =
         textDisabled = Gray600,
         scrim = Color.Black.copy(alpha = 0.72f),
         elevation = Gray200,
+        me = Color(0xFF618AB9),
+        enemy = Color(0xFFB97777),
     )
 
 @SuppressLint("ComposeCompositionLocalUsage")

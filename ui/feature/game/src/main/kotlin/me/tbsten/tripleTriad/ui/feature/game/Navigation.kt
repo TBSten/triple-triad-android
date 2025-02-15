@@ -8,7 +8,6 @@ import me.tbsten.tripleTriad.ui.navigation.Navigation
 import me.tbsten.tripleTriad.ui.navigation.Screen
 import me.tbsten.tripleTriad.ui.navigation.composable
 import me.tbsten.tripleTriad.ui.navigation.navigation
-import me.tbsten.tripleTriad.ui.navigation.toRoute
 
 @Serializable
 data object Game : Navigation
@@ -27,9 +26,11 @@ fun NavGraphBuilder.game() {
             GamePlayScreen()
         }
 
+        /*
         composable<Result> {
             val route: Result = it.toRoute<Result>()
             TODO("Result Screen: $route")
         }
+         */
     }
 }

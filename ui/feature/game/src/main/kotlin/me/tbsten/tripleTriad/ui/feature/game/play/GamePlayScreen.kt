@@ -153,6 +153,7 @@ internal fun GamePlayScreen(
                             },
                         )
                     },
+                    isClickable = uiState.isHandsCardClickable,
                     selectedCardIndex = uiState.playerSelectedCardIndexInHand,
                 )
             }

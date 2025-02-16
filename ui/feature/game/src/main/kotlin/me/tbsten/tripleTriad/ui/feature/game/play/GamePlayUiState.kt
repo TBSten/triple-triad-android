@@ -25,6 +25,15 @@ internal sealed interface GamePlayUiState {
 
     val gameField: GameField
 
+    val playerSelectedCardIndexInHand: Int?
+        get() = null
+    val enemySelectedCardIndexInHand: Int?
+        get() = null
+    val isSquareCardClickable: Boolean
+        get() = false
+    val isHandsCardClickable: Boolean
+        get() = false
+
     data class SelectingFirstPlayer(
         override val player: GamePlayer,
         override val playerHands: Hands,
@@ -41,7 +50,9 @@ internal sealed interface GamePlayUiState {
         override val gameField: GameField,
         override val turnPlayer: GamePlayer,
     ) : GamePlayUiState,
-        WithTurnPlayer
+        WithTurnPlayer {
+        override val isHandsCardClickable: Boolean = turnPlayer == player
+    }
 
     data class SelectingSquare(
         override val player: GamePlayer,
@@ -52,7 +63,12 @@ internal sealed interface GamePlayUiState {
         override val turnPlayer: GamePlayer,
         val selectedCardIndexInHand: Int,
     ) : GamePlayUiState,
-        WithTurnPlayer
+        WithTurnPlayer {
+        override val playerSelectedCardIndexInHand: Int? = if (turnPlayer == player) selectedCardIndexInHand else null
+        override val enemySelectedCardIndexInHand: Int? = if (turnPlayer == enemy) selectedCardIndexInHand else null
+        override val isSquareCardClickable: Boolean = turnPlayer == player
+        override val isHandsCardClickable: Boolean = turnPlayer == player
+    }
 
     data class ApplyingPlaceRule(
         override val player: GamePlayer,

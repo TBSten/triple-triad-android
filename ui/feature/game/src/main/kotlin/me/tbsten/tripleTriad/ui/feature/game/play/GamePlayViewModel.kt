@@ -74,6 +74,7 @@ private fun GameState.toUiState(): GamePlayUiState = when (this) {
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
+        turnPlayer = this.turnPlayer,
     )
     is GameState.SelectingSquare -> GamePlayUiState.SelectingSquare(
         player = this.player,
@@ -81,6 +82,8 @@ private fun GameState.toUiState(): GamePlayUiState = when (this) {
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
+        turnPlayer = this.turnPlayer,
+        selectedCardIndexInHand = this.selectedCardIndexInHands,
     )
     is GameState.ApplyingPlaceRule -> GamePlayUiState.ApplyingPlaceRule(
         player = this.player,
@@ -88,6 +91,7 @@ private fun GameState.toUiState(): GamePlayUiState = when (this) {
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
+        turnPlayer = this.turnPlayer,
     )
     is GameState.Finished -> GamePlayUiState.Finished(
         player = this.player,

@@ -184,6 +184,7 @@ internal class GamePlayUiStatePreviewParameters :
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,
+                    turnPlayer = meForPreview,
                 ),
                 GamePlayUiState.SelectingSquare(
                     player = meForPreview,
@@ -191,6 +192,8 @@ internal class GamePlayUiStatePreviewParameters :
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,
+                    turnPlayer = meForPreview,
+                    selectedCardIndexInHand = 1,
                 ),
                 GamePlayUiState.ApplyingPlaceRule(
                     player = meForPreview,
@@ -198,6 +201,7 @@ internal class GamePlayUiStatePreviewParameters :
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,
+                    turnPlayer = meForPreview,
                 ),
                 GamePlayUiState.Finished(
                     player = meForPreview,

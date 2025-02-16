@@ -15,6 +15,7 @@ import me.tbsten.tripleTriad.domain.game.GamePlayer
 import me.tbsten.tripleTriad.domain.game.GameState
 import me.tbsten.tripleTriad.domain.game.GameState.SelectingFirstPlayer
 import me.tbsten.tripleTriad.domain.game.GameStore
+import me.tbsten.tripleTriad.domain.game.autoControl.RandomAutoControlFactory
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import me.tbsten.tripleTriad.error.ApplicationErrorStateHolder
 import me.tbsten.tripleTriad.ui.BaseViewModel
@@ -31,10 +32,10 @@ private val initialGameStateForTest =
         ),
         enemy = GamePlayer("Test Enemy"),
         enemyHands = listOf(
-            GameCard(CardNumber(1), CardNumber(1), CardNumber(1), CardNumber(1)),
-            GameCard(CardNumber(1), CardNumber(1), CardNumber(1), CardNumber(1)),
-            GameCard(CardNumber(1), CardNumber(1), CardNumber(1), CardNumber(1)),
-            GameCard(CardNumber(1), CardNumber(1), CardNumber(1), CardNumber(1)),
+            GameCard(CardNumber(4), CardNumber(1), CardNumber(1), CardNumber(1)),
+            GameCard(CardNumber(1), CardNumber(4), CardNumber(1), CardNumber(1)),
+            GameCard(CardNumber(1), CardNumber(1), CardNumber(4), CardNumber(1)),
+            GameCard(CardNumber(1), CardNumber(1), CardNumber(1), CardNumber(4)),
             GameCard(CardNumber(1), CardNumber(1), CardNumber(1), CardNumber(1)),
         ),
     )
@@ -42,6 +43,7 @@ private val initialGameStateForTest =
 @HiltViewModel
 internal class GamePlayViewModel @Inject constructor(
     applicationErrorStateHolder: ApplicationErrorStateHolder,
+    private val randomAutoControlFactory: RandomAutoControlFactory,
 ) : BaseViewModel<GamePlayUiState, GamePlayUiAction>(applicationErrorStateHolder) {
     private val gameStore = GameStore(
         initialGameState = initialGameStateForTest,
@@ -58,6 +60,11 @@ internal class GamePlayViewModel @Inject constructor(
             )
 
     override fun init() {
+        viewModelScope.launchSafe {
+            randomAutoControlFactory
+                .create(gameStore, gameStore.state.value.enemy)
+                .start()
+        }
         // FIXME dispatch from ui
         viewModelScope.launchSafe {
             gameStore.state.collect {

@@ -13,6 +13,12 @@ sealed interface GameState : State {
 
     val gameField: GameField
 
+    fun handOf(player: GamePlayer) = when (player) {
+        this.player -> playerHands
+        this.enemy -> enemyHands
+        else -> throw throw GameException.IllegalPlayer("$player")
+    }
+
     @optics
     data class SelectingFirstPlayer(
         override val player: GamePlayer,

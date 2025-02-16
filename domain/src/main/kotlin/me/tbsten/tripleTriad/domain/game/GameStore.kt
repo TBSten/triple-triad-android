@@ -1,20 +1,29 @@
 package me.tbsten.tripleTriad.domain.game
 
+import io.yumemi.tart.core.Middleware
 import io.yumemi.tart.core.Store
+import io.yumemi.tart.logging.LoggingMiddleware
 import me.tbsten.tripleTriad.common.update
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import me.tbsten.tripleTriad.domain.game.gameRule.PlaceCardRule
 
-@Suppress("NestedBlockDepth")
+@Suppress("NestedBlockDepth", "CyclomaticComplexMethod")
 internal suspend fun gameReducer(
     placeCardRules: List<PlaceCardRule>,
     state: GameState,
     action: GameAction,
 ): GameState {
     return when (action) {
-        is GameAction.SelectCard -> {
-            check(state is GameState.SelectingCard) // TODO Replace check to custom exception
-            state.toSelectingSquareState(action.selectedCardIndexInHand)
+        is GameAction.SelectCard -> when (state) {
+            is GameState.SelectingCard ->
+                state.toSelectingSquareState(action.selectedCardIndexInHand)
+            is GameState.SelectingSquare ->
+                state.toSelectingSquareState(action.selectedCardIndexInHand)
+            else -> throw GameException.IllegalStateTransition("state: $state action:SelectCard")
+        }
+        is GameAction.UnselectCard -> {
+            check(state is WithTurnPlayerState)
+            state.toSelectingCardState()
         }
         is GameAction.SelectSquare,
         GameAction.CompleteApplyCardPlaceRule,
@@ -61,6 +70,10 @@ class GameStore(
         DefaultSelectFirstPlayer(initialGameState.player, initialGameState.enemy),
     private val placeCardRules: List<PlaceCardRule> = listOf(BasicPlaceCardRule),
 ) : Store.Base<GameState, GameAction, Nothing>(initialGameState) {
+    override val middlewares: List<Middleware<GameState, GameAction, Nothing>> = listOf(
+        LoggingMiddleware(),
+    )
+
     override suspend fun onDispatch(
         state: GameState,
         action: GameAction,
@@ -100,6 +113,25 @@ private fun GameState.SelectingCard.toSelectingSquareState(selectedCardIndexInHa
     gameField = this.gameField,
     turnPlayer = this.turnPlayer,
     selectedCardIndexInHands = selectedCardIndexInHand,
+)
+
+private fun GameState.SelectingSquare.toSelectingSquareState(selectedCardIndexInHand: Int) = GameState.SelectingSquare(
+    player = this.player,
+    playerHands = this.playerHands,
+    enemy = this.enemy,
+    enemyHands = this.enemyHands,
+    gameField = this.gameField,
+    turnPlayer = this.turnPlayer,
+    selectedCardIndexInHands = selectedCardIndexInHand,
+)
+
+private fun WithTurnPlayerState.toSelectingCardState() = GameState.SelectingCard(
+    player = this.player,
+    playerHands = this.playerHands,
+    enemy = this.enemy,
+    enemyHands = this.enemyHands,
+    gameField = this.gameField,
+    turnPlayer = this.turnPlayer,
 )
 
 private fun GameState.SelectingSquare.toApplyingPlaceRuleState(

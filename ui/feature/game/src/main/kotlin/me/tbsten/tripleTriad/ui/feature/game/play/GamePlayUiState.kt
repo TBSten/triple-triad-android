@@ -1,5 +1,6 @@
 package me.tbsten.tripleTriad.ui.feature.game.play
 
+import me.tbsten.tripleTriad.domain.game.GameException
 import me.tbsten.tripleTriad.domain.game.GameField
 import me.tbsten.tripleTriad.domain.game.GamePlayer
 import me.tbsten.tripleTriad.domain.game.Hands
@@ -38,7 +39,9 @@ internal sealed interface GamePlayUiState {
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
-    ) : GamePlayUiState
+        override val turnPlayer: GamePlayer,
+    ) : GamePlayUiState,
+        WithTurnPlayer
 
     data class SelectingSquare(
         override val player: GamePlayer,
@@ -46,7 +49,10 @@ internal sealed interface GamePlayUiState {
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
-    ) : GamePlayUiState
+        override val turnPlayer: GamePlayer,
+        val selectedCardIndexInHand: Int,
+    ) : GamePlayUiState,
+        WithTurnPlayer
 
     data class ApplyingPlaceRule(
         override val player: GamePlayer,
@@ -54,7 +60,9 @@ internal sealed interface GamePlayUiState {
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
-    ) : GamePlayUiState
+        override val turnPlayer: GamePlayer,
+    ) : GamePlayUiState,
+        WithTurnPlayer
 
     data class Finished(
         override val player: GamePlayer,
@@ -63,4 +71,20 @@ internal sealed interface GamePlayUiState {
         override val enemyHands: Hands,
         override val gameField: GameField,
     ) : GamePlayUiState
+}
+
+internal sealed interface WithTurnPlayer : GamePlayUiState {
+    val turnPlayer: GamePlayer
+    val turnPlayerHands: Hands
+        get() = when (turnPlayer) {
+            player -> playerHands
+            enemy -> enemyHands
+            else -> throw GameException.IllegalPlayer("ターンプレイヤー")
+        }
+    val nextTurnPlayer: GamePlayer
+        get() = when (turnPlayer) {
+            player -> enemy
+            enemy -> player
+            else -> throw GameException.IllegalPlayer("ターンプレイヤー")
+        }
 }

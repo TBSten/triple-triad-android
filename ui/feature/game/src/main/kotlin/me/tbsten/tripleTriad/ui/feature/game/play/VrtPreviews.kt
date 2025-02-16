@@ -26,6 +26,7 @@ private class GamePlayScreenViewPreviewParameterForVrt :
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
+                            turnPlayer = meForPreview,
                         ),
                         GamePlayUiState.SelectingSquare(
                             player = meForPreview,
@@ -33,6 +34,8 @@ private class GamePlayScreenViewPreviewParameterForVrt :
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
+                            selectedCardIndexInHand = 1,
+                            turnPlayer = meForPreview,
                         ),
                         GamePlayUiState.ApplyingPlaceRule(
                             player = meForPreview,
@@ -40,6 +43,7 @@ private class GamePlayScreenViewPreviewParameterForVrt :
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
+                            turnPlayer = meForPreview,
                         ),
                         GamePlayUiState.Finished(
                             player = meForPreview,

@@ -19,7 +19,7 @@ data object BasicPlaceCardRule : PlaceCardRule {
                 if (
                     it is GameField.Square.PlacedCard &&
                     it.owner != moveCardData.placeBy &&
-                    selectedCard.top >= it.placedCard.bottom
+                    selectedCard.top > it.placedCard.bottom
                 ) {
                     resultGameField = GameField.squares.modify(resultGameField) { squares ->
                         squares.update(it, GameField.Square.PlacedCard.owner.modify(it) { moveCardData.placeBy })
@@ -33,7 +33,7 @@ data object BasicPlaceCardRule : PlaceCardRule {
                 if (
                     it is GameField.Square.PlacedCard &&
                     it.owner != moveCardData.placeBy &&
-                    selectedCard.bottom >= it.placedCard.top
+                    selectedCard.bottom > it.placedCard.top
                 ) {
                     resultGameField = GameField.squares.modify(resultGameField) { squares ->
                         squares.update(it, GameField.Square.PlacedCard.owner.modify(it) { moveCardData.placeBy })
@@ -47,7 +47,7 @@ data object BasicPlaceCardRule : PlaceCardRule {
                 if (
                     it is GameField.Square.PlacedCard &&
                     it.owner != moveCardData.placeBy &&
-                    selectedCard.left >= it.placedCard.right
+                    selectedCard.left > it.placedCard.right
                 ) {
                     resultGameField = GameField.squares.modify(resultGameField) { squares ->
                         squares.update(it, GameField.Square.PlacedCard.owner.modify(it) { moveCardData.placeBy })
@@ -61,7 +61,7 @@ data object BasicPlaceCardRule : PlaceCardRule {
                 if (
                     it is GameField.Square.PlacedCard &&
                     it.owner != moveCardData.placeBy &&
-                    selectedCard.right >= it.placedCard.left
+                    selectedCard.right > it.placedCard.left
                 ) {
                     resultGameField = GameField.squares.modify(resultGameField) { squares ->
                         squares.update(it, GameField.Square.PlacedCard.owner.modify(it) { moveCardData.placeBy })

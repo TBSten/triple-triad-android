@@ -69,10 +69,11 @@ class GameStore(
     private val selectFirstPlayer: suspend () -> GamePlayer =
         DefaultSelectFirstPlayer(initialGameState.player, initialGameState.enemy),
     private val placeCardRules: List<PlaceCardRule> = listOf(BasicPlaceCardRule),
+    private val log: Boolean = true,
 ) : Store.Base<GameState, GameAction, Nothing>(initialGameState) {
-    override val middlewares: List<Middleware<GameState, GameAction, Nothing>> = listOf(
-        LoggingMiddleware(),
-    )
+    override val middlewares: List<Middleware<GameState, GameAction, Nothing>> = buildList {
+        if (log) add(LoggingMiddleware())
+    }
 
     override suspend fun onDispatch(
         state: GameState,

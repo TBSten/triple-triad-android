@@ -49,6 +49,7 @@ class GameStoreFlowTest {
                 initialGameState = initialState,
                 selectFirstPlayer = selectFirstPlayer,
                 placeCardRules = placeCardRules,
+                log = false,
             )
         val storeStateFlow = store.state
             .shareIn(backgroundScope, SharingStarted.Eagerly)

@@ -1,7 +1,6 @@
 package me.tbsten.tripleTriad.ui.feature.game.play
 
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,15 +9,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemGesturesPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -62,7 +58,6 @@ internal fun GamePlayScreen(
     modifier: Modifier = Modifier,
     gameFieldAnimationState: GameFieldAnimationState = rememberGameFieldAnimationState(uiState),
 ) {
-    val isSelectingSquare = uiState is GamePlayUiState.SelectingSquare
     val density = LocalDensity.current
 
     SharedTransitionLayout(
@@ -83,6 +78,7 @@ internal fun GamePlayScreen(
                     hands = uiState.enemyHands,
                     cardBackgroundColor = TripleTriadTheme.colors.enemy,
                     cardSize = CardSize.Large,
+                    isClickable = false,
                     onClick = {},
                     modifier = Modifier
                         .darken(0.75f)
@@ -113,10 +109,10 @@ internal fun GamePlayScreen(
                     .animateGameField(gameFieldAnimationState)
                     .padding(16.dp)
                     .zIndex(0f),
-                isCardClickable = isSelectingSquare,
+                isCardClickable = uiState.isSquareCardClickable,
                 onCardClick = {},
-                isSquareClickable = isSelectingSquare,
-                onSquareClick = {},
+                isSquareClickable = uiState.isSquareCardClickable,
+                onSquareClick = { dispatch(GamePlayUiAction.SelectSquare(it)) },
             )
 
             Column(
@@ -142,23 +138,22 @@ internal fun GamePlayScreen(
                         .align(Alignment.End)
                         .padding(horizontal = 12.dp),
                 )
-                // TODO move select card logic to ViewModel
-                val selectedIndex = remember { mutableStateOf<Int?>(null) }
 
-                val meHandsTranslateY = animateDpAsState(
-                    if (selectedIndex.value != null) -20.dp else 0.dp,
-                )
                 PlayerHandsView(
                     hands = uiState.playerHands,
                     cardBackgroundColor = TripleTriadTheme.colors.me,
                     cardSize = CardSize.Medium,
                     onClick = { clickedCard ->
                         val clickedCardIndex = uiState.playerHands.indexOfFirst { it == clickedCard }
-                        selectedIndex.value = if (selectedIndex.value == clickedCardIndex) null else clickedCardIndex
+                        dispatch(
+                            if (uiState.playerSelectedCardIndexInHand == clickedCardIndex) {
+                                GamePlayUiAction.UnselectCard
+                            } else {
+                                GamePlayUiAction.SelectCard(clickedCardIndex)
+                            },
+                        )
                     },
-                    selectedCardIndex = selectedIndex.value,
-                    modifier = Modifier
-                        .graphicsLayer { translationY = meHandsTranslateY.value.toPx() },
+                    selectedCardIndex = uiState.playerSelectedCardIndexInHand,
                 )
             }
         }

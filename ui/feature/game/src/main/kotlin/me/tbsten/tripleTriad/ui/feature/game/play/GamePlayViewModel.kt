@@ -3,11 +3,13 @@ package me.tbsten.tripleTriad.ui.feature.game.play
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import me.tbsten.tripleTriad.domain.game.CardNumber
+import me.tbsten.tripleTriad.domain.game.GameAction
 import me.tbsten.tripleTriad.domain.game.GameCard
 import me.tbsten.tripleTriad.domain.game.GamePlayer
 import me.tbsten.tripleTriad.domain.game.GameState
@@ -55,8 +57,23 @@ internal class GamePlayViewModel @Inject constructor(
                 gameStore.state.value.toUiState(),
             )
 
-    override fun dispatch(action: GamePlayUiAction) {
-        TODO("Not yet implemented")
+    override fun init() {
+        // FIXME dispatch from ui
+        viewModelScope.launchSafe {
+            gameStore.state.collect {
+                if (it is GameState.ApplyingPlaceRule) {
+                    delay(1000)
+                    dispatch(GamePlayUiAction.CompleteApplyCardPlaceRule)
+                }
+            }
+        }
+    }
+
+    override fun dispatch(action: GamePlayUiAction) = when (action) {
+        is GamePlayUiAction.SelectCard -> gameStore.dispatch(GameAction.SelectCard(action.selectedCardIndexInHand))
+        GamePlayUiAction.UnselectCard -> gameStore.dispatch(GameAction.UnselectCard)
+        is GamePlayUiAction.SelectSquare -> gameStore.dispatch(GameAction.SelectSquare(action.selectedSquare))
+        GamePlayUiAction.CompleteApplyCardPlaceRule -> gameStore.dispatch(GameAction.CompleteApplyCardPlaceRule)
     }
 }
 

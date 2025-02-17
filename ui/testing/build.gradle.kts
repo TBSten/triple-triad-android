@@ -13,15 +13,16 @@ android {
 }
 
 dependencies {
-    implementation(projects.ui.testing.annotation)
-    implementation(platform(libs.composeBom))
-    implementation(libs.kotlinxCoroutinesTest)
-    implementation(libs.androidxEspressoCore)
-    implementation(libs.composeUiTestJunit4)
-    implementation(libs.composeUiTestManifest)
-    implementation(libs.roborazziCore)
-    implementation(libs.roborazziCompose)
-    implementation(libs.roborazziJunit)
-    implementation(libs.roborazziComposePreviewScannerSupport)
-    implementation(libs.composePreviewScanner)
+    api(projects.ui.testing.annotation)
+    api(platform(libs.composeBom))
+    api(libs.composeUiTooling)
+    api(libs.kotlinxCoroutinesTest)
+    api(libs.androidxEspressoCore)
+    api(libs.composeUiTestJunit4)
+    api(libs.composeUiTestManifest)
+    api(libs.roborazziCore)
+    api(libs.roborazziCompose)
+    api(libs.roborazziJunit)
+    api(libs.roborazziComposePreviewScannerSupport)
+    api(libs.composePreviewScanner)
 }

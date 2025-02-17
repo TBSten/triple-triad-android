@@ -1,17 +1,29 @@
 package me.tbsten.tripleTriad.domain.game
 
-import arrow.optics.optics
+import kotlin.uuid.Uuid
 
-@optics
-data class GameCard(
+class GameCard private constructor(
+    val id: Id = Id(),
     val top: CardNumber,
     val bottom: CardNumber,
     val left: CardNumber,
     val right: CardNumber,
 ) {
+    constructor(
+        top: CardNumber,
+        bottom: CardNumber,
+        left: CardNumber,
+        right: CardNumber,
+    ) : this(id = Id(), top = top, bottom = bottom, left = left, right = right)
+
     override fun toString(): String = "Card(t=$top,b=$bottom,l=$left,r=$right)"
 
-    companion object;
+    override fun hashCode(): Int = this.id.hashCode()
+
+    override fun equals(other: Any?): Boolean = other is GameCard && this.id == other.id
+
+    @JvmInline
+    value class Id(val value: Uuid = Uuid.random())
 }
 
 sealed interface CardNumber {

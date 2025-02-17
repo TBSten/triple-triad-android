@@ -16,18 +16,10 @@ fun <T> List<T>.update(prev: T, new: (T) -> T) = map {
     }
 }
 
-fun <T> List<T>.updateIndexOf(index: Int, new: T) = mapIndexed { i, value ->
+fun <T> List<T>.updateIndexed(index: Int, new: (T) -> T) = mapIndexed { i, element ->
     if (i != index) {
-        value
+        element
     } else {
-        new
+        new(element)
     }
-}
-
-fun <T> List<T>.removedItemOf(removeTarget: T) = filter {
-    it != removeTarget
-}
-
-fun <T> List<T>.removedIndexOf(index: Int) = filterIndexed { i, _ ->
-    i != index
 }

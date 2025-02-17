@@ -1,21 +1,29 @@
 package me.tbsten.tripleTriad.domain.game
 
+import io.yumemi.tart.core.Middleware
 import io.yumemi.tart.core.Store
-import me.tbsten.tripleTriad.common.removedIndexOf
+import io.yumemi.tart.logging.LoggingMiddleware
 import me.tbsten.tripleTriad.common.update
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import me.tbsten.tripleTriad.domain.game.gameRule.PlaceCardRule
 
-@Suppress("NestedBlockDepth")
+@Suppress("NestedBlockDepth", "CyclomaticComplexMethod")
 internal suspend fun gameReducer(
     placeCardRules: List<PlaceCardRule>,
     state: GameState,
     action: GameAction,
 ): GameState {
     return when (action) {
-        is GameAction.SelectCard -> {
-            check(state is GameState.SelectingCard) // TODO Replace check to custom exception
-            state.toSelectingSquareState(action.selectedCardIndexInHand)
+        is GameAction.SelectCard -> when (state) {
+            is GameState.SelectingCard ->
+                state.toSelectingSquareState(action.selectedCardIndexInHand)
+            is GameState.SelectingSquare ->
+                state.toSelectingSquareState(action.selectedCardIndexInHand)
+            else -> throw GameException.IllegalStateTransition("state: $state action:SelectCard")
+        }
+        is GameAction.UnselectCard -> {
+            check(state is WithTurnPlayerState)
+            state.toSelectingCardState()
         }
         is GameAction.SelectSquare,
         GameAction.CompleteApplyCardPlaceRule,
@@ -58,9 +66,15 @@ internal suspend fun gameReducer(
 
 class GameStore(
     initialGameState: InitialGameState,
-    private val selectFirstPlayer: suspend () -> GamePlayer,
+    private val selectFirstPlayer: suspend () -> GamePlayer =
+        DefaultSelectFirstPlayer(initialGameState.player, initialGameState.enemy),
     private val placeCardRules: List<PlaceCardRule> = listOf(BasicPlaceCardRule),
+    private val log: Boolean = true,
 ) : Store.Base<GameState, GameAction, Nothing>(initialGameState) {
+    override val middlewares: List<Middleware<GameState, GameAction, Nothing>> = buildList {
+        if (log) add(LoggingMiddleware())
+    }
+
     override suspend fun onDispatch(
         state: GameState,
         action: GameAction,
@@ -100,6 +114,25 @@ private fun GameState.SelectingCard.toSelectingSquareState(selectedCardIndexInHa
     gameField = this.gameField,
     turnPlayer = this.turnPlayer,
     selectedCardIndexInHands = selectedCardIndexInHand,
+)
+
+private fun GameState.SelectingSquare.toSelectingSquareState(selectedCardIndexInHand: Int) = GameState.SelectingSquare(
+    player = this.player,
+    playerHands = this.playerHands,
+    enemy = this.enemy,
+    enemyHands = this.enemyHands,
+    gameField = this.gameField,
+    turnPlayer = this.turnPlayer,
+    selectedCardIndexInHands = selectedCardIndexInHand,
+)
+
+private fun WithTurnPlayerState.toSelectingCardState() = GameState.SelectingCard(
+    player = this.player,
+    playerHands = this.playerHands,
+    enemy = this.enemy,
+    enemyHands = this.enemyHands,
+    gameField = this.gameField,
+    turnPlayer = this.turnPlayer,
 )
 
 private fun GameState.SelectingSquare.toApplyingPlaceRuleState(
@@ -142,11 +175,11 @@ private fun GameState.SelectingSquare.movePlacedCardFromHandsToField(
         when (placingCardState.turnPlayer) {
             placingCardState.player ->
                 GameState.SelectingSquare.playerHands
-                    .modify(placingCardState) { it.removedIndexOf(moveCardData.selectedCardIndexInHands) }
+                    .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
             placingCardState.enemy ->
                 GameState.SelectingSquare.enemyHands
-                    .modify(placingCardState) { it.removedIndexOf(moveCardData.selectedCardIndexInHands) }
-            else -> throw GameException.IllegalTurnPlayer()
+                    .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
+            else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
     }.let { placingCardState ->
         // フィールドにカードを配置

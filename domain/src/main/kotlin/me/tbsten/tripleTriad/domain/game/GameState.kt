@@ -13,6 +13,12 @@ sealed interface GameState : State {
 
     val gameField: GameField
 
+    fun handOf(player: GamePlayer) = when (player) {
+        this.player -> playerHands
+        this.enemy -> enemyHands
+        else -> throw throw GameException.IllegalPlayer("$player")
+    }
+
     @optics
     data class SelectingFirstPlayer(
         override val player: GamePlayer,
@@ -87,19 +93,19 @@ typealias InitialGameState = GameState.SelectingFirstPlayer
 
 typealias TurnFirstState = GameState.SelectingCard
 
-interface WithTurnPlayerState : GameState {
+sealed interface WithTurnPlayerState : GameState {
     val turnPlayer: GamePlayer
     val turnPlayerHands: Hands
         get() = when (turnPlayer) {
             player -> playerHands
             enemy -> enemyHands
-            else -> throw GameException.IllegalTurnPlayer()
+            else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
     val nextTurnPlayer: GamePlayer
         get() = when (turnPlayer) {
             player -> enemy
             enemy -> player
-            else -> throw GameException.IllegalTurnPlayer()
+            else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
 }
 

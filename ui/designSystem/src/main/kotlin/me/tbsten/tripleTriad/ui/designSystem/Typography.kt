@@ -6,12 +6,19 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+val kaiseiOpti = FontFamily(
+    Font(R.font.kaisei_opti_regular, FontWeight.Normal),
+    Font(R.font.kaisei_opti_medium, FontWeight.Medium),
+    Font(R.font.kaisei_opti_bold, FontWeight.Bold),
+)
+
 @Composable
-fun fontFamily() = FontFamily.Default
+fun fontFamily() = kaiseiOpti
 
 data class Typography(
     val h1: TextStyle,
@@ -121,18 +128,18 @@ fun provideTypography(): Typography {
     val fontFamily = fontFamily()
 
     return defaultTypography.copy(
-        h1 = defaultTypography.h1.copy(fontFamily = fontFamily),
-        h2 = defaultTypography.h2.copy(fontFamily = fontFamily),
-        h3 = defaultTypography.h3.copy(fontFamily = fontFamily),
-        h4 = defaultTypography.h4.copy(fontFamily = fontFamily),
-        body1 = defaultTypography.body1.copy(fontFamily = fontFamily),
-        body2 = defaultTypography.body2.copy(fontFamily = fontFamily),
-        body3 = defaultTypography.body3.copy(fontFamily = fontFamily),
-        label1 = defaultTypography.label1.copy(fontFamily = fontFamily),
-        label2 = defaultTypography.label2.copy(fontFamily = fontFamily),
-        label3 = defaultTypography.label3.copy(fontFamily = fontFamily),
-        button = defaultTypography.button.copy(fontFamily = fontFamily),
-        input = defaultTypography.input.copy(fontFamily = fontFamily),
+        h1 = defaultTypography.h1.merge(fontFamily = fontFamily),
+        h2 = defaultTypography.h2.merge(fontFamily = fontFamily),
+        h3 = defaultTypography.h3.merge(fontFamily = fontFamily),
+        h4 = defaultTypography.h4.merge(fontFamily = fontFamily),
+        body1 = defaultTypography.body1.merge(fontFamily = fontFamily),
+        body2 = defaultTypography.body2.merge(fontFamily = fontFamily),
+        body3 = defaultTypography.body3.merge(fontFamily = fontFamily),
+        label1 = defaultTypography.label1.merge(fontFamily = fontFamily),
+        label2 = defaultTypography.label2.merge(fontFamily = fontFamily),
+        label3 = defaultTypography.label3.merge(fontFamily = fontFamily),
+        button = defaultTypography.button.merge(fontFamily = fontFamily),
+        input = defaultTypography.input.merge(fontFamily = fontFamily),
     )
 }
 

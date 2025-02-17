@@ -23,7 +23,7 @@ interface AutoControl {
                     is GameState.SelectingCard ->
                         selectCard(newState)
                             ?.let {
-                                gameStore.dispatch(GameAction.SelectCard(newState.handOf(controlPlayer).indexOf(it)))
+                                gameStore.dispatch(GameAction.SelectCard(newState.handsOf(controlPlayer).indexOf(it)))
                             }
                     is GameState.SelectingSquare ->
                         selectSquare(newState)
@@ -62,7 +62,7 @@ internal class RandomAutoControl(
 ) : AutoControl {
     override suspend fun selectCard(state: GameState.SelectingCard): GameCard {
         delay(selectCardDelay())
-        return state.handOf(controlPlayer).random()
+        return state.handsOf(controlPlayer).random()
     }
 
     override suspend fun selectSquare(state: GameState.SelectingSquare): GameField.Square {

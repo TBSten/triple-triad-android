@@ -25,9 +25,9 @@ internal sealed interface GamePlayUiState {
 
     val gameField: GameField
 
-    val meSelectedCardIndexInHand: Int?
+    val meSelectedCardIndexInHands: Int?
         get() = null
-    val enemySelectedCardIndexInHand: Int?
+    val enemySelectedCardIndexInHands: Int?
         get() = null
     val isSquareCardClickable: Boolean
         get() = false
@@ -61,11 +61,11 @@ internal sealed interface GamePlayUiState {
         override val enemyHands: Hands,
         override val gameField: GameField,
         override val turnPlayer: GamePlayer,
-        val selectedCardIndexInHand: Int,
+        val selectedCardIndexInHands: Int,
     ) : GamePlayUiState,
         WithTurnPlayer {
-        override val meSelectedCardIndexInHand: Int? = if (turnPlayer == me) selectedCardIndexInHand else null
-        override val enemySelectedCardIndexInHand: Int? = if (turnPlayer == enemy) selectedCardIndexInHand else null
+        override val meSelectedCardIndexInHands: Int? = if (turnPlayer == me) selectedCardIndexInHands else null
+        override val enemySelectedCardIndexInHands: Int? = if (turnPlayer == enemy) selectedCardIndexInHands else null
         override val isSquareCardClickable: Boolean = turnPlayer == me
         override val isHandsCardClickable: Boolean = turnPlayer == me
     }

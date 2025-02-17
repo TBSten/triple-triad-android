@@ -145,7 +145,7 @@ internal fun GamePlayScreen(
                     onClick = { clickedCard ->
                         val clickedCardIndex = uiState.meHands.indexOfFirst { it == clickedCard }
                         dispatch(
-                            if (uiState.meSelectedCardIndexInHand == clickedCardIndex) {
+                            if (uiState.meSelectedCardIndexInHands == clickedCardIndex) {
                                 GamePlayUiAction.UnselectCard
                             } else {
                                 GamePlayUiAction.SelectCard(clickedCardIndex)
@@ -153,7 +153,7 @@ internal fun GamePlayScreen(
                         )
                     },
                     isClickable = uiState.isHandsCardClickable,
-                    selectedCardIndex = uiState.meSelectedCardIndexInHand,
+                    selectedCardIndex = uiState.meSelectedCardIndexInHands,
                 )
             }
         }
@@ -188,7 +188,7 @@ internal class GamePlayUiStatePreviewParameters :
                     enemyHands = enemyHands,
                     gameField = gameField,
                     turnPlayer = meForPreview,
-                    selectedCardIndexInHand = 1,
+                    selectedCardIndexInHands = 1,
                 ),
                 GamePlayUiState.ApplyingPlaceRule(
                     me = meForPreview,

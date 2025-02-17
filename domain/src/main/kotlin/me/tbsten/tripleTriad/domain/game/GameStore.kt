@@ -16,9 +16,9 @@ internal suspend fun gameReducer(
     return when (action) {
         is GameAction.SelectCard -> when (state) {
             is GameState.SelectingCard ->
-                state.toSelectingSquareState(action.selectedCardIndexInHand)
+                state.toSelectingSquareState(action.selectedCardIndexInHands)
             is GameState.SelectingSquare ->
-                state.toSelectingSquareState(action.selectedCardIndexInHand)
+                state.toSelectingSquareState(action.selectedCardIndexInHands)
             else -> throw GameException.IllegalStateTransition("state: $state action:SelectCard")
         }
         is GameAction.UnselectCard -> {
@@ -106,14 +106,14 @@ private fun GameState.SelectingFirstPlayer.toStartFirstTurnState(
     turnPlayer = firstTurnPlayer,
 )
 
-private fun GameState.SelectingCard.toSelectingSquareState(selectedCardIndexInHand: Int) = GameState.SelectingSquare(
+private fun GameState.SelectingCard.toSelectingSquareState(selectedCardIndexInHands: Int) = GameState.SelectingSquare(
     me = this.me,
     meHands = this.meHands,
     enemy = this.enemy,
     enemyHands = this.enemyHands,
     gameField = this.gameField,
     turnPlayer = this.turnPlayer,
-    selectedCardIndexInHands = selectedCardIndexInHand,
+    selectedCardIndexInHands = selectedCardIndexInHands,
 )
 
 private fun GameState.SelectingSquare.toSelectingSquareState(selectedCardIndexInHand: Int) = GameState.SelectingSquare(

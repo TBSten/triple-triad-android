@@ -67,7 +67,7 @@ internal suspend fun gameReducer(
 class GameStore(
     initialGameState: InitialGameState,
     private val selectFirstPlayer: suspend () -> GamePlayer =
-        DefaultSelectFirstPlayer(initialGameState.player, initialGameState.enemy),
+        DefaultSelectFirstPlayer(initialGameState.me, initialGameState.enemy),
     private val placeCardRules: List<PlaceCardRule> = listOf(BasicPlaceCardRule),
     private val log: Boolean = true,
 ) : Store.Base<GameState, GameAction, Nothing>(initialGameState) {
@@ -98,8 +98,8 @@ class GameStore(
 private fun GameState.SelectingFirstPlayer.toStartFirstTurnState(
     firstTurnPlayer: GamePlayer,
 ): TurnFirstState = GameState.SelectingCard(
-    player = this.player,
-    playerHands = this.playerHands,
+    me = this.me,
+    meHands = this.meHands,
     enemy = this.enemy,
     enemyHands = this.enemyHands,
     gameField = this.gameField,
@@ -107,8 +107,8 @@ private fun GameState.SelectingFirstPlayer.toStartFirstTurnState(
 )
 
 private fun GameState.SelectingCard.toSelectingSquareState(selectedCardIndexInHand: Int) = GameState.SelectingSquare(
-    player = this.player,
-    playerHands = this.playerHands,
+    me = this.me,
+    meHands = this.meHands,
     enemy = this.enemy,
     enemyHands = this.enemyHands,
     gameField = this.gameField,
@@ -117,8 +117,8 @@ private fun GameState.SelectingCard.toSelectingSquareState(selectedCardIndexInHa
 )
 
 private fun GameState.SelectingSquare.toSelectingSquareState(selectedCardIndexInHand: Int) = GameState.SelectingSquare(
-    player = this.player,
-    playerHands = this.playerHands,
+    me = this.me,
+    meHands = this.meHands,
     enemy = this.enemy,
     enemyHands = this.enemyHands,
     gameField = this.gameField,
@@ -127,8 +127,8 @@ private fun GameState.SelectingSquare.toSelectingSquareState(selectedCardIndexIn
 )
 
 private fun WithTurnPlayerState.toSelectingCardState() = GameState.SelectingCard(
-    player = this.player,
-    playerHands = this.playerHands,
+    me = this.me,
+    meHands = this.meHands,
     enemy = this.enemy,
     enemyHands = this.enemyHands,
     gameField = this.gameField,
@@ -140,8 +140,8 @@ private fun GameState.SelectingSquare.toApplyingPlaceRuleState(
     placeRules: List<PlaceCardRule>,
     applyingPlaceRule: PlaceCardRule,
 ) = GameState.ApplyingPlaceRule(
-    player = this.player,
-    playerHands = this.playerHands,
+    me = this.me,
+    meHands = this.meHands,
     enemy = this.enemy,
     enemyHands = this.enemyHands,
     gameField = this.gameField,
@@ -173,8 +173,8 @@ private fun GameState.SelectingSquare.movePlacedCardFromHandsToField(
     .let { placingCardState ->
         // 手札から削除
         when (placingCardState.turnPlayer) {
-            placingCardState.player ->
-                GameState.SelectingSquare.playerHands
+            placingCardState.me ->
+                GameState.SelectingSquare.meHands
                     .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
             placingCardState.enemy ->
                 GameState.SelectingSquare.enemyHands
@@ -199,8 +199,8 @@ private fun GameState.SelectingSquare.movePlacedCardFromHandsToField(
 
 private fun WithTurnPlayerState.toNextTurnOrFinish() = if (gameField.isFill()) {
     GameState.Finished(
-        player = this.player,
-        playerHands = this.playerHands,
+        me = this.me,
+        meHands = this.meHands,
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
@@ -208,8 +208,8 @@ private fun WithTurnPlayerState.toNextTurnOrFinish() = if (gameField.isFill()) {
     )
 } else {
     TurnFirstState(
-        player = this.player,
-        playerHands = this.playerHands,
+        me = this.me,
+        meHands = this.meHands,
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,

@@ -123,7 +123,7 @@ internal fun GamePlayScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "${uiState.playerPoint.value}",
+                    text = "${uiState.mePoint.value}",
                     color = Color.White,
                     style = LocalTextStyle.current.merge(
                         fontSize = 60.sp,
@@ -139,13 +139,13 @@ internal fun GamePlayScreen(
                 )
 
                 PlayerHandsView(
-                    hands = uiState.playerHands,
+                    hands = uiState.meHands,
                     cardBackgroundColor = TripleTriadTheme.colors.me,
                     cardSize = CardSize.Medium,
                     onClick = { clickedCard ->
-                        val clickedCardIndex = uiState.playerHands.indexOfFirst { it == clickedCard }
+                        val clickedCardIndex = uiState.meHands.indexOfFirst { it == clickedCard }
                         dispatch(
-                            if (uiState.playerSelectedCardIndexInHand == clickedCardIndex) {
+                            if (uiState.meSelectedCardIndexInHand == clickedCardIndex) {
                                 GamePlayUiAction.UnselectCard
                             } else {
                                 GamePlayUiAction.SelectCard(clickedCardIndex)
@@ -153,7 +153,7 @@ internal fun GamePlayScreen(
                         )
                     },
                     isClickable = uiState.isHandsCardClickable,
-                    selectedCardIndex = uiState.playerSelectedCardIndexInHand,
+                    selectedCardIndex = uiState.meSelectedCardIndexInHand,
                 )
             }
         }
@@ -163,27 +163,27 @@ internal fun GamePlayScreen(
 internal class GamePlayUiStatePreviewParameters :
     CollectionPreviewParameterProvider<GamePlayUiState>(
         gameFieldsForPreview.flatMap { gameField ->
-            val playerHands = playerHandsForPreview[0]
+            val meHands = meHandsForPreview[0]
             val enemyHands = enemyHandsForPreview[0]
             listOf(
                 GamePlayUiState.SelectingFirstPlayer(
-                    player = meForPreview,
-                    playerHands = playerHands,
+                    me = meForPreview,
+                    meHands = meHands,
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,
                 ),
                 GamePlayUiState.SelectingCard(
-                    player = meForPreview,
-                    playerHands = playerHands,
+                    me = meForPreview,
+                    meHands = meHands,
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,
                     turnPlayer = meForPreview,
                 ),
                 GamePlayUiState.SelectingSquare(
-                    player = meForPreview,
-                    playerHands = playerHands,
+                    me = meForPreview,
+                    meHands = meHands,
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,
@@ -191,16 +191,16 @@ internal class GamePlayUiStatePreviewParameters :
                     selectedCardIndexInHand = 1,
                 ),
                 GamePlayUiState.ApplyingPlaceRule(
-                    player = meForPreview,
-                    playerHands = playerHands,
+                    me = meForPreview,
+                    meHands = meHands,
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,
                     turnPlayer = meForPreview,
                 ),
                 GamePlayUiState.Finished(
-                    player = meForPreview,
-                    playerHands = playerHands,
+                    me = meForPreview,
+                    meHands = meHands,
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,

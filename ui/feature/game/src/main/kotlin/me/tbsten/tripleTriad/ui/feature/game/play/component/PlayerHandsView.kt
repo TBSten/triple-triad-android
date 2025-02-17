@@ -31,7 +31,7 @@ import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.designSystem.components.Text
 import me.tbsten.tripleTriad.ui.error.handleUiEvent
 import me.tbsten.tripleTriad.ui.feature.game.play.enemyHandsForPreview
-import me.tbsten.tripleTriad.ui.feature.game.play.playerHandsForPreview
+import me.tbsten.tripleTriad.ui.feature.game.play.meHandsForPreview
 import me.tbsten.tripleTriad.ui.modifier.darken
 import me.tbsten.tripleTriad.ui.modifier.thenIf
 
@@ -85,7 +85,7 @@ internal fun PlayerHandsView(
 
 class HandsViewPreviewParameters :
     CollectionPreviewParameterProvider<Pair<Hands, Int?>>(
-        (playerHandsForPreview + enemyHandsForPreview)
+        (meHandsForPreview + enemyHandsForPreview)
             .filter { it.isNotEmpty() }
             .flatMap {
                 listOf(

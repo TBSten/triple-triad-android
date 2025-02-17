@@ -9,27 +9,27 @@ class GameStoreTest {
     @Test
     fun testFinishGame() = runTest {
         val prevState = run {
-            val player = GamePlayer("test player")
+            val me = GamePlayer("test player")
             val enemy = GamePlayer("test enemy")
             GameState.SelectingSquare(
-                player = player,
-                playerHands = listOf(allAceCard()),
+                me = me,
+                meHands = listOf(allAceCard()),
                 enemy = enemy,
                 enemyHands = listOf(allAceCard()),
                 gameField = GameField(
                     squares = listOf(
                         GameField.Square.Empty(0, 0),
                         GameField.Square.PlacedCard(1, 0, enemy, allAceCard()),
-                        GameField.Square.PlacedCard(2, 0, player, allAceCard()),
+                        GameField.Square.PlacedCard(2, 0, me, allAceCard()),
                         GameField.Square.PlacedCard(0, 1, enemy, allAceCard()),
-                        GameField.Square.PlacedCard(1, 1, player, allAceCard()),
+                        GameField.Square.PlacedCard(1, 1, me, allAceCard()),
                         GameField.Square.PlacedCard(2, 1, enemy, allAceCard()),
-                        GameField.Square.PlacedCard(0, 2, player, allAceCard()),
+                        GameField.Square.PlacedCard(0, 2, me, allAceCard()),
                         GameField.Square.PlacedCard(1, 2, enemy, allAceCard()),
-                        GameField.Square.PlacedCard(2, 2, player, allAceCard()),
+                        GameField.Square.PlacedCard(2, 2, me, allAceCard()),
                     ),
                 ),
-                turnPlayer = player,
+                turnPlayer = me,
                 selectedCardIndexInHands = 0,
             )
         }
@@ -43,8 +43,8 @@ class GameStoreTest {
 
         assertEquals(
             GameState.Finished(
-                player = prevState.player,
-                playerHands = emptyList(),
+                me = prevState.me,
+                meHands = emptyList(),
                 enemy = prevState.enemy,
                 enemyHands = prevState.enemyHands,
                 gameField = GameField.squares.modify(prevState.gameField) {
@@ -52,12 +52,12 @@ class GameStoreTest {
                         GameField.Square.PlacedCard(
                             prevSquare.x,
                             prevSquare.y,
-                            prevState.player,
+                            prevState.me,
                             prevState.selectedCard,
                         )
                     }
                 },
-                turnPlayer = prevState.player,
+                turnPlayer = prevState.me,
             ),
             newState,
         )

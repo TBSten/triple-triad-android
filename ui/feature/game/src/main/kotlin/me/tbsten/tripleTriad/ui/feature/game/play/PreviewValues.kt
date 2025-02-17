@@ -10,7 +10,7 @@ import me.tbsten.tripleTriad.domain.game.squares
 internal val meForPreview = GamePlayer("Test Player")
 internal val enemyForPreview = GamePlayer("Test Enemy")
 
-internal val playerHandsForPreview = listOf(
+internal val meHandsForPreview = listOf(
     listOf(
         GameCard(CardNumber(6), CardNumber(1), CardNumber(1), CardNumber(1)),
         GameCard(CardNumber(2), CardNumber(1), CardNumber(2), CardNumber(3)),

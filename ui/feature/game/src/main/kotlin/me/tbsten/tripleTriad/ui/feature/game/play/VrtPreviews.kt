@@ -34,7 +34,7 @@ private class GamePlayScreenViewPreviewParameterForVrt :
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
-                            selectedCardIndexInHand = 1,
+                            selectedCardIndexInHands = 1,
                             turnPlayer = meForPreview,
                         ),
                         GamePlayUiState.ApplyingPlaceRule(

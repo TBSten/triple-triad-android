@@ -77,7 +77,7 @@ internal class GamePlayViewModel @Inject constructor(
     }
 
     override fun dispatch(action: GamePlayUiAction) = when (action) {
-        is GamePlayUiAction.SelectCard -> gameStore.dispatch(GameAction.SelectCard(action.selectedCardIndexInHand))
+        is GamePlayUiAction.SelectCard -> gameStore.dispatch(GameAction.SelectCard(action.selectedCardIndexInHands))
         GamePlayUiAction.UnselectCard -> gameStore.dispatch(GameAction.UnselectCard)
         is GamePlayUiAction.SelectSquare -> gameStore.dispatch(GameAction.SelectSquare(action.selectedSquare))
         GamePlayUiAction.CompleteApplyCardPlaceRule -> gameStore.dispatch(GameAction.CompleteApplyCardPlaceRule)
@@ -107,7 +107,7 @@ private fun GameState.toUiState(): GamePlayUiState = when (this) {
         enemyHands = this.enemyHands,
         gameField = this.gameField,
         turnPlayer = this.turnPlayer,
-        selectedCardIndexInHand = this.selectedCardIndexInHands,
+        selectedCardIndexInHands = this.selectedCardIndexInHands,
     )
     is GameState.ApplyingPlaceRule -> GamePlayUiState.ApplyingPlaceRule(
         me = this.me,

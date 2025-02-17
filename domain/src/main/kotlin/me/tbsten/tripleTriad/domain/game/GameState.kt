@@ -13,7 +13,7 @@ sealed interface GameState : State {
 
     val gameField: GameField
 
-    fun handOf(player: GamePlayer) = when (player) {
+    fun handsOf(player: GamePlayer) = when (player) {
         this.me -> meHands
         this.enemy -> enemyHands
         else -> throw throw GameException.IllegalPlayer("$player")

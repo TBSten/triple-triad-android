@@ -22,8 +22,8 @@ import me.tbsten.tripleTriad.ui.BaseViewModel
 
 private val initialGameStateForTest =
     SelectingFirstPlayer(
-        player = GamePlayer("Test Player"),
-        playerHands = listOf(
+        me = GamePlayer("Test Player"),
+        meHands = listOf(
             GameCard(CardNumber(6), CardNumber(1), CardNumber(1), CardNumber(1)),
             GameCard(CardNumber(2), CardNumber(1), CardNumber(2), CardNumber(3)),
             GameCard(CardNumber(2), CardNumber(4), CardNumber(2), CardNumber(1)),
@@ -86,23 +86,23 @@ internal class GamePlayViewModel @Inject constructor(
 
 private fun GameState.toUiState(): GamePlayUiState = when (this) {
     is SelectingFirstPlayer -> GamePlayUiState.SelectingFirstPlayer(
-        player = this.player,
-        playerHands = this.playerHands,
+        me = this.me,
+        meHands = this.meHands,
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
     )
     is GameState.SelectingCard -> GamePlayUiState.SelectingCard(
-        player = this.player,
-        playerHands = this.playerHands,
+        me = this.me,
+        meHands = this.meHands,
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
         turnPlayer = this.turnPlayer,
     )
     is GameState.SelectingSquare -> GamePlayUiState.SelectingSquare(
-        player = this.player,
-        playerHands = this.playerHands,
+        me = this.me,
+        meHands = this.meHands,
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
@@ -110,16 +110,16 @@ private fun GameState.toUiState(): GamePlayUiState = when (this) {
         selectedCardIndexInHand = this.selectedCardIndexInHands,
     )
     is GameState.ApplyingPlaceRule -> GamePlayUiState.ApplyingPlaceRule(
-        player = this.player,
-        playerHands = this.playerHands,
+        me = this.me,
+        meHands = this.meHands,
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
         turnPlayer = this.turnPlayer,
     )
     is GameState.Finished -> GamePlayUiState.Finished(
-        player = this.player,
-        playerHands = this.playerHands,
+        me = this.me,
+        meHands = this.meHands,
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,

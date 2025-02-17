@@ -7,7 +7,7 @@ import me.tbsten.tripleTriad.common.updateIndexed
 import me.tbsten.tripleTriad.domain.game.gameRule.BasicPlaceCardRule
 import org.junit.Test
 
-private val player = GamePlayer("test player")
+private val me = GamePlayer("test player")
 private val enemy = GamePlayer("test enemy")
 
 private val placeCardRules = listOf(BasicPlaceCardRule)
@@ -16,8 +16,8 @@ private const val SelectedSquareIndex = 4
 private val testCases = mapOf(
     run {
         val prevState = GameState.SelectingSquare(
-            player = player,
-            playerHands = listOf(allAceCard()),
+            me = me,
+            meHands = listOf(allAceCard()),
             enemy = enemy,
             enemyHands = listOf(allAceCard()),
             gameField = GameField(
@@ -51,13 +51,13 @@ private val testCases = mapOf(
                 ),
                 GameField.Square.Empty(2, 2),
             ),
-            turnPlayer = player,
+            turnPlayer = me,
             selectedCardIndexInHands = 0,
         )
 
         prevState to GameState.ApplyingPlaceRule(
-            player = prevState.player,
-            playerHands = prevState.playerHands.let { it - it[prevState.selectedCardIndexInHands] },
+            me = prevState.me,
+            meHands = prevState.meHands.let { it - it[prevState.selectedCardIndexInHands] },
             enemy = prevState.enemy,
             enemyHands = prevState.enemyHands,
             gameField =
@@ -104,12 +104,12 @@ private val testCases = mapOf(
                         )
                     },
             ),
-            turnPlayer = prevState.player,
+            turnPlayer = prevState.me,
             moveCardData = MoveCardData(
                 selectedCardIndexInHands = 0,
                 selectedCard = prevState.selectedCard,
                 selectedSquare = prevState.gameField.squares[SelectedSquareIndex],
-                placeBy = player,
+                placeBy = me,
             ),
             applyingPlaceRule = placeCardRules[0],
             applyingPlaceRules = placeCardRules - placeCardRules[0],
@@ -117,8 +117,8 @@ private val testCases = mapOf(
     },
     run {
         val prevState = GameState.SelectingSquare(
-            player = player,
-            playerHands = listOf(GameCard(CardNumber(2), CardNumber(2), CardNumber(2), CardNumber(2))),
+            me = me,
+            meHands = listOf(GameCard(CardNumber(2), CardNumber(2), CardNumber(2), CardNumber(2))),
             enemy = enemy,
             enemyHands = listOf(allAceCard()),
             gameField = GameField(
@@ -152,12 +152,12 @@ private val testCases = mapOf(
                 ),
                 GameField.Square.Empty(2, 2),
             ),
-            turnPlayer = player,
+            turnPlayer = me,
             selectedCardIndexInHands = 0,
         )
         prevState to GameState.ApplyingPlaceRule(
-            player = prevState.player,
-            playerHands = listOf(),
+            me = prevState.me,
+            meHands = listOf(),
             enemy = prevState.enemy,
             enemyHands = prevState.enemyHands,
             gameField = GameField(
@@ -170,12 +170,12 @@ private val testCases = mapOf(
                     )
                 },
             ),
-            turnPlayer = player,
+            turnPlayer = me,
             moveCardData = MoveCardData(
                 selectedCardIndexInHands = 0,
                 selectedCard = prevState.selectedCard,
                 selectedSquare = prevState.gameField.squares[SelectedSquareIndex],
-                placeBy = player,
+                placeBy = me,
             ),
             applyingPlaceRule = placeCardRules[0],
             applyingPlaceRules = placeCardRules.filterIndexed { index, _ -> index != 0 },

@@ -10,27 +10,27 @@ import me.tbsten.tripleTriad.ui.PreviewRoot
 private class GamePlayScreenViewPreviewParameterForVrt :
     CollectionPreviewParameterProvider<GamePlayUiState>(
         gameFieldsForPreview.take(3).flatMap { gameField ->
-            playerHandsForPreview.take(3).flatMap { playerHands ->
+            meHandsForPreview.take(3).flatMap { meHands ->
                 enemyHandsForPreview.take(3).flatMap { enemyHands ->
                     listOf(
                         GamePlayUiState.SelectingFirstPlayer(
-                            player = meForPreview,
-                            playerHands = playerHands,
+                            me = meForPreview,
+                            meHands = meHands,
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
                         ),
                         GamePlayUiState.SelectingCard(
-                            player = meForPreview,
-                            playerHands = playerHands,
+                            me = meForPreview,
+                            meHands = meHands,
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
                             turnPlayer = meForPreview,
                         ),
                         GamePlayUiState.SelectingSquare(
-                            player = meForPreview,
-                            playerHands = playerHands,
+                            me = meForPreview,
+                            meHands = meHands,
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
@@ -38,16 +38,16 @@ private class GamePlayScreenViewPreviewParameterForVrt :
                             turnPlayer = meForPreview,
                         ),
                         GamePlayUiState.ApplyingPlaceRule(
-                            player = meForPreview,
-                            playerHands = playerHands,
+                            me = meForPreview,
+                            meHands = meHands,
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
                             turnPlayer = meForPreview,
                         ),
                         GamePlayUiState.Finished(
-                            player = meForPreview,
-                            playerHands = playerHands,
+                            me = meForPreview,
+                            meHands = meHands,
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,

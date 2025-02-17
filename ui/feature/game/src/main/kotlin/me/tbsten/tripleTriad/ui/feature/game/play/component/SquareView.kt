@@ -111,9 +111,9 @@ internal fun SquareView(
 @SuppressLint("ComposeUnstableReceiver")
 @Composable
 internal fun GamePlayUiState.cardColorFor(square: GameField.Square.PlacedCard): Color = when (square.owner) {
-    player -> TripleTriadTheme.colors.me
+    me -> TripleTriadTheme.colors.me
     enemy -> TripleTriadTheme.colors.enemy
-    else -> throw GameException.IllegalPlayer("square.owner(${square.owner})", "$player または $enemy である必要があります。")
+    else -> throw GameException.IllegalPlayer("square.owner(${square.owner})", "$me または $enemy である必要があります。")
 }
 
 private class SquarePreviewParameters :

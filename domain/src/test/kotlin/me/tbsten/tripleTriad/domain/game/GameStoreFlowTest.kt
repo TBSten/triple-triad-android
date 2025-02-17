@@ -23,8 +23,8 @@ class GameStoreFlowTest {
 
         val initialState =
             InitialGameState(
-                player = GamePlayer("test player"),
-                playerHands = List(5) {
+                me = GamePlayer("test player"),
+                meHands = List(5) {
                     GameCard(
                         top = CardNumber(1 + it),
                         bottom = CardNumber(2 + it),
@@ -59,8 +59,8 @@ class GameStoreFlowTest {
         var prevState: GameState = storeStateFlow.first().also {
             assertEquals(
                 GameState.SelectingFirstPlayer(
-                    player = initialState.player,
-                    playerHands = initialState.playerHands,
+                    me = initialState.me,
+                    meHands = initialState.meHands,
                     enemy = initialState.enemy,
                     enemyHands = initialState.enemyHands,
                     gameField = initialState.gameField,
@@ -69,18 +69,18 @@ class GameStoreFlowTest {
             )
         }
 
-        selectFirstPlayerFlow.emit(initialState.player)
+        selectFirstPlayerFlow.emit(initialState.me)
 
         prevState =
             storeStateFlow.first().also {
                 assertEquals(
                     GameState.SelectingCard(
-                        player = prevState.player,
-                        playerHands = prevState.playerHands,
+                        me = prevState.me,
+                        meHands = prevState.meHands,
                         enemy = prevState.enemy,
                         enemyHands = prevState.enemyHands,
                         gameField = prevState.gameField,
-                        turnPlayer = initialState.player,
+                        turnPlayer = initialState.me,
                     ),
                     it,
                 )
@@ -88,19 +88,19 @@ class GameStoreFlowTest {
 
         // カード選択
         val selectedCardIndexInHand = 0
-        val selectedCard = prevState.playerHands[selectedCardIndexInHand]
+        val selectedCard = prevState.meHands[selectedCardIndexInHand]
         store.dispatch(GameAction.SelectCard(selectedCardIndexInHand))
 
         prevState =
             storeStateFlow.first().also {
                 assertEquals(
                     GameState.SelectingSquare(
-                        player = prevState.player,
-                        playerHands = prevState.playerHands,
+                        me = prevState.me,
+                        meHands = prevState.meHands,
                         enemy = prevState.enemy,
                         enemyHands = prevState.enemyHands,
                         gameField = prevState.gameField,
-                        turnPlayer = initialState.player,
+                        turnPlayer = initialState.me,
                         selectedCardIndexInHands = selectedCardIndexInHand,
                     ),
                     it,
@@ -114,8 +114,8 @@ class GameStoreFlowTest {
         prevState = storeStateFlow.first().also {
             assertEquals(
                 GameState.ApplyingPlaceRule(
-                    player = prevState.player,
-                    playerHands = prevState.playerHands - selectedCard,
+                    me = prevState.me,
+                    meHands = prevState.meHands - selectedCard,
                     enemy = prevState.enemy,
                     enemyHands = prevState.enemyHands,
                     gameField = prevState.gameField.copy(
@@ -125,17 +125,17 @@ class GameStoreFlowTest {
                                 GameField.Square.PlacedCard(
                                     x = selectedSquare.x,
                                     y = selectedSquare.y,
-                                    owner = initialState.player,
+                                    owner = initialState.me,
                                     placedCard = selectedCard,
                                 ),
                             ),
                     ),
-                    turnPlayer = initialState.player,
+                    turnPlayer = initialState.me,
                     moveCardData = MoveCardData(
                         selectedCardIndexInHands = selectedCardIndexInHand,
                         selectedCard = selectedCard,
                         selectedSquare = selectedSquare,
-                        placeBy = initialState.player,
+                        placeBy = initialState.me,
                     ),
                     applyingPlaceRule = placeCardRules[0],
                     applyingPlaceRules = placeCardRules - placeCardRules[0],
@@ -150,8 +150,8 @@ class GameStoreFlowTest {
         prevState = storeStateFlow.first().also {
             assertEquals(
                 TurnFirstState(
-                    player = initialState.player,
-                    playerHands = prevState.playerHands,
+                    me = initialState.me,
+                    meHands = prevState.meHands,
                     enemy = initialState.enemy,
                     enemyHands = prevState.enemyHands,
                     // TODO BasicPlaceRule 適用後の状態になってることを確認すべき

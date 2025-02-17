@@ -5,8 +5,8 @@ import io.yumemi.tart.core.State
 import me.tbsten.tripleTriad.domain.game.gameRule.PlaceCardRule
 
 sealed interface GameState : State {
-    val player: GamePlayer
-    val playerHands: List<GameCard>
+    val me: GamePlayer
+    val meHands: List<GameCard>
 
     val enemy: GamePlayer
     val enemyHands: List<GameCard>
@@ -14,15 +14,15 @@ sealed interface GameState : State {
     val gameField: GameField
 
     fun handOf(player: GamePlayer) = when (player) {
-        this.player -> playerHands
+        this.me -> meHands
         this.enemy -> enemyHands
         else -> throw throw GameException.IllegalPlayer("$player")
     }
 
     @optics
     data class SelectingFirstPlayer(
-        override val player: GamePlayer,
-        override val playerHands: Hands,
+        override val me: GamePlayer,
+        override val meHands: Hands,
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField = GameField.emptyAll(),
@@ -32,8 +32,8 @@ sealed interface GameState : State {
 
     @optics
     data class SelectingCard(
-        override val player: GamePlayer,
-        override val playerHands: Hands,
+        override val me: GamePlayer,
+        override val meHands: Hands,
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
@@ -45,8 +45,8 @@ sealed interface GameState : State {
 
     @optics
     data class SelectingSquare(
-        override val player: GamePlayer,
-        override val playerHands: Hands,
+        override val me: GamePlayer,
+        override val meHands: Hands,
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
@@ -61,8 +61,8 @@ sealed interface GameState : State {
 
     @optics
     data class ApplyingPlaceRule(
-        override val player: GamePlayer,
-        override val playerHands: Hands,
+        override val me: GamePlayer,
+        override val meHands: Hands,
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
@@ -77,8 +77,8 @@ sealed interface GameState : State {
 
     @optics
     data class Finished(
-        override val player: GamePlayer,
-        override val playerHands: Hands,
+        override val me: GamePlayer,
+        override val meHands: Hands,
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
@@ -97,14 +97,14 @@ sealed interface WithTurnPlayerState : GameState {
     val turnPlayer: GamePlayer
     val turnPlayerHands: Hands
         get() = when (turnPlayer) {
-            player -> playerHands
+            me -> meHands
             enemy -> enemyHands
             else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
     val nextTurnPlayer: GamePlayer
         get() = when (turnPlayer) {
-            player -> enemy
-            enemy -> player
+            me -> enemy
+            enemy -> me
             else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
 }

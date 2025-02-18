@@ -1,16 +1,11 @@
 package me.tbsten.tripleTriad.ui.feature.game.play.component
 
-import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,7 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
+import androidx.compose.ui.UiComposable
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -50,65 +45,32 @@ fun CardView(
     modifier: Modifier = Modifier,
     size: CardSize = CardSize.Large,
     isClickable: Boolean = true,
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
-    if (animatedVisibilityScope != null) {
-        CardViewContent(
-            card = card,
-            backgroundColor = backgroundColor,
-            onClick = handleUiEvent(onClick),
-            size = size,
-            isClickable = isClickable,
-            modifier = modifier
-                .animateCardView(
-                    card = card,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedVisibilityScope = animatedVisibilityScope,
-                ),
-        )
-    } else {
-        AnimatedVisibility(
-            true,
-            enter = EnterTransition.None,
-            exit = ExitTransition.None,
-            modifier = modifier,
-        ) {
-            CardViewContent(
-                card = card,
-                backgroundColor = backgroundColor,
-                onClick = onClick,
-                size = size,
-                isClickable = isClickable,
-                modifier = Modifier
-                    .animateCardView(
-                        card = card,
-                        sharedTransitionScope = sharedTransitionScope,
-                        animatedVisibilityScope = this@AnimatedVisibility,
-                    ),
-            )
-        }
-    }
+    CardViewContent(
+        card = card,
+        backgroundColor = backgroundColor,
+        onClick = handleUiEvent(onClick),
+        size = size,
+        isClickable = isClickable,
+        modifier = modifier,
+    )
 }
 
-@SuppressLint("ComposeModifierComposed")
 @Composable
-private fun Modifier.animateCardView(
-    card: GameCard,
-    sharedTransitionScope: SharedTransitionScope?,
-    animatedVisibilityScope: AnimatedVisibilityScope,
-): Modifier = composed {
-    then(
-        if (sharedTransitionScope != null) {
-            with(sharedTransitionScope) {
-                Modifier.sharedElement(
-                    rememberSharedContentState(card.id),
-                    animatedVisibilityScope,
-                )
-            }
-        } else {
-            Modifier
-        },
+fun CardSizedBox(
+    size: CardSize,
+    modifier: Modifier = Modifier,
+    contentAlignment: Alignment = Alignment.TopStart,
+    content:
+    @Composable @UiComposable
+    (BoxWithConstraintsScope.() -> Unit) = {},
+) {
+    BoxWithConstraints(
+        modifier = modifier
+            .width(size.width)
+            .aspectRatio(CardSizeAspectRatio),
+        contentAlignment = contentAlignment,
+        content = content,
     )
 }
 
@@ -127,7 +89,8 @@ private fun CardViewContent(
 
     val numbersText = "${card.top}\n${card.left} ${card.right}\n${card.bottom}"
 
-    BoxWithConstraints(
+    CardSizedBox(
+        size = size,
         modifier = modifier
             .testTag("CardView:${card.id}")
             .clip(shape)
@@ -140,9 +103,7 @@ private fun CardViewContent(
                     1f to Color(0xFFA28C3B),
                 ),
                 shape = shape,
-            )
-            .width(size.width)
-            .aspectRatio(CardSizeAspectRatio),
+            ),
         contentAlignment = Alignment.Center,
     ) {
         val autoFitFontSize =

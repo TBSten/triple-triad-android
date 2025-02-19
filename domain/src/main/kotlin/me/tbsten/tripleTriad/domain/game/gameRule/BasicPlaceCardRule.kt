@@ -82,7 +82,7 @@ data object BasicPlaceCardRule : PlaceCardRule {
             )
         }
 
-        if (checkReverseTop(resultGameField, moveCardData)) {
+        if (checkReverseBottom(resultGameField, moveCardData)) {
             val bottom: GameField.Square.PlacedCard = gameField
                 .bottomOfOrNull(moveCardData.selectedSquare.x, moveCardData.selectedSquare.y) as
                 GameField.Square.PlacedCard

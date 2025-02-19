@@ -10,7 +10,6 @@ import me.tbsten.tripleTriad.domain.game.GameField
 import me.tbsten.tripleTriad.domain.game.GamePlayer
 import me.tbsten.tripleTriad.domain.game.GameState
 import me.tbsten.tripleTriad.domain.game.GameStore
-import me.tbsten.tripleTriad.domain.game.WithTurnPlayerState
 
 interface AutoControl {
     val gameStore: GameStore
@@ -18,26 +17,20 @@ interface AutoControl {
 
     suspend fun start() {
         gameStore.state.collect { newState ->
-            if (newState is WithTurnPlayerState && newState.turnPlayer == controlPlayer) {
-                when (newState) {
-                    is GameState.SelectingCard ->
-                        selectCard(newState)
-                            ?.let {
-                                gameStore.dispatch(GameAction.SelectCard(newState.handsOf(controlPlayer).indexOf(it)))
-                            }
-                    is GameState.SelectingSquare ->
-                        selectSquare(newState)
-                            ?.let {
-                                gameStore.dispatch(GameAction.SelectSquare(it))
-                            }
-                    else -> Unit
+            if (newState is GameState.SelectingCardAndSquare && newState.turnPlayer == controlPlayer) {
+                if (newState.selectedCardIndexInHands == null) {
+                    val selectedCard = selectCard(newState) ?: return@collect
+                    gameStore.dispatch(GameAction.SelectCard(newState.handsOf(controlPlayer).indexOf(selectedCard)))
+                } else if (newState.selectedSquare == null) {
+                    val selectedSquare = selectSquare(newState) ?: return@collect
+                    gameStore.dispatch(GameAction.SelectSquare(selectedSquare))
                 }
             }
         }
     }
 
-    suspend fun selectCard(state: GameState.SelectingCard): GameCard?
-    suspend fun selectSquare(state: GameState.SelectingSquare): GameField.Square?
+    suspend fun selectCard(state: GameState.SelectingCardAndSquare): GameCard?
+    suspend fun selectSquare(state: GameState.SelectingCardAndSquare): GameField.Square?
 }
 
 class RandomAutoControlFactory @Inject constructor() {
@@ -60,12 +53,12 @@ internal class RandomAutoControl(
     private val selectCardDelay: suspend () -> Duration = { 1.seconds },
     private val selectSquareDelay: suspend () -> Duration = { 1.seconds },
 ) : AutoControl {
-    override suspend fun selectCard(state: GameState.SelectingCard): GameCard {
+    override suspend fun selectCard(state: GameState.SelectingCardAndSquare): GameCard {
         delay(selectCardDelay())
         return state.handsOf(controlPlayer).random()
     }
 
-    override suspend fun selectSquare(state: GameState.SelectingSquare): GameField.Square {
+    override suspend fun selectSquare(state: GameState.SelectingCardAndSquare): GameField.Square {
         delay(selectSquareDelay())
         return state.gameField.filterIsInstance<GameField.Square.Empty>().random()
     }

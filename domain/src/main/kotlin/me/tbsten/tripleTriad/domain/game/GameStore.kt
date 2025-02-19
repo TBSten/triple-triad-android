@@ -12,54 +12,60 @@ internal suspend fun gameReducer(
     placeCardRules: List<PlaceCardRule>,
     state: GameState,
     action: GameAction,
-): GameState {
-    return when (action) {
-        is GameAction.SelectCard -> when (state) {
-            is GameState.SelectingCard ->
-                state.toSelectingSquareState(action.selectedCardIndexInHands)
-            is GameState.SelectingSquare ->
-                state.toSelectingSquareState(action.selectedCardIndexInHands)
-            else -> throw GameException.IllegalStateTransition("state: $state action:SelectCard")
+): GameState = when (action) {
+    is GameAction.SelectCard -> {
+        check(state is GameState.SelectingCardAndSquare)
+        state
+            .copy(selectedCardIndexInHands = action.selectedCardIndexInHands)
+            .let { it.toPlacingCardState() ?: it }
+    }
+    is GameAction.SelectSquare -> {
+        check(state is GameState.SelectingCardAndSquare)
+        state
+            .copy(selectedSquare = action.selectedSquare)
+            .let { it.toPlacingCardState() ?: it }
+    }
+    is GameAction.UnselectCard -> {
+        check(state is GameState.SelectingCardAndSquare)
+        state
+            .copy(selectedCardIndexInHands = null)
+    }
+    GameAction.CompletePlaceCard -> {
+        check(state is GameState.PlacingCard)
+        val nextRuleIndex = placeCardRules
+            .indexOfFirst { it.shouldApply(state.gameField, state.moveCardData) }
+        if (nextRuleIndex == -1) {
+            state.toNextTurnOrFinish()
+        } else {
+            val nextRule = placeCardRules[nextRuleIndex]
+            val newField = nextRule.afterPlaceCard(state.gameField, state.moveCardData)
+            GameState.ApplyingPlaceRule(
+                me = state.me,
+                enemy = state.enemy,
+                meHands = state.meHands,
+                enemyHands = state.enemyHands,
+                gameField = newField,
+                turnPlayer = state.turnPlayer,
+                moveCardData = state.moveCardData,
+                applyingPlaceRule = nextRule,
+                applyingPlaceRules = placeCardRules.subList(nextRuleIndex + 1, placeCardRules.size),
+            )
         }
-        is GameAction.UnselectCard -> {
-            check(state is WithTurnPlayerState)
-            state.toSelectingCardState()
-        }
-        is GameAction.SelectSquare,
-        GameAction.CompleteApplyCardPlaceRule,
-        -> {
-            when {
-                state is GameState.SelectingSquare && action is GameAction.SelectSquare -> {
-                    val movedState = state.movePlacedCardFromHandsToField(moveCardDataOf(state, action))
-                    if (placeCardRules.isEmpty()) return movedState.toNextTurnOrFinish()
-                    movedState.toApplyingPlaceRuleState(action.selectedSquare, placeCardRules, placeCardRules[0])
-                }
-                state is GameState.ApplyingPlaceRule && action is GameAction.CompleteApplyCardPlaceRule ->
-                    state
-                else -> throw GameException.IllegalStateTransition("state:$state action:$action")
-            }.let { applyingPlaceRuleState ->
-                // 配置ルール適用フェーズ
-                val rules = applyingPlaceRuleState.applyingPlaceRules.toMutableList()
-                val placeRule = rules.removeFirstOrNull()
-                if (placeRule == null) {
-                    // 適用する配置ルールがないので次のターンへ
-                    applyingPlaceRuleState.toNextTurnOrFinish()
-                } else {
-                    // 配置ルールを適用
-                    val newGameField =
-                        placeRule.afterPlaceCard(
-                            applyingPlaceRuleState.gameField,
-                            applyingPlaceRuleState.moveCardData,
-                        )
-                    applyingPlaceRuleState
-                        .let { GameState.ApplyingPlaceRule.gameField.modify(it) { newGameField } }
-                        .let { GameState.ApplyingPlaceRule.applyingPlaceRules.modify(it) { rules.toList() } }
-                }
-            }
-        }
-        is GameAction.CompleteApplyCardPlaceRule -> {
-            check(state is GameState.ApplyingPlaceRule) // TODO Replace check to custom exception
-            state
+    }
+    is GameAction.CompleteApplyCardPlaceRule -> {
+        check(state is GameState.ApplyingPlaceRule)
+        val nextRuleIndex = state.applyingPlaceRules
+            .indexOfFirst { it.shouldApply(state.gameField, state.moveCardData) }
+        if (nextRuleIndex == -1) {
+            state.toNextTurnOrFinish()
+        } else {
+            val nextRule = state.applyingPlaceRules[nextRuleIndex]
+            val newField = nextRule.afterPlaceCard(state.gameField, state.moveCardData)
+            state.copy(
+                gameField = newField,
+                applyingPlaceRule = nextRule,
+                applyingPlaceRules = state.applyingPlaceRules.subList(nextRuleIndex + 1, state.applyingPlaceRules.size),
+            )
         }
     }
 }
@@ -97,104 +103,85 @@ class GameStore(
 
 private fun GameState.SelectingFirstPlayer.toStartFirstTurnState(
     firstTurnPlayer: GamePlayer,
-): TurnFirstState = GameState.SelectingCard(
+): TurnFirstState = GameState.SelectingCardAndSquare(
     me = this.me,
     meHands = this.meHands,
     enemy = this.enemy,
     enemyHands = this.enemyHands,
     gameField = this.gameField,
     turnPlayer = firstTurnPlayer,
+    selectedCardIndexInHands = null,
+    selectedSquare = null,
 )
 
-private fun GameState.SelectingCard.toSelectingSquareState(selectedCardIndexInHands: Int) = GameState.SelectingSquare(
-    me = this.me,
-    meHands = this.meHands,
-    enemy = this.enemy,
-    enemyHands = this.enemyHands,
-    gameField = this.gameField,
-    turnPlayer = this.turnPlayer,
-    selectedCardIndexInHands = selectedCardIndexInHands,
-)
+private fun GameState.SelectingCardAndSquare.toPlacingCardState(): GameState.PlacingCard? {
+    val moveCardData = moveCardDataOf(prevState = this) ?: return null
+    return GameState.PlacingCard(
+        me = this.me,
+        enemy = this.enemy,
+        meHands = this.meHands,
+        enemyHands = this.enemyHands,
+        gameField = this.gameField,
+        turnPlayer = this.turnPlayer,
+        moveCardData = moveCardData,
+    ).movePlacedCardFromHandsToField(moveCardData = moveCardData)
+}
 
-private fun GameState.SelectingSquare.toSelectingSquareState(selectedCardIndexInHand: Int) = GameState.SelectingSquare(
-    me = this.me,
-    meHands = this.meHands,
-    enemy = this.enemy,
-    enemyHands = this.enemyHands,
-    gameField = this.gameField,
-    turnPlayer = this.turnPlayer,
-    selectedCardIndexInHands = selectedCardIndexInHand,
-)
-
-private fun WithTurnPlayerState.toSelectingCardState() = GameState.SelectingCard(
-    me = this.me,
-    meHands = this.meHands,
-    enemy = this.enemy,
-    enemyHands = this.enemyHands,
-    gameField = this.gameField,
-    turnPlayer = this.turnPlayer,
-)
-
-private fun GameState.SelectingSquare.toApplyingPlaceRuleState(
-    selectedSquare: GameField.Square,
-    placeRules: List<PlaceCardRule>,
-    applyingPlaceRule: PlaceCardRule,
-) = GameState.ApplyingPlaceRule(
-    me = this.me,
-    meHands = this.meHands,
-    enemy = this.enemy,
-    enemyHands = this.enemyHands,
-    gameField = this.gameField,
-    turnPlayer = this.turnPlayer,
-    moveCardData = MoveCardData(
-        selectedCardIndexInHands = this.selectedCardIndexInHands,
-        selectedCard = (this.gameField.getOrNull(selectedSquare.x, selectedSquare.y) as GameField.Square.PlacedCard)
-            .placedCard,
-        selectedSquare = selectedSquare,
-        placeBy = this.turnPlayer,
-    ),
-    applyingPlaceRule = applyingPlaceRule,
-    applyingPlaceRules = placeRules,
-)
-
+@Suppress("ReturnCount")
 private fun moveCardDataOf(
-    prevState: GameState.SelectingSquare,
-    action: GameAction.SelectSquare,
-) = MoveCardData(
-    selectedCardIndexInHands = prevState.selectedCardIndexInHands,
-    selectedCard = prevState.turnPlayerHands[prevState.selectedCardIndexInHands],
-    selectedSquare = action.selectedSquare,
-    placeBy = prevState.turnPlayer,
-)
+    prevState: GameState.SelectingCardAndSquare,
+): MoveCardData? {
+    return MoveCardData(
+        selectedCardIndexInHands = prevState.selectedCardIndexInHands ?: return null,
+        selectedCard = prevState.turnPlayerHands[prevState.selectedCardIndexInHands],
+        selectedSquare = prevState.selectedSquare ?: return null,
+        placeBy = prevState.turnPlayer,
+    )
+}
 
-private fun GameState.SelectingSquare.movePlacedCardFromHandsToField(
+private fun GameState.PlacingCard.movePlacedCardFromHandsToField(
     moveCardData: MoveCardData,
-): GameState.SelectingSquare = this
+): GameState.PlacingCard = this
     .let { placingCardState ->
         // 手札から削除
         when (placingCardState.turnPlayer) {
             placingCardState.me ->
-                GameState.SelectingSquare.meHands
-                    .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
+                placingCardState.let {
+                    val meHands = it.meHands
+                    it.copy(
+                        meHands = meHands.toMutableList()
+                            .apply { removeAt(moveCardData.selectedCardIndexInHands) }
+                            .toList(),
+                    )
+                }
             placingCardState.enemy ->
-                GameState.SelectingSquare.enemyHands
-                    .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
+                placingCardState.let {
+                    val enemyHands = it.enemyHands
+                    it.copy(
+                        enemyHands = enemyHands.toMutableList()
+                            .apply { removeAt(moveCardData.selectedCardIndexInHands) }
+                            .toList(),
+                    )
+                }
             else -> throw GameException.IllegalPlayer("ターンプレイヤー")
         }
     }.let { placingCardState ->
         // フィールドにカードを配置
-        GameState.SelectingSquare.gameField.squares.modify(placingCardState) {
-            it.update(moveCardData.selectedSquare) {
-                if (it !is GameField.Square.Empty) {
-                    throw GameException.AlreadyPlaced()
-                } else {
-                    it.toPlacedCard(
-                        owner = moveCardData.placeBy,
-                        placedCard = moveCardData.selectedCard,
-                    )
-                }
-            }
-        }
+        placingCardState.copy(
+            gameField = placingCardState.gameField.copy(
+                squares = placingCardState.gameField.update(moveCardData.selectedSquare) {
+                    when (it) {
+                        is GameField.Square.Empty ->
+                            it.toPlacedCard(
+                                owner = moveCardData.placeBy,
+                                placedCard = moveCardData.selectedCard,
+                            )
+                        is GameField.Square.PlacedCard ->
+                            throw GameException.AlreadyPlaced()
+                    }
+                },
+            ),
+        )
     }
 
 private fun WithTurnPlayerState.toNextTurnOrFinish() = if (gameField.isFill()) {
@@ -214,5 +201,7 @@ private fun WithTurnPlayerState.toNextTurnOrFinish() = if (gameField.isFill()) {
         enemyHands = this.enemyHands,
         gameField = this.gameField,
         turnPlayer = this.nextTurnPlayer,
+        selectedCardIndexInHands = null,
+        selectedSquare = null,
     )
 }

@@ -31,31 +31,31 @@ sealed interface GameState : State {
     }
 
     @optics
-    data class SelectingCard(
+    data class SelectingCardAndSquare(
         override val me: GamePlayer,
         override val meHands: Hands,
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
         override val turnPlayer: GamePlayer,
+        val selectedCardIndexInHands: Int?,
+        val selectedSquare: GameField.Square?,
     ) : GameState,
         WithTurnPlayerState {
         companion object;
     }
 
     @optics
-    data class SelectingSquare(
+    data class PlacingCard(
         override val me: GamePlayer,
         override val meHands: Hands,
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
         override val turnPlayer: GamePlayer,
-        val selectedCardIndexInHands: Int,
+        val moveCardData: MoveCardData,
     ) : GameState,
         WithTurnPlayerState {
-        val selectedCard get() = turnPlayerHands[selectedCardIndexInHands]
-
         companion object;
     }
 
@@ -91,7 +91,7 @@ sealed interface GameState : State {
 
 typealias InitialGameState = GameState.SelectingFirstPlayer
 
-typealias TurnFirstState = GameState.SelectingCard
+typealias TurnFirstState = GameState.SelectingCardAndSquare
 
 sealed interface WithTurnPlayerState : GameState {
     val turnPlayer: GamePlayer

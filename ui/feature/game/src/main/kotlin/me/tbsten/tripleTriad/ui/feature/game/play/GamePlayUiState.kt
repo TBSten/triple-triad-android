@@ -70,6 +70,16 @@ internal sealed interface GamePlayUiState {
         override val isHandsCardClickable: Boolean = turnPlayer == me
     }
 
+    data class PlacingCard(
+        override val me: GamePlayer,
+        override val meHands: Hands,
+        override val enemy: GamePlayer,
+        override val enemyHands: Hands,
+        override val gameField: GameField,
+        override val turnPlayer: GamePlayer,
+    ) : GamePlayUiState,
+        WithTurnPlayer
+
     data class ApplyingPlaceRule(
         override val me: GamePlayer,
         override val meHands: Hands,

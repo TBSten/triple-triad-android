@@ -48,6 +48,7 @@ internal class GamePlayViewModel @Inject constructor(
     private val gameStore = GameStore(
         initialGameState = initialGameStateForTest,
         placeCardRules = listOf(BasicPlaceCardRule),
+        selectFirstPlayer = { initialGameStateForTest.me },
     )
 
     override val uiState: StateFlow<GamePlayUiState> =
@@ -67,8 +68,11 @@ internal class GamePlayViewModel @Inject constructor(
         }
         // FIXME dispatch from ui
         viewModelScope.launchSafe {
-            gameStore.state.collect {
-                if (it is GameState.ApplyingPlaceRule) {
+            uiState.collect {
+                if (it is GamePlayUiState.PlacingCard) {
+                    delay(500)
+                    dispatch(GamePlayUiAction.CompletePlaceCard)
+                } else if (it is GamePlayUiState.ApplyingPlaceRule) {
                     delay(1000)
                     dispatch(GamePlayUiAction.CompleteApplyCardPlaceRule)
                 }
@@ -80,6 +84,7 @@ internal class GamePlayViewModel @Inject constructor(
         is GamePlayUiAction.SelectCard -> gameStore.dispatch(GameAction.SelectCard(action.selectedCardIndexInHands))
         GamePlayUiAction.UnselectCard -> gameStore.dispatch(GameAction.UnselectCard)
         is GamePlayUiAction.SelectSquare -> gameStore.dispatch(GameAction.SelectSquare(action.selectedSquare))
+        GamePlayUiAction.CompletePlaceCard -> gameStore.dispatch(GameAction.CompletePlaceCard)
         GamePlayUiAction.CompleteApplyCardPlaceRule -> gameStore.dispatch(GameAction.CompleteApplyCardPlaceRule)
     }
 }
@@ -92,22 +97,36 @@ private fun GameState.toUiState(): GamePlayUiState = when (this) {
         enemyHands = this.enemyHands,
         gameField = this.gameField,
     )
-    is GameState.SelectingCard -> GamePlayUiState.SelectingCard(
+    is GameState.SelectingCardAndSquare -> {
+        val selectedCardIndex = this.selectedCardIndexInHands
+        if (selectedCardIndex == null) {
+            GamePlayUiState.SelectingCard(
+                me = this.me,
+                meHands = this.meHands,
+                enemy = this.enemy,
+                enemyHands = this.enemyHands,
+                gameField = this.gameField,
+                turnPlayer = this.turnPlayer,
+            )
+        } else {
+            GamePlayUiState.SelectingSquare(
+                me = this.me,
+                meHands = this.meHands,
+                enemy = this.enemy,
+                enemyHands = this.enemyHands,
+                gameField = this.gameField,
+                turnPlayer = this.turnPlayer,
+                selectedCardIndexInHands = selectedCardIndex,
+            )
+        }
+    }
+    is GameState.PlacingCard -> GamePlayUiState.PlacingCard(
         me = this.me,
         meHands = this.meHands,
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
         turnPlayer = this.turnPlayer,
-    )
-    is GameState.SelectingSquare -> GamePlayUiState.SelectingSquare(
-        me = this.me,
-        meHands = this.meHands,
-        enemy = this.enemy,
-        enemyHands = this.enemyHands,
-        gameField = this.gameField,
-        turnPlayer = this.turnPlayer,
-        selectedCardIndexInHands = this.selectedCardIndexInHands,
     )
     is GameState.ApplyingPlaceRule -> GamePlayUiState.ApplyingPlaceRule(
         me = this.me,

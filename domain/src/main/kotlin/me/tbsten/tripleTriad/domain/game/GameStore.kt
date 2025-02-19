@@ -33,7 +33,6 @@ internal suspend fun gameReducer(
     GameAction.CompletePlaceCard -> {
         check(state is GameState.PlacingCard)
         val nextRuleIndex = placeCardRules
-//            .indexOfFirst { it.afterPlaceCard(state.gameField, state.moveCardData) != state.gameField }
             .indexOfFirst { it.shouldApply(state.gameField, state.moveCardData) }
         if (nextRuleIndex == -1) {
             state.toNextTurnOrFinish()
@@ -56,7 +55,6 @@ internal suspend fun gameReducer(
     is GameAction.CompleteApplyCardPlaceRule -> {
         check(state is GameState.ApplyingPlaceRule)
         val nextRuleIndex = state.applyingPlaceRules
-//            .indexOfFirst { it.afterPlaceCard(state.gameField, state.moveCardData) != state.gameField }
             .indexOfFirst { it.shouldApply(state.gameField, state.moveCardData) }
         if (nextRuleIndex == -1) {
             state.toNextTurnOrFinish()
@@ -129,6 +127,7 @@ private fun GameState.SelectingCardAndSquare.toPlacingCardState(): GameState.Pla
     ).movePlacedCardFromHandsToField(moveCardData = moveCardData)
 }
 
+@Suppress("ReturnCount")
 private fun moveCardDataOf(
     prevState: GameState.SelectingCardAndSquare,
 ): MoveCardData? {
@@ -140,22 +139,6 @@ private fun moveCardDataOf(
     )
 }
 
-private fun GameState.PlacingCard.toApplyingPlaceRuleState(
-    applyingPlaceRules: List<PlaceCardRule>,
-): GameState.ApplyingPlaceRule? {
-    return GameState.ApplyingPlaceRule(
-        me = this.me,
-        enemy = this.enemy,
-        meHands = this.meHands,
-        enemyHands = this.enemyHands,
-        gameField = this.gameField,
-        turnPlayer = this.turnPlayer,
-        moveCardData = this.moveCardData,
-        applyingPlaceRules = applyingPlaceRules,
-        applyingPlaceRule = applyingPlaceRules.firstOrNull() ?: return null,
-    )
-}
-
 private fun GameState.PlacingCard.movePlacedCardFromHandsToField(
     moveCardData: MoveCardData,
 ): GameState.PlacingCard = this
@@ -163,8 +146,6 @@ private fun GameState.PlacingCard.movePlacedCardFromHandsToField(
         // 手札から削除
         when (placingCardState.turnPlayer) {
             placingCardState.me ->
-//                GameState.PlacingCard.meHands
-//                    .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
                 placingCardState.let {
                     val meHands = it.meHands
                     it.copy(
@@ -174,8 +155,6 @@ private fun GameState.PlacingCard.movePlacedCardFromHandsToField(
                     )
                 }
             placingCardState.enemy ->
-//                GameState.PlacingCard.enemyHands
-//                    .modify(placingCardState) { it - it[moveCardData.selectedCardIndexInHands] }
                 placingCardState.let {
                     val enemyHands = it.enemyHands
                     it.copy(

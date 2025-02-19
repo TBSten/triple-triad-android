@@ -6,5 +6,6 @@ sealed interface GameAction : Action {
     data class SelectCard(val selectedCardIndexInHands: Int) : GameAction
     data object UnselectCard : GameAction
     data class SelectSquare(val selectedSquare: GameField.Square) : GameAction
+    data object CompletePlaceCard : GameAction
     data object CompleteApplyCardPlaceRule : GameAction
 }

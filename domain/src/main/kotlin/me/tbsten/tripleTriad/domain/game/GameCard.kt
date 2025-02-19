@@ -2,7 +2,7 @@ package me.tbsten.tripleTriad.domain.game
 
 import kotlin.uuid.Uuid
 
-class GameCard private constructor(
+class GameCard internal constructor(
     val id: Id = Id(),
     val top: CardNumber,
     val bottom: CardNumber,

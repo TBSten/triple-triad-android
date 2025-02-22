@@ -4,6 +4,7 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -64,15 +65,8 @@ internal fun GamePlayScreen(
             .background(Color(0xFF2A2A2A))
             .systemGesturesPadding(),
     ) {
-        Box {
-            Column(
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = -20.dp)
-                    .fillMaxWidth()
-                    .zIndex(-1f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
+        GamePlayScreenLayout(
+            enemyHands = {
                 PlayerHandsView(
                     hands = uiState.enemyHands,
                     cardBackgroundColor = TripleTriadTheme.colors.enemy,
@@ -84,6 +78,8 @@ internal fun GamePlayScreen(
                         .scale(0.5f)
                         .fillMaxWidth(),
                 )
+            },
+            enemyPoint = {
                 Text(
                     text = "${uiState.enemyPoint.value}",
                     color = Color.White,
@@ -99,29 +95,22 @@ internal fun GamePlayScreen(
                         .align(Alignment.Start)
                         .padding(horizontal = 12.dp),
                 )
-            }
-
-            GameFieldView(
-                gameField = uiState.gameField,
-                cardColor = { uiState.cardColorFor(it) },
-                modifier = Modifier
-                    .animateGameField(gameFieldAnimationState)
-                    .padding(16.dp)
-                    .zIndex(0f),
-                isCardClickable = uiState.isSquareCardClickable,
-                onCardClick = {},
-                isSquareClickable = uiState.isSquareCardClickable,
-                onSquareClick = { dispatch(GamePlayUiAction.SelectSquare(it)) },
-            )
-
-            Column(
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .offset(y = 20.dp)
-                    .fillMaxWidth()
-                    .zIndex(+1f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
+            },
+            gameField = {
+                GameFieldView(
+                    gameField = uiState.gameField,
+                    cardColor = { uiState.cardColorFor(it) },
+                    modifier = Modifier
+                        .animateGameField(gameFieldAnimationState)
+                        .padding(16.dp)
+                        .zIndex(0f),
+                    isCardClickable = uiState.isSquareCardClickable,
+                    onCardClick = {},
+                    isSquareClickable = uiState.isSquareCardClickable,
+                    onSquareClick = { dispatch(GamePlayUiAction.SelectSquare(it)) },
+                )
+            },
+            mePoint = {
                 Text(
                     text = "${uiState.mePoint.value}",
                     color = Color.White,
@@ -137,7 +126,8 @@ internal fun GamePlayScreen(
                         .align(Alignment.End)
                         .padding(horizontal = 12.dp),
                 )
-
+            },
+            meHands = {
                 PlayerHandsView(
                     hands = uiState.meHands,
                     cardBackgroundColor = TripleTriadTheme.colors.me,
@@ -155,7 +145,47 @@ internal fun GamePlayScreen(
                     isClickable = uiState.isHandsCardClickable,
                     selectedCardIndex = uiState.meSelectedCardIndexInHands,
                 )
-            }
+            },
+        )
+    }
+}
+
+@Composable
+private fun GamePlayScreenLayout(
+    enemyHands: @Composable ColumnScope.()->Unit,
+    enemyPoint: @Composable ColumnScope.()->Unit,
+    gameField: @Composable ()->Unit,
+    mePoint: @Composable ColumnScope.()->Unit,
+    meHands: @Composable ColumnScope.()->Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier=modifier) {
+        Column(
+            Modifier
+                .align(Alignment.TopCenter)
+                .offset(y = -20.dp)
+                .fillMaxWidth()
+                .zIndex(-1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            enemyHands()
+
+            enemyPoint()
+        }
+
+        gameField()
+
+        Column(
+            Modifier
+                .align(Alignment.BottomCenter)
+                .offset(y = 20.dp)
+                .fillMaxWidth()
+                .zIndex(+1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            mePoint()
+
+            meHands()
         }
     }
 }

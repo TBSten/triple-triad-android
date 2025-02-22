@@ -80,13 +80,13 @@ class CallableState<Arg, Result> internal constructor(private val content: Calla
                 onDispose = { entry, result ->
                     println("CallableState.onDispose($result)")
                     continuation.resume(result)
-                    dispose(entry, result)
+                    dispose(entry)
                 },
             ),
         )
     }
 
-    private fun dispose(entry: Entry, result: Result) {
+    private fun dispose(entry: Entry) {
         entries.remove(entry)
     }
 

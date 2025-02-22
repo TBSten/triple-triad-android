@@ -13,23 +13,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import me.tbsten.tripleTriad.ui.Dispatch
 import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.consumeViewModel
-import me.tbsten.tripleTriad.ui.designSystem.LocalTextStyle
 import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
-import me.tbsten.tripleTriad.ui.designSystem.components.Text
 import me.tbsten.tripleTriad.ui.feature.game.play.component.CardSize
 import me.tbsten.tripleTriad.ui.feature.game.play.component.GameFieldView
 import me.tbsten.tripleTriad.ui.feature.game.play.component.GamePlayText
@@ -59,8 +53,6 @@ internal fun GamePlayScreen(
     modifier: Modifier = Modifier,
     gameFieldAnimationState: GameFieldAnimationState = rememberGameFieldAnimationState(uiState),
 ) {
-    val density = LocalDensity.current
-
     SharedTransitionLayout(
         modifier = modifier
             .background(Color(0xFF2A2A2A))
@@ -82,7 +74,7 @@ internal fun GamePlayScreen(
             },
             enemyPoint = {
                 GamePlayText(
-                    text  = "${uiState.enemyPoint.value}",
+                    text = "${uiState.enemyPoint.value}",
                     color = Color.White,
                     shadowColor = TripleTriadTheme.colors.enemyShadow,
                     modifier = Modifier
@@ -106,7 +98,7 @@ internal fun GamePlayScreen(
             },
             mePoint = {
                 GamePlayText(
-                    text  = "${uiState.mePoint.value}",
+                    text = "${uiState.mePoint.value}",
                     color = Color.White,
                     shadowColor = TripleTriadTheme.colors.meShadow,
                     modifier = Modifier
@@ -139,14 +131,14 @@ internal fun GamePlayScreen(
 
 @Composable
 private fun GamePlayScreenLayout(
-    enemyHands: @Composable ColumnScope.()->Unit,
-    enemyPoint: @Composable ColumnScope.()->Unit,
-    gameField: @Composable ()->Unit,
-    mePoint: @Composable ColumnScope.()->Unit,
-    meHands: @Composable ColumnScope.()->Unit,
+    enemyHands: @Composable ColumnScope.() -> Unit,
+    enemyPoint: @Composable ColumnScope.() -> Unit,
+    gameField: @Composable () -> Unit,
+    mePoint: @Composable ColumnScope.() -> Unit,
+    meHands: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier=modifier) {
+    Box(modifier = modifier) {
         Column(
             Modifier
                 .align(Alignment.TopCenter)

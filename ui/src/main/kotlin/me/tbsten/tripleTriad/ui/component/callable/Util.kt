@@ -15,6 +15,10 @@ import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.designSystem.components.Button
 import me.tbsten.tripleTriad.ui.designSystem.components.Text
 
+// Unit arg Callables
+
+suspend fun <Result> CallableState<Unit, Result>.call() = call(Unit)
+
 // return Unit Callables
 
 fun Callable(

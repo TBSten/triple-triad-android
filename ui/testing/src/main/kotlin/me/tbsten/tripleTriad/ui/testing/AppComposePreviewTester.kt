@@ -6,14 +6,9 @@ import androidx.compose.ui.test.onRoot
 import com.github.takahirom.roborazzi.AndroidComposePreviewTester
 import com.github.takahirom.roborazzi.ComposePreviewTester
 import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
-import com.github.takahirom.roborazzi.InternalRoborazziApi
 import com.github.takahirom.roborazzi.RoborazziActivity
-import com.github.takahirom.roborazzi.RoborazziRecordFilePathStrategy
 import com.github.takahirom.roborazzi.captureRoboImage
-import com.github.takahirom.roborazzi.provideRoborazziContext
 import com.github.takahirom.roborazzi.roborazziDefaultNamingStrategy
-import com.github.takahirom.roborazzi.roborazziRecordFilePathStrategy
-import com.github.takahirom.roborazzi.roborazziSystemPropertyOutputDirectory
 import com.github.takahirom.roborazzi.toRoborazziComposeOptions
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -50,25 +45,14 @@ class AppComposePreviewTester : ComposePreviewTester<AndroidPreviewInfo> by Andr
             }.getPreviews()
     }
 
-    @OptIn(InternalRoborazziApi::class)
     override fun test(preview: ComposablePreview<AndroidPreviewInfo>) = runTest {
         val filePath =
             run {
-                val isRelativePathFromCurrentDirectory =
-                    roborazziRecordFilePathStrategy() ==
-                        RoborazziRecordFilePathStrategy.RelativePathFromCurrentDirectory
-
-                val pathPrefix =
-                    if (isRelativePathFromCurrentDirectory) {
-                        roborazziSystemPropertyOutputDirectory() + java.io.File.separator
-                    } else {
-                        ""
-                    }
                 val name = roborazziDefaultNamingStrategy().generateOutputName(
                     preview.declaringClass,
                     createScreenshotIdFor(preview),
                 )
-                "$pathPrefix$name.${provideRoborazziContext().imageExtension}"
+                getRoborazziOutputFilePath(name)
             }
 
         // Preview アノテーションの内容を反映する

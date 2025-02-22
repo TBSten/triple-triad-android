@@ -12,6 +12,8 @@ plugins {
     alias(libs.plugins.buildLogicPrimitiveKotlinxSerialization) apply false
     alias(libs.plugins.buildLogicPrimitiveHilt) apply false
     alias(libs.plugins.buildLogicPrimitiveRoom) apply false
+    alias(libs.plugins.buildLogicPrimitiveRoborazzi) apply false
+    alias(libs.plugins.buildLogicPrimitiveRobolectric) apply false
     alias(libs.plugins.buildLogicPrimitiveOpenApi) apply false
 
     // build-logic module plugins

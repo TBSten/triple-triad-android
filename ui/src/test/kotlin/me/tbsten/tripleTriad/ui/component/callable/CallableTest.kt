@@ -19,33 +19,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
+import com.github.takahirom.roborazzi.RoborazziActivity
 import com.github.takahirom.roborazzi.captureRoboImage
 import kotlin.test.assertEquals
 import kotlinx.coroutines.launch
 import me.tbsten.tripleTriad.ui.designSystem.components.Button
 import me.tbsten.tripleTriad.ui.designSystem.components.Surface
 import me.tbsten.tripleTriad.ui.designSystem.components.Text
+import me.tbsten.tripleTriad.ui.testing.getRoborazziOutputFilePath
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 import org.robolectric.shadows.ShadowLog
 
 private const val TestConfirmDialogText = "Are you sure you want me to delete it?"
 
 @RunWith(AndroidJUnit4::class)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 internal class CallableTest {
-    val testRoboImageFilePrefix = "CallableTest"
+    private fun getCallableTestRoboImageFile(name: String) = getRoborazziOutputFilePath("CallableTest.$name")
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule = createAndroidComposeRule<RoborazziActivity>()
 
     @Before
     @Throws(Exception::class)
@@ -109,7 +115,7 @@ internal class CallableTest {
         }
     }
 
-    fun assertExistsDialog() {
+    private fun assertExistsDialog() {
         composeTestRule.onNodeWithTag("confirm-dialog")
             .assertExists("Not exists confirm-dialog")
         composeTestRule.onNodeWithTag("confirm-ok")
@@ -118,15 +124,17 @@ internal class CallableTest {
             .assertExists("Exists confirm-dialog but not exists ConfirmDialogText")
     }
 
-    fun assertDoesExistsDialog() {
+    private fun assertDoesExistsDialog() {
         composeTestRule.onNodeWithTag("confirm-dialog").assertDoesNotExist()
         composeTestRule.onNodeWithTag(TestConfirmDialogText).assertDoesNotExist()
         composeTestRule.onNodeWithTag("confirm-ok").assertDoesNotExist()
     }
 
     @Test
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @Config(sdk = [32], qualifiers = RobolectricDeviceQualifiers.Pixel5)
     fun testBasicUsage() {
-        val roboImagePrefix = "$testRoboImageFilePrefix.testBasicUsage"
+        val roboImagePrefix = "testBasicUsage"
 
         var deleted = false
         fun onDelete() {
@@ -143,7 +151,7 @@ internal class CallableTest {
         assertDoesExistsDialog()
         assertEquals(deleted, false)
 
-        composeTestRule.onRoot().captureRoboImage("$roboImagePrefix.initial.png")
+        composeTestRule.onRoot().captureRoboImage(getCallableTestRoboImageFile("$roboImagePrefix.initial"))
 
         // delete ボタンをクリック
         composeTestRule
@@ -154,7 +162,7 @@ internal class CallableTest {
         assertExistsDialog()
         assertEquals(deleted, false)
 
-        composeTestRule.onRoot().captureRoboImage("$roboImagePrefix.after-click-delete.png")
+        composeTestRule.onRoot().captureRoboImage(getCallableTestRoboImageFile("$roboImagePrefix.after-click-delete"))
 
         // ok ボタンをクリック
         composeTestRule
@@ -169,12 +177,14 @@ internal class CallableTest {
             .assertExists()
             .assertTextEquals("result: true")
 
-        composeTestRule.onRoot().captureRoboImage("$roboImagePrefix.after-close-dialog.png")
+        composeTestRule.onRoot().captureRoboImage(getCallableTestRoboImageFile("$roboImagePrefix.after-close-dialog"))
     }
 
     @Test
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @Config(sdk = [32], qualifiers = RobolectricDeviceQualifiers.Pixel5)
     fun testCancel() {
-        val roboImagePrefix = "$testRoboImageFilePrefix.testCancel"
+        val roboImagePrefix = "testCancel"
 
         var deleted = false
         fun onDelete() {
@@ -191,7 +201,7 @@ internal class CallableTest {
         assertDoesExistsDialog()
         assertEquals(deleted, false)
 
-        composeTestRule.onRoot().captureRoboImage("$roboImagePrefix.initial.png")
+        composeTestRule.onRoot().captureRoboImage(getCallableTestRoboImageFile("$roboImagePrefix.initial"))
 
         // delete ボタンをクリック
         composeTestRule
@@ -202,7 +212,7 @@ internal class CallableTest {
         assertExistsDialog()
         assertEquals(deleted, false)
 
-        composeTestRule.onRoot().captureRoboImage("$roboImagePrefix.after-click-delete.png")
+        composeTestRule.onRoot().captureRoboImage(getCallableTestRoboImageFile("$roboImagePrefix.after-click-delete"))
 
         // Backdrop をタップしてキャンセル
         composeTestRule
@@ -217,6 +227,6 @@ internal class CallableTest {
             .assertExists()
             .assertTextEquals("result: false")
 
-        composeTestRule.onRoot().captureRoboImage("$roboImagePrefix.after-cancel.png")
+        composeTestRule.onRoot().captureRoboImage(getCallableTestRoboImageFile("$roboImagePrefix.after-cancel"))
     }
 }

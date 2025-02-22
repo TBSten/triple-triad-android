@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.buildLogicModuleAndroidLibrary)
     alias(libs.plugins.buildLogicPrimitiveCompose)
-    alias(libs.plugins.buildLogicPrimitiveRobolectric)
+    alias(libs.plugins.buildLogicPrimitiveRoborazzi)
 }
 
 android {

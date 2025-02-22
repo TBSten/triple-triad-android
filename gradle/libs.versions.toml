@@ -130,4 +130,5 @@ buildLogicPrimitiveKotlinxSerialization = { id = "buildLogic.primitive.kotlinx.s
 buildLogicPrimitiveHilt = { id = "buildLogic.primitive.hilt", version = "unspecified" }
 buildLogicPrimitiveRoom = { id = "buildLogic.primitive.room", version = "unspecified" }
 buildLogicPrimitiveRobolectric = { id = "buildLogic.primitive.robolectric", version = "unspecified" }
+buildLogicPrimitiveRoborazzi = { id = "buildLogic.primitive.roborazzi", version = "unspecified" }
 buildLogicPrimitiveOpenApi = { id = "buildLogic.primitive.open.api", version = "unspecified" }

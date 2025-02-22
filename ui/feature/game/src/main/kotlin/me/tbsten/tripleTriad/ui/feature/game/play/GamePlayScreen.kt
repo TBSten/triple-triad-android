@@ -32,6 +32,7 @@ import me.tbsten.tripleTriad.ui.designSystem.TripleTriadTheme
 import me.tbsten.tripleTriad.ui.designSystem.components.Text
 import me.tbsten.tripleTriad.ui.feature.game.play.component.CardSize
 import me.tbsten.tripleTriad.ui.feature.game.play.component.GameFieldView
+import me.tbsten.tripleTriad.ui.feature.game.play.component.GamePlayText
 import me.tbsten.tripleTriad.ui.feature.game.play.component.PlayerHandsView
 import me.tbsten.tripleTriad.ui.feature.game.play.component.cardColorFor
 import me.tbsten.tripleTriad.ui.modifier.darken
@@ -80,17 +81,10 @@ internal fun GamePlayScreen(
                 )
             },
             enemyPoint = {
-                Text(
-                    text = "${uiState.enemyPoint.value}",
+                GamePlayText(
+                    text  = "${uiState.enemyPoint.value}",
                     color = Color.White,
-                    style = LocalTextStyle.current.merge(
-                        fontSize = 60.sp,
-                        shadow = Shadow(
-                            Color.Red,
-                            Offset.Zero,
-                            with(density) { 16.dp.toPx() },
-                        ),
-                    ),
+                    shadowColor = TripleTriadTheme.colors.enemyShadow,
                     modifier = Modifier
                         .align(Alignment.Start)
                         .padding(horizontal = 12.dp),
@@ -111,17 +105,10 @@ internal fun GamePlayScreen(
                 )
             },
             mePoint = {
-                Text(
-                    text = "${uiState.mePoint.value}",
+                GamePlayText(
+                    text  = "${uiState.mePoint.value}",
                     color = Color.White,
-                    style = LocalTextStyle.current.merge(
-                        fontSize = 60.sp,
-                        shadow = Shadow(
-                            Color.Blue,
-                            Offset.Zero,
-                            with(density) { 16.dp.toPx() },
-                        ),
-                    ),
+                    shadowColor = TripleTriadTheme.colors.meShadow,
                     modifier = Modifier
                         .align(Alignment.End)
                         .padding(horizontal = 12.dp),

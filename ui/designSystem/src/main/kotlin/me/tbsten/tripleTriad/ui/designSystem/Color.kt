@@ -82,7 +82,9 @@ data class Colors(
     val elevation: Color,
 
     val me: Color,
+    val meShadow: Color,
     val enemy: Color,
+    val enemyShadow: Color,
 )
 
 internal val LightColors =
@@ -113,7 +115,9 @@ internal val LightColors =
         scrim = Color.Black.copy(alpha = 0.32f),
         elevation = Gray700,
         me = Color(0xFF618AB9),
+        meShadow = Color(0xFF0000FF),
         enemy = Color(0xFFB97777),
+        enemyShadow = Color(0xFFFF0000),
     )
 
 internal val DarkColors =
@@ -144,7 +148,9 @@ internal val DarkColors =
         scrim = Color.Black.copy(alpha = 0.72f),
         elevation = Gray200,
         me = Color(0xFF618AB9),
+        meShadow = Color(0xFF0000FF),
         enemy = Color(0xFFB97777),
+        enemyShadow = Color(0xFFFF0000),
     )
 
 @SuppressLint("ComposeCompositionLocalUsage")

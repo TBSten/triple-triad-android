@@ -74,6 +74,10 @@ gradlePlugin {
             id = "buildLogic.primitive.roborazzi"
             implementationClass = "primitive.RoborazziPlugin"
         }
+        register("robolectric") {
+            id = "buildLogic.primitive.robolectric"
+            implementationClass = "primitive.RobolectricPlugin"
+        }
         register("open.api") {
             id = "buildLogic.primitive.open.api"
             implementationClass = "primitive.OpenApiPlugin"

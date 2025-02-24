@@ -40,6 +40,7 @@ internal sealed interface GamePlayUiState {
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField,
+        val firstPlayer: GamePlayer?,
     ) : GamePlayUiState
 
     data class SelectingCard(

@@ -33,4 +33,6 @@ dependencies {
     // feature modules
     implementation(projects.ui.feature.example)
     implementation(projects.ui.feature.game)
+
+    implementation(libs.andridxCoreSplashScreen)
 }

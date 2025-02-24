@@ -127,6 +127,11 @@ internal fun GamePlayScreen(
             },
         )
     }
+
+    SelectingFirstPlayerAnimation(
+        uiState = uiState,
+        onFinish = { dispatch(GamePlayUiAction.CompleteSelectingFirstPlayer) },
+    )
 }
 
 @Composable

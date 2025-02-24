@@ -143,7 +143,6 @@ private fun SelectingFirstPlayerAnimationPreview(
     @PreviewParameter(GamePlayerPreviewParameters::class)
     firstPlayer: GamePlayer?,
 ) = PreviewRoot {
-    SafeLaunchedEffect { delay(1000) }
     SelectingFirstPlayerAnimation(
         uiState = GamePlayUiState.SelectingFirstPlayer(
             me = meForPreview,

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -76,33 +77,26 @@ internal fun GamePlayScreen(
                 )
             },
             enemyInfo = {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    GamePlayText(
-                        text = "${uiState.enemyPoint.value}",
-                        color = Color.White,
-                        shadowColor = TripleTriadTheme.colors.enemyShadow,
-                    )
+                GamePlayText(
+                    text = "${uiState.enemyPoint.value}",
+                    color = Color.White,
+                    shadowColor = TripleTriadTheme.colors.enemyShadow,
+                )
 
-                    Spacer(Modifier.weight(1f))
+                Spacer(Modifier.weight(1f))
 
-                    GameNavigationText(
-                        visible = uiState is WithTurnPlayer && uiState.turnPlayer == uiState.enemy,
-                        text = uiState.enemy.name,
-                        color = Color.White,
-                        shadowColor = TripleTriadTheme.colors.enemyShadow,
-                    )
-                    GameNavigationText(
-                        visible = uiState is WithTurnPlayer && uiState.turnPlayer == uiState.enemy,
-                        text = " Turn",
-                        color = Color.White,
-                        shadowColor = TripleTriadTheme.colors.enemyShadow,
-                    )
-                }
+                GameNavigationText(
+                    visible = uiState is WithTurnPlayer && uiState.turnPlayer == uiState.enemy,
+                    text = uiState.enemy.name,
+                    color = Color.White,
+                    shadowColor = TripleTriadTheme.colors.enemyShadow,
+                )
+                GameNavigationText(
+                    visible = uiState is WithTurnPlayer && uiState.turnPlayer == uiState.enemy,
+                    text = " Turn",
+                    color = Color.White,
+                    shadowColor = TripleTriadTheme.colors.enemyShadow,
+                )
             },
             gameField = {
                 GameFieldView(
@@ -119,34 +113,27 @@ internal fun GamePlayScreen(
                 )
             },
             meInfo = {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    GameNavigationText(
-                        visible = uiState is WithTurnPlayer && uiState.turnPlayer == uiState.me,
-                        text = uiState.me.name,
-                        color = Color.White,
-                        shadowColor = TripleTriadTheme.colors.meShadow,
-                    )
-                    GameNavigationText(
-                        visible = uiState is WithTurnPlayer && uiState.turnPlayer == uiState.me,
-                        text = " Turn",
-                        color = Color.White,
-                        shadowColor = TripleTriadTheme.colors.meShadow,
-                    )
+                GameNavigationText(
+                    visible = uiState is WithTurnPlayer && uiState.turnPlayer == uiState.me,
+                    text = uiState.me.name,
+                    color = Color.White,
+                    shadowColor = TripleTriadTheme.colors.meShadow,
+                )
+                GameNavigationText(
+                    visible = uiState is WithTurnPlayer && uiState.turnPlayer == uiState.me,
+                    text = " Turn",
+                    color = Color.White,
+                    shadowColor = TripleTriadTheme.colors.meShadow,
+                )
 
-                    Spacer(Modifier.weight(1f))
+                Spacer(Modifier.weight(1f))
 
-                    GamePlayText(
-                        text = "${uiState.mePoint.value}",
-                        color = Color.White,
-                        shadowColor = TripleTriadTheme.colors.meShadow,
-                        modifier = Modifier,
-                    )
-                }
+                GamePlayText(
+                    text = "${uiState.mePoint.value}",
+                    color = Color.White,
+                    shadowColor = TripleTriadTheme.colors.meShadow,
+                    modifier = Modifier,
+                )
             },
             meHands = {
                 PlayerHandsView(
@@ -179,9 +166,9 @@ internal fun GamePlayScreen(
 @Composable
 private fun GamePlayScreenLayout(
     enemyHands: @Composable ColumnScope.() -> Unit,
-    enemyInfo: @Composable ColumnScope.() -> Unit,
+    enemyInfo: @Composable RowScope.() -> Unit,
     gameField: @Composable () -> Unit,
-    meInfo: @Composable ColumnScope.() -> Unit,
+    meInfo: @Composable RowScope.() -> Unit,
     meHands: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -196,7 +183,14 @@ private fun GamePlayScreenLayout(
         ) {
             enemyHands()
 
-            enemyInfo()
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                enemyInfo()
+            }
         }
 
         gameField()
@@ -209,7 +203,14 @@ private fun GamePlayScreenLayout(
                 .zIndex(+1f),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            meInfo()
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                meInfo()
+            }
 
             meHands()
         }

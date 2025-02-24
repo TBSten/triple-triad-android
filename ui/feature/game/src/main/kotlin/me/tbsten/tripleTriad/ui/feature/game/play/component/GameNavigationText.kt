@@ -1,8 +1,11 @@
 package me.tbsten.tripleTriad.ui.feature.game.play.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -17,8 +20,8 @@ internal fun GameNavigationText(
 ) {
     AnimatedVisibility(
         visible = visible,
-        enter = fadeIn(),
-        exit = fadeOut(),
+        enter = fadeIn(tween(100)) + slideInHorizontally(tween(300)) { 80 },
+        exit = fadeOut(tween(100)) + slideOutHorizontally(tween(300)) { -80 },
     ) {
         GamePlayText(
             text = text,

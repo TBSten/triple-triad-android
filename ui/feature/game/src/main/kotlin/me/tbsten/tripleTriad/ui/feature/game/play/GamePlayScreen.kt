@@ -127,6 +127,11 @@ internal fun GamePlayScreen(
             },
         )
     }
+
+    SelectingFirstPlayerAnimation(
+        uiState = uiState,
+        onFinish = { dispatch(GamePlayUiAction.CompleteSelectingFirstPlayer) },
+    )
 }
 
 @Composable
@@ -181,6 +186,23 @@ internal class GamePlayUiStatePreviewParameters :
                     enemy = enemyForPreview,
                     enemyHands = enemyHands,
                     gameField = gameField,
+                    firstPlayer = null,
+                ),
+                GamePlayUiState.SelectingFirstPlayer(
+                    me = meForPreview,
+                    meHands = meHands,
+                    enemy = enemyForPreview,
+                    enemyHands = enemyHands,
+                    gameField = gameField,
+                    firstPlayer = meForPreview,
+                ),
+                GamePlayUiState.SelectingFirstPlayer(
+                    me = meForPreview,
+                    meHands = meHands,
+                    enemy = enemyForPreview,
+                    enemyHands = enemyHands,
+                    gameField = gameField,
+                    firstPlayer = enemyForPreview,
                 ),
                 GamePlayUiState.SelectingCard(
                     me = meForPreview,

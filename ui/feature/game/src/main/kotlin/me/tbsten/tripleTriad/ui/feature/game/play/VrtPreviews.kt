@@ -19,6 +19,15 @@ private class GamePlayScreenViewPreviewParameterForVrt :
                             enemy = enemyForPreview,
                             enemyHands = enemyHands,
                             gameField = gameField,
+                            firstPlayer = null,
+                        ),
+                        GamePlayUiState.SelectingFirstPlayer(
+                            me = meForPreview,
+                            meHands = meHands,
+                            enemy = enemyForPreview,
+                            enemyHands = enemyHands,
+                            gameField = gameField,
+                            firstPlayer = meForPreview,
                         ),
                         GamePlayUiState.SelectingCard(
                             me = meForPreview,

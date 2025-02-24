@@ -82,6 +82,7 @@ internal class GamePlayViewModel @Inject constructor(
     }
 
     override fun dispatch(action: GamePlayUiAction) = when (action) {
+        GamePlayUiAction.CompleteSelectingFirstPlayer -> gameStore.dispatch(GameAction.CompleteSelectFirstPlayer)
         is GamePlayUiAction.SelectCard -> gameStore.dispatch(GameAction.SelectCard(action.selectedCardIndexInHands))
         GamePlayUiAction.UnselectCard -> gameStore.dispatch(GameAction.UnselectCard)
         is GamePlayUiAction.SelectSquare -> gameStore.dispatch(GameAction.SelectSquare(action.selectedSquare))
@@ -97,6 +98,7 @@ private fun GameState.toUiState(): GamePlayUiState = when (this) {
         enemy = this.enemy,
         enemyHands = this.enemyHands,
         gameField = this.gameField,
+        firstPlayer = this.firstPlayer,
     )
     is GameState.SelectingCardAndSquare -> {
         val selectedCardIndex = this.selectedCardIndexInHands

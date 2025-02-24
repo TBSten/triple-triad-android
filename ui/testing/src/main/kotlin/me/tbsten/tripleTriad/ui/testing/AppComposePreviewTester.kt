@@ -13,6 +13,7 @@ import com.github.takahirom.roborazzi.toRoborazziComposeOptions
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withTimeoutOrNull
 import sergio.sastre.composable.preview.scanner.android.AndroidComposablePreviewScanner
 import sergio.sastre.composable.preview.scanner.android.AndroidPreviewInfo
@@ -45,7 +46,7 @@ class AppComposePreviewTester : ComposePreviewTester<AndroidPreviewInfo> by Andr
             }.getPreviews()
     }
 
-    override fun test(preview: ComposablePreview<AndroidPreviewInfo>) = runTest {
+    override fun test(preview: ComposablePreview<AndroidPreviewInfo>) = runTest(timeout = 10.seconds) {
         val filePath =
             run {
                 val name = roborazziDefaultNamingStrategy().generateOutputName(
@@ -55,23 +56,22 @@ class AppComposePreviewTester : ComposePreviewTester<AndroidPreviewInfo> by Andr
                 getRoborazziOutputFilePath(name)
             }
 
-        // Preview アノテーションの内容を反映する
-        val previewContent =
-            preview
-                .toRoborazziComposeOptions()
-                .configured(composeTestRule.activityRule.scenario) {
-                    preview()
-                }
-        composeTestRule.setContent {
-            previewContent()
-        }
+        withTimeout(6.seconds) {
+            // 無限ループする Composable も考慮に入れて
+            // 一番最初のフレームのみキャプチャする
+            composeTestRule.mainClock.autoAdvance = false
 
-        // ローディングインジケータなどを含む Preview で想定以上の時間がかかるため、最大 10秒 待つようにする。
-        composeTestRule.mainClock.autoAdvance = false
-        composeTestRule.awaitIdle(maxDuration = 5.seconds)
-            .also {
-                if (it) println("WARN: Cancelled wait because ComposeTestRule.awaitIdle() took more than 10 seconds.")
+            // Preview アノテーションの内容を反映する
+            val previewContent =
+                preview
+                    .toRoborazziComposeOptions()
+                    .configured(composeTestRule.activityRule.scenario) {
+                        preview()
+                    }
+            composeTestRule.setContent {
+                previewContent()
             }
+        }
 
         composeTestRule.onRoot()
             .captureRoboImage(filePath)

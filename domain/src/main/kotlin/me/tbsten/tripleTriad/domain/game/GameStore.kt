@@ -13,6 +13,10 @@ internal suspend fun gameReducer(
     state: GameState,
     action: GameAction,
 ): GameState = when (action) {
+    is GameAction.CompleteSelectFirstPlayer -> {
+        check(state is GameState.SelectingFirstPlayer && state.firstPlayer != null)
+        state.toStartFirstTurnState(state.firstPlayer)
+    }
     is GameAction.SelectCard -> {
         check(state is GameState.SelectingCardAndSquare)
         state
@@ -95,7 +99,7 @@ class GameStore(
     ): GameState = when (state) {
         is GameState.SelectingFirstPlayer -> {
             val firstPlayer = selectFirstPlayer()
-            state.toStartFirstTurnState(firstPlayer)
+            state.copy(firstPlayer = firstPlayer)
         }
         else -> state
     }

@@ -38,6 +38,7 @@ private val initialGameStateForTest =
             GameCard(CardNumber(1), CardNumber(1), CardNumber(1), CardNumber(4)),
             GameCard(CardNumber(1), CardNumber(1), CardNumber(1), CardNumber(1)),
         ),
+        firstPlayer = null,
     )
 
 @HiltViewModel

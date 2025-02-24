@@ -6,6 +6,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.tbsten.tripleTriad.ui.designSystem.LocalTextStyle
@@ -17,20 +19,28 @@ internal fun GamePlayText(
     color: Color,
     shadowColor: Color,
     modifier: Modifier = Modifier,
+    style: TextStyle = GamePlayTextDefaults.style(shadowColor),
+    overflow: TextOverflow = TextOverflow.Clip,
 ) {
-    val density = LocalDensity.current
-
     Text(
         text = text,
         color = color,
-        style = LocalTextStyle.current.merge(
-            fontSize = 60.sp,
-            shadow = Shadow(
-                shadowColor,
-                Offset.Zero,
-                with(density) { 16.dp.toPx() },
-            ),
-        ),
+        style = style,
         modifier = modifier,
+        overflow = overflow,
+    )
+}
+
+internal object GamePlayTextDefaults {
+    @Composable
+    fun style(
+        shadowColor: Color,
+    ): TextStyle = LocalTextStyle.current.merge(
+        fontSize = 60.sp,
+        shadow = Shadow(
+            shadowColor,
+            Offset.Zero,
+            with(LocalDensity.current) { 16.dp.toPx() },
+        ),
     )
 }

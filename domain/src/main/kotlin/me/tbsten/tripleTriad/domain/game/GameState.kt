@@ -26,6 +26,7 @@ sealed interface GameState : State {
         override val enemy: GamePlayer,
         override val enemyHands: Hands,
         override val gameField: GameField = GameField.emptyAll(),
+        val firstPlayer: GamePlayer?,
     ) : GameState {
         companion object;
     }

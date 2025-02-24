@@ -15,14 +15,11 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
@@ -40,7 +37,6 @@ import me.tbsten.tripleTriad.domain.game.GameField
 import me.tbsten.tripleTriad.domain.game.GamePlayer
 import me.tbsten.tripleTriad.ui.PreviewRoot
 import me.tbsten.tripleTriad.ui.ValuesPreviewParameterProvider
-import me.tbsten.tripleTriad.ui.designSystem.components.Button
 import me.tbsten.tripleTriad.ui.error.SafeLaunchedEffect
 import me.tbsten.tripleTriad.ui.feature.game.R
 import me.tbsten.tripleTriad.ui.testing.IgnoreVrt
@@ -133,11 +129,12 @@ private fun triangleRotation(
     return rotation.value
 }
 
-private class GamePlayerPreviewParameters : ValuesPreviewParameterProvider<GamePlayer?>(
-    null,
-    meForPreview,
-    enemyForPreview,
-)
+private class GamePlayerPreviewParameters :
+    ValuesPreviewParameterProvider<GamePlayer?>(
+        null,
+        meForPreview,
+        enemyForPreview,
+    )
 
 @IgnoreVrt
 @Preview(showBackground = true)

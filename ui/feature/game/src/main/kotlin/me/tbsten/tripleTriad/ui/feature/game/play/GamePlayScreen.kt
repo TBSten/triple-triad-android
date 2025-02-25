@@ -161,6 +161,10 @@ internal fun GamePlayScreen(
         uiState = uiState,
         onFinish = { dispatch(GamePlayUiAction.CompleteSelectingFirstPlayer) },
     )
+
+    NewTurnAnimation(
+        uiState = uiState,
+    )
 }
 
 @Composable

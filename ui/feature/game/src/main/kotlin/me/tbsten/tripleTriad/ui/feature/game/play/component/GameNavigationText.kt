@@ -11,6 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
+internal val textSlideIn = fadeIn(tween(100)) + slideInHorizontally(tween(300)) { 80 }
+internal val textSlideOut = fadeOut(tween(100)) + slideOutHorizontally(tween(300)) { -80 }
+
 @Composable
 internal fun GameNavigationText(
     visible: Boolean,
@@ -20,8 +23,8 @@ internal fun GameNavigationText(
 ) {
     AnimatedVisibility(
         visible = visible,
-        enter = fadeIn(tween(100)) + slideInHorizontally(tween(300)) { 80 },
-        exit = fadeOut(tween(100)) + slideOutHorizontally(tween(300)) { -80 },
+        enter = textSlideIn,
+        exit = textSlideOut,
     ) {
         GamePlayText(
             text = text,

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,24 @@ fun HorizontalDivider(
 ) {
     drawLine(
         color = color,
+        strokeWidth = thickness.toPx(),
+        start = Offset(0f, thickness.toPx() / 2),
+        end = Offset(size.width, thickness.toPx() / 2),
+    )
+}
+
+@Composable
+fun HorizontalDivider(
+    vararg colorStops: Pair<Float, Color>,
+    modifier: Modifier = Modifier,
+    thickness: Dp = DividerDefaults.Thickness,
+) = Canvas(
+    modifier
+        .fillMaxWidth()
+        .height(thickness),
+) {
+    drawLine(
+        Brush.horizontalGradient(colorStops = colorStops),
         strokeWidth = thickness.toPx(),
         start = Offset(0f, thickness.toPx() / 2),
         end = Offset(size.width, thickness.toPx() / 2),

@@ -37,10 +37,13 @@ internal object GamePlayTextDefaults {
         shadowColor: Color,
     ): TextStyle = LocalTextStyle.current.merge(
         fontSize = 60.sp,
-        shadow = Shadow(
-            shadowColor,
-            Offset.Zero,
-            with(LocalDensity.current) { 16.dp.toPx() },
-        ),
+        shadow = shadow(shadowColor),
+    )
+
+    @Composable
+    fun shadow(color: Color) = Shadow(
+        color,
+        Offset.Zero,
+        with(LocalDensity.current) { 16.dp.toPx() },
     )
 }

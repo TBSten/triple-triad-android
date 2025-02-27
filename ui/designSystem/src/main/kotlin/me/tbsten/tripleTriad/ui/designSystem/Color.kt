@@ -83,8 +83,10 @@ data class Colors(
 
     val me: Color,
     val meShadow: Color,
+    val meBorder: Color,
     val enemy: Color,
     val enemyShadow: Color,
+    val enemyBorder: Color,
 )
 
 internal val LightColors =
@@ -116,8 +118,10 @@ internal val LightColors =
         elevation = Gray700,
         me = Color(0xFF618AB9),
         meShadow = Color(0xFF0000FF),
+        meBorder = Color(0xFF3A3EAB),
         enemy = Color(0xFFB97777),
         enemyShadow = Color(0xFFFF0000),
+        enemyBorder = Color(0xFFAB3A3C),
     )
 
 internal val DarkColors =
@@ -149,8 +153,10 @@ internal val DarkColors =
         elevation = Gray200,
         me = Color(0xFF618AB9),
         meShadow = Color(0xFF0000FF),
+        meBorder = Color(0xFF3A3EAB),
         enemy = Color(0xFFB97777),
         enemyShadow = Color(0xFFFF0000),
+        enemyBorder = Color(0xFFAB3A3C),
     )
 
 @SuppressLint("ComposeCompositionLocalUsage")

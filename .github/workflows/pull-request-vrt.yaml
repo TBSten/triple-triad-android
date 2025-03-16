@@ -67,7 +67,7 @@ jobs:
       - uses: yumemi-inc/setup-java-gradle@v2
       - uses: actions/setup-node@v4 # for reg-suit
         with:
-          node-version: 20.x
+          node-version: 22.x
       - run: npm i
 
       - uses: actions/download-artifact@v4

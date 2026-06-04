@@ -35,7 +35,7 @@ openApi = "7.10.0"
 okhttp = "4.12.0"
 timber = "5.0.1"
 tart = "1.4.0"
-arrowKt = "2.0.1"
+arrowKt = "2.2.3"
 lumoUi = "1.1.1"
 
 ktlintGradlePlugin = "12.1.2"
